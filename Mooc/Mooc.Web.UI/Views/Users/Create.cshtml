@@ -9,13 +9,10 @@
 
 
 
-@using (Ajax.BeginForm("AddUser", "Users", null, new AjaxOptions
-{
-    HttpMethod = "Post",
-    OnSuccess = "onSuccess(data, status, xhr)",
-}, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddUser", "Users", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return jQueryAjaxPost(this);" }))
 {
     @Html.AntiForgeryToken()
+    <p id="p1"></p>
 
     <div class="form-horizontal">
 
