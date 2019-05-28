@@ -53,8 +53,8 @@ namespace Mooc.Web.UI.Controllers
                     user.AddTime = DateTime.Now.ToLocalTime();
                     db.Users.Add(user);
                     db.SaveChanges();
-                    // return RedirectToAction("Index");
-                    return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                     return RedirectToAction("Index");
+                    //return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
