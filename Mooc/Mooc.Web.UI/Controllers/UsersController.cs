@@ -42,12 +42,39 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddUser(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    user.AddTime = DateTime.Now.ToLocalTime();
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    // return RedirectToAction("Index");
+                    return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Model state is not valid" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,UserName,PassWord,Email,NickName,UserState,RoleType,AddTime")] User user)
+        public ActionResult Create([Bind(Include = "UserName,PassWord,Email,NickName,RoleType")] User user)
         {
             if (ModelState.IsValid)
             {
