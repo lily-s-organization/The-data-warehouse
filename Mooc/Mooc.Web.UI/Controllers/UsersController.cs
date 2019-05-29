@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
+using Mooc.DataAccess.Models.ViewModels;
 
 namespace Mooc.Web.UI.Controllers
 {
@@ -44,28 +45,31 @@ namespace Mooc.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUser(User user)
+        public ActionResult AddUser(UserViewModel viewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    User user = AutoMapper.Mapper.Map<UserViewModel>(viewModel);//AutoMapper
                     user.AddTime = DateTime.Now.ToLocalTime();
                     db.Users.Add(user);
                     db.SaveChanges();
-                    // return RedirectToAction("Index");
-                     return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                     return RedirectToAction("Index");//因为是 form  提交数据  没有回调函数  所以 执行完 直接跳转到列表页
+                   //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                    // return Content("<script>alert('user added!');location.href='" + Url.Action("Create") + "'</script>");
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Model state is not valid" }, JsonRequestBehavior.AllowGet);
+                    return View("Create", viewModel);
+                    // return Json(new { success = false, message = "Model state is not valid" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
+                return View("Create",viewModel);
 
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+               // return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
         }
