@@ -9,6 +9,7 @@ namespace Mooc.Web.UI.Models
         public MapperProfile()
         {
             CreateMap<User, UserViewModel>();
+            CreateMap<UserViewModel, User>();
         }
 
        
