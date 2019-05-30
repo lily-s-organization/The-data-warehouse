@@ -43,31 +43,48 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        public ActionResult Update(long id)
+        {
+            User user = new User();
+            user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
+            return View("Update", user);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUser(UserViewModel viewModel)
+        public ActionResult AddUser(User user)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    User user = AutoMapper.Mapper.Map<UserViewModel>(viewModel);//AutoMapper
-                    user.AddTime = DateTime.Now.ToLocalTime();
-                    db.Users.Add(user);
-                    db.SaveChanges();
-                     return RedirectToAction("Index");//因为是 form  提交数据  没有回调函数  所以 执行完 直接跳转到列表页
-                   //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
-                   // return Content("<script>alert('user added!');location.href='" + Url.Action("Create") + "'</script>");
+                   // User user = AutoMapper.Mapper.Map<UserViewModel>(viewModel);//AutoMapper
+                    if (user.Id == 0)
+                    {                       
+                        user.AddTime = DateTime.Now.ToLocalTime();
+                        db.Users.Add(user);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");//因为是 form  提交数据  没有回调函数  所以 执行完 直接跳转到列表页
+                                                         //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
                 }
                 else
                 {
-                    return View("Create", viewModel);
+                    return View("Create", user);
                     // return Json(new { success = false, message = "Model state is not valid" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return View("Create",viewModel);
+                return View("Create",user);
+                //用日志记录ex
 
                // return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
@@ -145,7 +162,8 @@ namespace Mooc.Web.UI.Controllers
             User user = db.Users.Find(id);
             db.Users.Remove(user);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            return Json(new { success = true, message = "Deleted Successfully", userid = id }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

@@ -7,7 +7,6 @@
 
 <h2>User List</h2>
 
-
 <table class="table">
     <tr>
         <th>
@@ -16,23 +15,13 @@
 
         <th>
             @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NickName)
-        </th>
-
+        </th>       
         <th>
             @Html.DisplayNameFor(model => model.RoleType)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AddTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Credit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LearningHours)
-        </th>
+        </th>      
         <th>
             @Html.DisplayNameFor(model => model.PhotoUrl)
         </th>
@@ -41,37 +30,39 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
 
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NickName)
-            </td>
-
+            </td>           
             <td>
                 @Html.DisplayFor(modelItem => item.RoleType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AddTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Credit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LearningHours)
-            </td>
+            </td>          
             <td>
                 @Html.DisplayFor(modelItem => item.PhotoUrl)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+
+                @using (Ajax.BeginForm("Delete/" + item.Id, "Users", new AjaxOptions { Confirm = "are you sure to delete?", HttpMethod = "Post", OnSuccess = "AfterDelete" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(modelItem => item.Id)
+
+                    <input type="submit" value="Delete" class="btn btn-danger " style="display:inline" />
+
+                   // @Html.ActionLink("Update111", "Update", new { id = item.Id, @class = "btn btn-primary btn-large" })
+                    @Html.ActionLink("Update", "Update/"+item.Id, "Users", null, new {  @class = "btn btn-primary " })
+
+                }
+
+
             </td>
         </tr>
     }
