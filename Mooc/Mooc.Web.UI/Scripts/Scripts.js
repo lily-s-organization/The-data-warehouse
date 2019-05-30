@@ -49,11 +49,11 @@ function Delete(url) {
 function AfterDelete(data, status, xhr)
 {    
     var id = data.userid
-    console.log(id);
-    alert(id);
+  //  console.log(id);
+  //  alert(id);
     $("#" + id).remove();
-   // $('#19').remove();
-    alert(data.message);
+ 
+  //  alert(data.message);
 }
 
 function AfterAdd(data, status, xhr) {
