@@ -52,20 +52,22 @@ namespace Mooc.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUser(User user)
+        public ActionResult AddUser(UserViewModel viewModel)
         {
+           
             try
             {
                 if (ModelState.IsValid)
                 {
-                   // User user = AutoMapper.Mapper.Map<UserViewModel>(viewModel);//AutoMapper
+                    User user = AutoMapper.Mapper.Map<User>(viewModel);//AutoMapper
+                   
                     if (user.Id == 0)
-                    {                       
+                    {
                         user.AddTime = DateTime.Now.ToLocalTime();
                         db.Users.Add(user);
                         db.SaveChanges();
                         return RedirectToAction("Index");//因为是 form  提交数据  没有回调函数  所以 执行完 直接跳转到列表页
-                                                         //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                        //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
@@ -77,13 +79,13 @@ namespace Mooc.Web.UI.Controllers
                 }
                 else
                 {
-                    return View("Create", user);
+                    return View("Create", viewModel);
                     // return Json(new { success = false, message = "Model state is not valid" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return View("Create",user);
+                return View("Create",viewModel);
                 //用日志记录ex
 
                // return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
