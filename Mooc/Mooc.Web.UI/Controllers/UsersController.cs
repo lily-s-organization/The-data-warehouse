@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
 using Mooc.DataAccess.Models.ViewModels;
@@ -15,11 +16,20 @@ namespace Mooc.Web.UI.Controllers
     public class UsersController : Controller
     {
         private DataContext db = new DataContext();
-
+        private ILog logger = LogManager.GetLogger(typeof(UsersController));
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            try
+            {
+                return View(db.Users.ToList());
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return View();
+            }
         }
 
         // GET: Users/Details/5
@@ -45,9 +55,46 @@ namespace Mooc.Web.UI.Controllers
 
         public ActionResult Update(long id)
         {
-            User user = new User();
-            user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
-            return View("Update", user);
+            try
+            {
+                User user = new User();
+                user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
+                return View("Update", user);
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return View();
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateUser(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("Update", user);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return View("Update", user);
+            }
+            
+
+          
         }
 
         [HttpPost]
@@ -60,31 +107,23 @@ namespace Mooc.Web.UI.Controllers
                 if (ModelState.IsValid)
                 {
                     User user = AutoMapper.Mapper.Map<User>(viewModel);//AutoMapper
-                   
-                    if (user.Id == 0)
-                    {
-                        user.AddTime = DateTime.Now.ToLocalTime();
-                        db.Users.Add(user);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");//因为是 form  提交数据  没有回调函数  所以 执行完 直接跳转到列表页
-                        //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        db.Entry(user).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-
+                                  
+                    user.AddTime = DateTime.Now.ToLocalTime();
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");//因为是 form  提交数据  没有回调函数  所以 执行完 直接跳转到列表页
+                    //  return Json(new { success = true, message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+              
                 }
                 else
-                {
+                {                  
                     return View("Create", viewModel);
                     // return Json(new { success = false, message = "Model state is not valid" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
+                logger.Error(ex.Message);
                 return View("Create",viewModel);
                 //用日志记录ex
 
@@ -161,11 +200,19 @@ namespace Mooc.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
-            //return RedirectToAction("Index");
-            return Json(new { success = true, message = "Deleted Successfully", userid = id }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                User user = db.Users.Find(id);
+                db.Users.Remove(user);
+                db.SaveChanges();
+                //return RedirectToAction("Index");
+                return Json(new { success = true, message = "Deleted Successfully", userid = id }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                return View("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)
