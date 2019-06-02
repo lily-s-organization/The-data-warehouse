@@ -59,7 +59,10 @@ namespace Mooc.Web.UI.Controllers
             {
                 User user = new User();
                 user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
-                return View("Update", user);
+                return View("Details", user);//If you return the view that is the same with action, you don't need to use "update"
+
+                //return action
+               // return RedirectToAction("Details", new { id = id });
             }
             catch (Exception ex)
             {

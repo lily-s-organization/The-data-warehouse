@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table">
+    <caption>用户列表</caption>
+    <thead>
+        <tr>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>用户类型</th>
+            <th>用户状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody id="dataBind"></tbody>
+</table>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    function initSearch() {
+        var _html = '';
+        $.ajax({
+            url: "@Url.Content("~/Demo2/GetUserList")",
+            data: { "pageIndex": 1, "pageSize": 100 },
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                if (result.code == 0 && result.data.length > 0) {
+                    for (var i = 0; i < result.data.length; i++) {
+                        var item = result.data[i];
+                        _html += '<tr>';
+                        _html += '<td>' + item.UserName + '</td>';
+                        _html += '<td>' + item.Email + '</td>';
+                        _html += '<td>' + item.ShowRoleType + '</td>';
+                        _html += '<td>' + item.ShowStatus + '</td>';
+                        _html += '<td><a href="@Url.Content("~/Users/Details/")' + item.Id + '">查看详情</a></td>';
+                        _html += '</tr>';
+                    }
+                } else {
+                    _html = '<tr><td  colspan="5" class="center">暂无数据</td></tr>';
+
+                }
+                $("#dataBind").html(_html);
+            }
+        });
+    }
+
+    $(function () {
+        initSearch();
+    })
+</script>

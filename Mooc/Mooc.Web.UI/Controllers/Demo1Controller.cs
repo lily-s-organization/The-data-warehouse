@@ -9,6 +9,7 @@ namespace Mooc.Web.UI.Controllers
     public class Demo1Controller : Controller
     {
         // 使用 razor 绑定数据实现 User 的增删改查  EF + Automap
+        // implement add delete update select functions in Demo1--using razor
         public ActionResult Index()
         {
             return View();
