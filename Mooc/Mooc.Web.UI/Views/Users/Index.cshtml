@@ -1,70 +1,87 @@
-﻿@model IEnumerable<Mooc.DataAccess.Models.Entities.User>
-
+﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>User List</h2>
+<head>
+   <style>
+       .Btn {
+           color: #337AB7;
+           border: 0px none;
+           background-color:white;
+           margin-top: -8px;
+           font-family: Arial, Helvetica, sans-serif;
+           font-size: 14px;
+       }        
+   </style>
+   
+</head>
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
+    <caption>用户列表</caption>
+    <thead>
+        <tr>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>头像</th>
+            <th>用户类型</th>
+            <th>用户状态</th>
+            <th>操作</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="dataBind"></tbody>
+</table>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    function initSearch() {
+        var _html = '';
+        $.ajax({
+            url: "@Url.Content("~/Demo2/GetUserList")",
+            data: { "pageIndex": 1, "pageSize": 100 },
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                if (result.code == 0 && result.data.length > 0) {
+                    for (var i = 0; i < result.data.length; i++) {
+                        var item = result.data[i];
+                        _html += '<tr>';
+                        _html += '<td>' + item.UserName + '</td>';
+                        _html += '<td>' + item.Email + '</td>';
+                        _html += '<td>' + item.PhotoUrl + '</td>';
+                        _html += '<td>' + item.ShowRoleType + '</td>';
+                        _html += '<td>' + item.ShowStatus + '</td>';
+                        _html += '<td><a href="@Url.Content("~/Users/Details/")' + item.Id + '">查看详情</a></td>';
+                        _html += '<td> <button class="Btn" onclick="Delete(' + item.Id +')" class="btn btn-default">删除记录</button></td>';
+                        _html += '</tr>';
+                    }
+                } else {
+                    _html = '<tr><td  colspan="5" class="center">暂无数据</td></tr>';
 
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>       
-        <th>
-            @Html.DisplayNameFor(model => model.RoleType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AddTime)
-        </th>      
-        <th>
-            @Html.DisplayNameFor(model => model.PhotoUrl)
-        </th>
-        <th></th>
-    </tr>
+                }
+                $("#dataBind").html(_html);
+            }
+        });
+    }
 
-    @foreach (var item in Model)
+    $(function () {
+        initSearch();
+    })
+
+    function Delete(id)
     {
-        <tr id="@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>           
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddTime)
-            </td>          
-            <td>
-                @Html.DisplayFor(modelItem => item.PhotoUrl)
-            </td>
-            <td>
-
-
-                @using (Ajax.BeginForm("Delete/" + item.Id, "Users", new AjaxOptions { Confirm = "are you sure to delete?", HttpMethod = "Post", OnSuccess = "AfterDelete" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(modelItem => item.Id)
-
-                    <input type="submit" value="Delete" class="btn btn-danger " style="display:inline" />
-
-                   // @Html.ActionLink("Update111", "Update", new { id = item.Id, @class = "btn btn-primary btn-large" })
-                    @Html.ActionLink("Update", "Update/"+item.Id, "Users", null, new {  @class = "btn btn-primary " })
+        
+        $.ajax({
+            url: "@Url.Content("~/Users/Delete")",
+            data: { "id": id },
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                if (result == 0 ) {
+                    window.location.href="@Url.Content("~/Users/Index")"
+                } else {
+                    alert("failed add");
 
                 }
 
-
-            </td>
-        </tr>
+            }
+        });
     }
-
-</table>
+</script>
