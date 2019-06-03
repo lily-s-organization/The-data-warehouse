@@ -1,66 +1,133 @@
 ﻿@model Mooc.DataAccess.Models.Entities.User
-
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<body>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AddTime)
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PassWord)
-        </dt>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="PassWord"
+                       placeholder="请输入密码">
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.PassWord)
-        </dd>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">确认密码</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="confirmPassWord"
+                       placeholder="请确认密码">
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">邮箱</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">头像路径</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.PhotoUrl, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserState)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserState)
-        </dd>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户类型</label>
+            <div class="col-sm-10">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RoleType)
-        </dt>
+                @Html.DropDownListFor(m => m.RoleType, ViewData["RoleType"] as List<SelectListItem>, "---请选择---", new { @class = "form-control", @id = "roleType" })
 
-        <dd>
-            @Html.DisplayFor(model => model.RoleType)
-        </dd>
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AddTime)
-        </dt>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button onclick="Update()" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.AddTime)
-        </dd>
+    <script src="~/Scripts/Script.js"></script>
+</body>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<script>
+    function Update() {
+
+        var username = $("#UserName").val();
+
+       
+        if (!username) {
+            alert("user can't be empty");
+            return false;
+        }
+        var password = $("#PassWord").val();
+        if (!password) {
+            alert("password can't be empty");
+            return false;
+        }
+        if (password.length < 6) {
+            alert("password should be at least 6 letters");
+            return false;
+        }
+        var roleType = $("#roleType").val();
+        if (!roleType) {
+            alert("roleType can't be empty");
+            return false;
+        }
+        var confirmPassWord = $("#confirmPassWord").val();
+        if (!confirmPassWord ) {
+            alert("Re-type password");
+            return false;
+        }
+        if (confirmPassWord != password) {
+            alert("Please confirm your password again");
+            return false;
+        }
+        var email = $("#Email").val();
+        if (!email) {
+            alert("email can't be empty");
+            return false;
+        }
+        var photoUrl = $("#PhotoUrl").val();
+        var res = TestEmail(email);
+        if (!res) {
+            return false;
+        }
+
+        var id = $("#Id").val();
+        var addTime = $("#AddTime").val();
+
+
+
+        $.ajax({
+            url: "@Url.Content("~/Users/AddUserList")",
+            data: { "Id": id, "UserName": username, "PassWord": password, "RoleType": roleType, "Email": email, "AddTime": addTime, "PhotoUrl": photoUrl},
+            dataType: 'json', type: "POST",
+            success: function (result) {
+                if (result == 0 ) {
+                    window.location.href="@Url.Content("~/Users/Index")"//return controller
+                } else {
+                    alert("failed update");
+
+                }
+
+            }
+        });
+    }
+</script>
