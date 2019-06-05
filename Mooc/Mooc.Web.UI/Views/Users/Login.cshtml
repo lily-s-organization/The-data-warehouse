@@ -9,110 +9,255 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Document</title>
-    
+
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <style>
+
         body {
-            background-color: #C7EDCC;
-            font-family: "microsoft yahei";
-            /*min-width: 800px;*/
+            font: 14px/1.5 "PingFang SC", "微软雅黑", "Microsoft YaHei", Helvetica, "Helvetica Neue", Tahoma, Arial, sans-serif;
+            color: #1c1f21;
         }
 
-        img {
-            width: 100%;
-            /*height: 462px;*/
+        body {
+            min-width: 1200px;
+            background-color: #f8fafc;
+            overflow-y: scroll;
+            padding-top: 0;
+            -webkit-transition: -webkit-transform 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
-        .navbar {
-            /*margin-bottom: -10px;*/
+        #header-signin {
+            margin-left: 12px;
+            margin-right:16px;
+           
         }
 
-        #myppt {
-            margin-top: -20px;
+        #header-signin a {
+            display: inline-block;
+            padding: 0 12px;
+            color: #4d555d;
+            height: 72px;
+            line-height: 72px;
+            font-size: 14px;
+            -webkit-transition: background-color 0.2s;
+            -moz-transition: background-color 0.2s;
+            transition: background-color 0.2s;
         }
+
+        #header-signin a :hover {
+            color: #07111b;
+        }
+
+        #nav {
+            float: left;
+        }
+
+        #nav ul {
+            list-style: none;
+            display: inline;
+            float: left;
+        }
+
+        #nav li {
+            display: inline;
+           
+            float: left
+        }
+
+       
+
+        #nav li a {
+            padding: 0 20px;
+            display: block;
+            color: #4d555d;
+            text-align: center;
+            font-size: 16px;
+            height: 72px;
+            line-height: 72px;
+            -webkit-transition: background-color 0.3s;
+            -moz-transition: background-color 0.3s;
+            transition: background-color 0.3s;
+            position: relative;
+            cursor:pointer;
+        }
+            #nav li a.active,
+            #nav a:hover {
+                color: #07111b;
+                text-decoration:none;
+            }
+
+        .page-container {
+            margin: 0 auto;
+           
+        }
+
+        .active-title a {
+            float: left;
+            width: 80px;
+            color: rgb(120, 125, 130);
+            text-align: center;
+            height: 49px;
+            line-height: 49px;
+            font-size:16px;
+            cursor: pointer;
+            font-weight:700;
+            font-family:Arial, Helvetica, sans-serif
+        }
+
+        .active-title a:hover {
+            color: rgb(242, 13, 13);
+        }
+
+        .input-content {
+            height: 48px;
+            width: 302px;
+            outline: none;
+            background: rgba(28, 31, 33,0.06);
+            border-radius:8px;
+            box-sizing:border-box;
+            border-width:0px;
+            
+        }
+        .input-errorHint {
+            height: 20px;
+            width: 302px;
+        }
+        .cantLogin a {
+            color: rgb(145, 153, 161);
+            text-decoration: none;
+            line-height: 1em;
+            margin-right: 30px;
+        }
+        .cantLogin a:hover {
+            color: rgb(84, 92, 99);
+            cursor:pointer;
+               
+        }
+        .submitBtn {
+            height: 48px;
+            width: 320px;
+            box-sizing: border-box;
+            padding: 11px 32px;
+            font-size: 16px;
+            line-height: 24px;
+            border-radius: 24px;
+            border-style: solid;
+            border-width: 1px;
+            cursor: pointer;
+            transition: all .3s;
+            color: #fff;
+            background-color: #f20d0d;
+            border-color: #f20d0d;
+            opacity: 1;
+            margin-top:6px;
+        }
+
     </style>
 </head>
 <body>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a data-toggle="modal" data-target="#register" href=""><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-        <li><a data-toggle="modal" data-target="#login" href=""><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-    </ul>
-    <!-- 注册窗口 -->
-    <div id="register" class="modal fade" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
+    <div id="header">
+        <div class="page-container">
+            <div id="logo" style="display:inline;float:left">
+                <a href="#">
+                    <img title="Mocc" src="https://www.imooc.com/static/img/index/logo.png" />
+                </a>
+            </div>
+
+            <div id="nav">
+                <ul class="nav-item">
+                    <li><a>免费课程</a></li>
+                    <li><a>实战课程</a></li>
+                    <li><a>就业班</a></li>
+                    <li><a>专栏</a></li>
+                    <li><a>猿问</a></li>
+                    <li><a>手记</a></li>
+                </ul>
+            </div>
+
+            <div id="login-area" style="display:inline">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="header-signin">
+                        <a data-toggle="modal" data-target="#register" href=""> 注册</a>
+                        /
+                        <a data-toggle="modal" data-target="#login" href=""> 登录</a>
+                    </li>
+                   
+                </ul>
+                <!-- 登陆窗口 -->
+                <div id="login" class="modal fade" tabindex="-1" >
+                    <div class="modal-dialog"  style="height:377px;width:384px;margin-top:260px;text-align:center;">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <button class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="active-title" style="height:74px;width:344px;margin-left:16px;">
+                             
+                                <a href="#" >登录</a>
+                                <a href="" data-toggle="modal" data-dismiss="modal" data-target="#register">注册</a>
+
+                            </div>
+                            <div class="modal-body" >
+                                <form class="form-group" action="">
+
+                                    <input class="input-content" id="userName" type="text" placeholder="请输入用户名">
+                                    <div class="input-errorHint"></div>
+
+                                    <input class="input-content" id="passWord" type="password" placeholder="请输入密码">
+                                    <div class="input-errorHint"></div>
+
+                                    <div class="text-right">
+                                        <div class="cantLogin">
+                                            <a>找回密码</a>
+                                            <a>无法登陆</a>
+                                        </div>
+                                    </div>
+                                        
+                                   <button class="submitBtn" type="submit" onclick="Login()">登陆</button>
+ 
+                                   
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-title">
-                    <h1 class="text-center">注册</h1>
-                </div>
-                <div class="modal-body">
-                    <form class="form-group" action="">
-                        <div class="form-group">
-                            <label for="">用户名</label>
-                            <input class="form-control" type="text" placeholder="6-15位字母或数字">
+                <!-- 注册窗口 -->
+                <div id="register" class="modal fade">
+                    <div class="modal-dialog"   style="height:377px;width:384px;margin-top:260px;text-align:center;">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <button class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="active-title" style="height:74px;width:344px;margin-left:16px;">
+
+                                <a href="" data-toggle="modal" data-dismiss="modal" data-target="#login">登录</a>
+                                <a  href="#" >注册</a>
+
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" action="">
+                                    <input class="input-content" id="userName" type="text" placeholder="请输入注册手机号">
+                                    <div class="input-errorHint"></div>
+
+                                    <input class="input-content" id="passWord" type="password" placeholder="请输入验证码">
+                                    <div class="input-errorHint"></div>
+
+
+                                    <button class="submitBtn" type="submit" onclick="Register()">注册</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="">密码</label>
-                            <input class="form-control" type="password" placeholder="至少6位字母或数字">
-                        </div>
-                        <div class="form-group">
-                            <label for="">再次输入密码</label>
-                            <input class="form-control" type="password" placeholder="至少6位字母或数字">
-                        </div>
-                        <div class="form-group">
-                            <label for="">邮箱</label>
-                            <input class="form-control" type="email" placeholder="例如:123@123.com">
-                        </div>
-                        <div class="text-right">
-                            <button class="btn btn-primary" type="submit">提交</button>
-                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                        </div>
-                        <a href="" data-toggle="modal" data-dismiss="modal" data-target="#login">已有账号？点我登录</a>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- 登录窗口 -->
-    <div id="login" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-title">
-                    <h1 class="text-center">登录</h1>
-                </div>
-                <div class="modal-body">
-                    <form class="form-group" action="">
-                        <div class="form-group">
-                            <label for="">用户名</label>
-                            <input class="form-control" type="text" placeholder="" id="userName">
-                        </div>
-                        <div class="form-group">
-                            <label for="">密码</label>
-                            <input class="form-control" type="password" placeholder="" id="passWord">
-                        </div>
-                        <div class="text-left">
-                            <div id="errorMsg"></div>
-                        </div>
-                        <div class="text-right">
-                            <button class="btn btn-primary" type="button" onclick="Login()">登录</button>
-                            <button class="btn btn-danger" data-dismiss="modal">取消</button>
-                        </div>
-                        <a href="" data-toggle="modal" data-dismiss="modal" data-target="#register">还没有账号？点我注册</a>
-                    </form>
-                </div>
-            </div>
-        </div>
+
     </div>
 
 </body>
@@ -122,18 +267,17 @@
 </html>
 
 <script>
-    function Login()
-    {
-      //  alert("add");
+    function Login() {
+        
         var username = $("#userName").val();
         var password = $("#passWord").val();
 
         if (username == "qwe" && password == "123") {
             alert("pass");
         }
-        else
-        {         
-            $("#errorMsg").text("Error!");
+        else {
+            $(".input-errorHint").text("Error!");
+            
         }
 
         setCookie("username", username, 1);
@@ -160,4 +304,6 @@
         }
         return "";
     }
+
+    function Register() { alert("register") };
 </script>
