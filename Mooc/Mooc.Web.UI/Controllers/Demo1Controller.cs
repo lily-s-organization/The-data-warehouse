@@ -21,15 +21,7 @@ namespace Mooc.Web.UI.Controllers
 
         public ActionResult Index()
         {
-            try
-            {
-                return View(db.Users.ToList());
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex.Message);
-                return View();
-            }
+            return View(db.Users.ToList());
         }
 
         public ActionResult Create()
@@ -37,33 +29,6 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateUser(User user)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    db.Entry(user).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return View("Update", user);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                logger.Error(ex.Message);
-                return View("Update", user);
-            }
-
-
-
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,28 +45,28 @@ namespace Mooc.Web.UI.Controllers
                     db.Users.Add(user);
                     db.SaveChanges();
                     return RedirectToAction("Index");
-                                                    
 
-                }
-                else
-                {
-                    return View("Create", viewModel);
-                    
+
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex.Message);
-                return View("Create", viewModel);
-                //用日志记录ex
-
-                // return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+               
             }
+            return View("Create", viewModel);
 
         }
 
         public ActionResult Update(long id)
         {
+            User user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
+            if (user == null)
+                return HttpNotFound();
+
+            return View(user);
+
+            /*
             try
             {
                 User user = new User();
@@ -117,7 +82,33 @@ namespace Mooc.Web.UI.Controllers
                 logger.Error(ex.Message);
                 return View();
             }
+            */
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateUser(User user)
+        {
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }               
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                
+            }
+
+            return View("Update", user);
+
+        }
+
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -128,14 +119,15 @@ namespace Mooc.Web.UI.Controllers
                 User user = db.Users.Find(id);
                 db.Users.Remove(user);
                 db.SaveChanges();
-               
-                return RedirectToAction("Index");
+
             }
             catch (Exception ex)
             {
                 logger.Error(ex.Message);
-                return RedirectToAction("Index");
             }
+
+            return RedirectToAction("Index");
         }
+
     }
 }

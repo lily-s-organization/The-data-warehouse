@@ -37,7 +37,8 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PhotoUrl)
+            <img src="@item.PhotoUrl" alt=""/>
+            @*@Html.DisplayFor(modelItem => item.PhotoUrl)*@
         </td>
       
       
@@ -46,14 +47,17 @@
         </td>
         <td>
 
-            @using (Html.BeginForm("Delete/" + item.Id, "Demo1", FormMethod.Post))
+            @*@using (Html.BeginForm("Delete", "Demo1", FormMethod.Post))*@
+            @using (Html.BeginForm("Delete", "Demo1", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
-                @Html.HiddenFor(modelItem => item.Id)
+                @*@Html.HiddenFor(modelItem => item.Id)*@
+               <input type="hidden" value="@item.Id" name="id"/>
                 <input type="submit" value="Delete" class="btn btn-danger " style="display:inline" />
-                @Html.ActionLink("Update", "Update/" + item.Id, "Demo1", null, new { @class = "btn btn-primary " })
-
             }
+
+              @*@Html.ActionLink("Update", "Update/" + item.Id, "Demo1", null, new { @class = "btn btn-primary " })*@
+            @Html.ActionLink("Update", "Update", "Demo1",new {id=item.Id}, new { @class = "btn btn-primary" })
         </td>
     </tr>
 }

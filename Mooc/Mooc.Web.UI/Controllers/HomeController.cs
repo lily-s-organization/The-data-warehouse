@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mooc.DataAccess.Models.ViewModels;
+using Mooc.Common.Utils;
 
 namespace Mooc.Web.UI.Controllers
 {
@@ -24,6 +25,9 @@ namespace Mooc.Web.UI.Controllers
         }
         public ActionResult Index()
         {
+            CookieHelper.SetCookie(CommonVariables.LoginCookieName, "test", CookieHelper.TimeUtil.H, "2");//2h
+
+            string name = CookieHelper.GetCookie(CommonVariables.LoginCookieName);//get cookie
 
             using (DataContext db = new DataContext())
             {

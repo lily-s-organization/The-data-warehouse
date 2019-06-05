@@ -121,16 +121,12 @@ namespace Mooc.Web.UI.Controllers
             try
             {
                 User user = db.Users.Find(id);
-                if (user != null)
-                {
-                    db.Users.Remove(user);
-                    db.SaveChanges();
-                    return Json(0);
-                }
-                else
-                {
-                    return Json(300);
-                }
+                if (user == null)
+                    return Json(500);
+
+                db.Users.Remove(user);
+                db.SaveChanges();
+                return Json(0);
             }
             catch (Exception ex)
             {
