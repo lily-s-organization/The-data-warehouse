@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using log4net;
+using Mooc.Common.Utils;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
 using Mooc.DataAccess.Models.Utils;
@@ -14,11 +16,15 @@ using Mooc.DataAccess.Models.ViewModels;
 
 namespace Mooc.Web.UI.Controllers
 {
+
+    [AllowAnonymous]
     public class UsersController : Controller
     {
         private DataContext db = new DataContext();
         private ILog logger = LogManager.GetLogger(typeof(UsersController));
 
+
+        
         public ActionResult Index()
         {
             return View();
@@ -28,6 +34,51 @@ namespace Mooc.Web.UI.Controllers
         {
             return View();
         }
+
+        public ActionResult ToRegister()
+        {
+            IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
+            ViewData["RoleType"] = new SelectList(RoleNamelistItem, "Value", "Text");
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Register(User user)
+        {
+            try
+            {
+                if (user.ImageUpload != null)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(user.ImageUpload.FileName);
+                    string extension = Path.GetExtension(user.ImageUpload.FileName);
+                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                    user.PhotoUrl = "~/App_Data/Images/" + fileName;
+                    user.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/App_Data/Images/"), fileName));
+                }
+                db.Users.Add(user);
+                db.SaveChanges();
+                //用户注册后，默认为登录状态，用cookie存储用户状态
+                CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
+                
+                return Json(0);
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return Json(400);
+            }
+        }
+
+        public ActionResult ToSignIn()
+        {
+            return View();
+        }
+
+
+
+
+
 
         public ActionResult Add()
         {

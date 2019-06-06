@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Mooc.DataAccess.Models.Entities
 {
@@ -38,9 +39,10 @@ namespace Mooc.DataAccess.Models.Entities
         [Range(1, 3)]//1=管理员 2=老师 3=学生
         public int RoleType { get; set; }       //通过枚举来区别是学生还是老师
         public DateTime? AddTime { get; set; }       //用户注册时间
-       
 
-       
+
+        [NotMapped]
+        public HttpPostedFileBase ImageUpload { get; set; }
 
     }
 }

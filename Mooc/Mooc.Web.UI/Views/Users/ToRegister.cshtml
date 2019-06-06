@@ -1,0 +1,155 @@
+﻿@model Mooc.DataAccess.Models.Entities.User
+
+
+
+
+<body>
+    <form action="" id="myform" enctype="multipart/form-data">
+        <div class="form-horizontal" style="margin-top:10px">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="UserName"
+                           placeholder="请输入用户名" maxlength="50">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="PassWord"
+                           placeholder="请输入密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="confirmPassWord"
+                           placeholder="请确认密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="email"
+                           placeholder="请输入邮箱" maxlength="50">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">头像</label>
+                <div class="col-sm-10">
+                    <input type="file" name="ImageUpload" id="ImageUpload" accept="image/jpeg, image/png" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户类型</label>
+                <div class="col-sm-10">
+
+                    @Html.DropDownListFor(m => m.RoleType, ViewData["RoleType"] as List<SelectListItem>, "---请选择---", new { @class = "form-control", @id = "roleType" })
+
+                </div>
+            </div>
+
+           
+        </div>
+       
+
+    </form>
+
+    <button id="btnRegister" type="button">submit</button>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/Script.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnRegister").click(function () {
+                //验证数据格式
+                var username = $("#UserName").val();
+                if (!username) {
+                    alert("user can't be empty");
+                    return false;
+                }
+                var password = $("#PassWord").val();
+                if (!password) {
+                    alert("password can't be empty");
+                    return false;
+                }
+                if (password.length < 6) {
+                    alert("password should be at least 6 letters");
+                    return false;
+                }
+                var roleType = $("#roleType").val();
+                if (!roleType) {
+                    alert("roleType can't be empty");
+                    return false;
+                }
+             
+                var confirmPassWord = $("#confirmPassWord").val();
+                if (!confirmPassWord) {
+                    alert("Re-type password");
+                    return false;
+                }
+                if (confirmPassWord != password) {
+                    alert("Please confirm your password again");
+                    return false;
+                }
+                var email = $("#email").val();
+                if (!email) {
+                    alert("email can't be empty");
+                    return false;
+                }
+
+                if (!TestEmail(email)) {
+                    return false;
+                }
+
+                var formData = new FormData($("#btnRegister")[0]);
+                formData.append('ImageUpload', $('#ImageUpload')[0].files[0]);
+                formData.append("UserName", username);
+                formData.append("PassWord", password);
+                formData.append("roleType", roleType);
+                formData.append("email", email);
+                       
+
+                $.ajax({
+                    type: 'post',
+                     url: "@Url.Content("~/Users/Register")",
+                   // data: $("#myform").serialize(),
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (data) {
+                     
+                        if (data == 0) {
+                            window.location.href = "@Url.Content("~/Users/Login")"//return controller
+                            //注册完成后 返回首页 将用户名保存在cookie中用于显示
+                            setCookie("username", username, 1);
+                        }
+                        else
+                        {
+                            alert("fail to add");
+                        }
+
+                    }
+
+
+                });
+            });
+        });
+
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + "; " + expires;
+        }
+    </script>
+
+</body>
+
