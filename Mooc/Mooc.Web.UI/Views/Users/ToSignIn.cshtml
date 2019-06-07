@@ -46,13 +46,20 @@
             
             var username = $("#UserName").val();
             var password = $("#PassWord").val();
+            //判断username 和 密码不为空
+            if (username == null)
+            {
+                alert("用户名不能为空");
+                return false;
+
+            }
              $.ajax({
                 url: "@Url.Content("~/Users/SignIn")",
                  data: { "UserName": username, "PassWord": password},
                 dataType: 'json', type: "POST",
                  success: function (result) {
                      if (result == 0) {
-                          window.location.href="@Url.Content("~/Users/Login")"
+                          window.location.href="@Url.Content("~/Home/Index")"//跳转到homeindex页
                      }
                      else {
                          $("#errorMsg").text("wrong username or password");

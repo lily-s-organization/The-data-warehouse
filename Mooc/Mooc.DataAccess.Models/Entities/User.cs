@@ -41,8 +41,8 @@ namespace Mooc.DataAccess.Models.Entities
         public DateTime? AddTime { get; set; }       //用户注册时间
 
 
-        [NotMapped]
-        public HttpPostedFileBase ImageUpload { get; set; }
+        //[NotMapped]
+        //public HttpPostedFileBase ImageUpload { get; set; }
 
     }
 }

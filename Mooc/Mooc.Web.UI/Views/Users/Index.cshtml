@@ -68,7 +68,7 @@
 
     function Delete(id) {
 
-        if (confirm("do want to delete?")) {
+        if (confirm("do you want to delete?")) {
             $.ajax({
                 url: "@Url.Content("~/Users/Delete")",
                 data: { "id": id },
