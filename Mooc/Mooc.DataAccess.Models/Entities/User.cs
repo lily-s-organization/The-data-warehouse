@@ -42,7 +42,7 @@ namespace Mooc.DataAccess.Models.Entities
 
 
         [NotMapped]
-        public HttpPostedFileBase ImageUpload { get; set; }
+        public HttpPostedFileBase ImageUpload { get; set; }   //用于保存前端上传的图片
 
     }
 }
