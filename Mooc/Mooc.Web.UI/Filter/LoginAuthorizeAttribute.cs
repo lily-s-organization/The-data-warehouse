@@ -27,16 +27,17 @@ namespace Mooc.Web.UI.Filter
             }
             else
             {
-                var cookieUserName = cookie.Value;
-                var localCookie = CookieHelper.GetCookie(CommonVariables.LoginCookieName);
-                if (localCookie != cookieUserName)
-                {
-                    filterContext.Result = new RedirectResult("/Users/Login");
-                }
-                else
-                {
-                    return;
-                }
+                //var cookieUserName = cookie.Value;
+                //var localCookie = CookieHelper.GetCookie(CommonVariables.LoginCookieName);
+                //if (localCookie != cookieUserName)
+                //{
+                //    filterContext.Result = new RedirectResult("/Users/Login");
+                //}
+                //else
+                //{
+                //    return;
+                //}
+                return;
             }
             
 
