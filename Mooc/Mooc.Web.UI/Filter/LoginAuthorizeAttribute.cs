@@ -20,19 +20,27 @@ namespace Mooc.Web.UI.Filter
 
             //得到前端发来的cookie值
             HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get(CommonVariables.LoginCookieName);
-            var cookieUserName = cookie.Value;
 
-            //判断登录情况
-            if ((cookieUserName == null) ||(CookieHelper.GetCookie(CommonVariables.LoginCookieName) != cookieUserName))
+            if (cookie == null )
             {
-                //cookie里没有值 或者值不对  没有权限访问
-
                 filterContext.Result = new RedirectResult("/Users/Login");
             }
             else
             {
-                return;
+                var cookieUserName = cookie.Value;
+                var localCookie = CookieHelper.GetCookie(CommonVariables.LoginCookieName);
+                if (localCookie != cookieUserName)
+                {
+                    filterContext.Result = new RedirectResult("/Users/Login");
+                }
+                else
+                {
+                    return;
+                }
             }
+            
+
+            
         }
 
     }

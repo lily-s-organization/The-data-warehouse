@@ -35,6 +35,12 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        public JsonResult Logout()
+        {
+            CookieHelper.DelWithCurrentDomain(CommonVariables.LoginCookieName);
+            return Json(200);
+        }
+
         public ActionResult ToRegister()
         {
             IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
