@@ -35,10 +35,27 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        [HttpPost]
         public JsonResult Logout()
         {
             CookieHelper.DelWithCurrentDomain(CommonVariables.LoginCookieName);
             return Json(200);
+        }
+
+        [HttpPost]
+        public JsonResult SignIn(User user)
+        {
+            var result = db.Users.Where(x => x.UserName == user.UserName && x.PassWord == user.PassWord).SingleOrDefault();
+            if (result == null)
+            {
+                return Json(300);    
+            }
+            else
+            {
+                //用户登录后 默认存cookie一小时
+                CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
+                return Json(0);
+            }
         }
 
         public ActionResult ToRegister()
@@ -63,7 +80,7 @@ namespace Mooc.Web.UI.Controllers
                 }
                 db.Users.Add(user);
                 db.SaveChanges();
-                //用户注册后，默认为登录状态，用cookie存储用户状态
+                //用户注册后，默认为登录状态，用cookie存储用户状态一小时
                 CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
                 
                 return Json(0);

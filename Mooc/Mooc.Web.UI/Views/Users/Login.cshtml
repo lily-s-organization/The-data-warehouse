@@ -242,10 +242,11 @@
 </html>
 
 <script>
-    $(function () {      
-        var res = getCookie("username");
+    $(function () {    
+        //如果cookie有值，则显示用户名字
+        var res = getCookie("Login_Cookies_UserName");
         if (res) {
-            alert(res);
+           // alert(res);
             var _html = '';
          //   var _html = '<a>' + res + '</a>';
 
@@ -256,8 +257,6 @@
             _html += ' <a href="http://www.runoob.com">Personal Detail</a>';
             _html += '  </div>';
             _html += '  </div>';
-         
-
 
             $("#header-signin").html(_html);
         }
@@ -274,9 +273,9 @@
                 }
             });
 
-            //清除浏览器端的cookie
+            //不用清除浏览器端的cookie，后台会清
            
-            setCookie("username", "", -1); 
+           // setCookie("username", "", -1); 
             //刷新页面
              window.location.href = "@Url.Content("~/Users/Login")"
 
