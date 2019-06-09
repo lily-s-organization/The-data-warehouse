@@ -37,9 +37,9 @@ namespace Mooc.Web.UI.Controllers
             else
             {
                 //用户登录后 默认存cookie一小时
-                CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
-                CookieHelper.SetCookie(CommonVariables.LoginCookieID, user.Id.ToString(), CookieHelper.TimeUtil.H, "1");
-                CookieHelper.SetCookie(CommonVariables.LoginCookieType, user.RoleType.ToString(), CookieHelper.TimeUtil.H, "1");
+                CookieHelper.SetCookie(CommonVariables.LoginCookieName, result.UserName, CookieHelper.TimeUtil.H, "1");
+                CookieHelper.SetCookie(CommonVariables.LoginCookieID, result.Id.ToString(), CookieHelper.TimeUtil.H, "1");
+                CookieHelper.SetCookie(CommonVariables.LoginCookieType, result.RoleType.ToString(), CookieHelper.TimeUtil.H, "1");
                 return Json(0);
             }
         }
@@ -51,6 +51,7 @@ namespace Mooc.Web.UI.Controllers
             CookieHelper.DelCookie(CommonVariables.LoginCookieName);
             CookieHelper.DelCookie(CommonVariables.LoginCookieID);
             CookieHelper.DelCookie(CommonVariables.LoginCookieType);
+          //  return RedirectToAction("Index", "Home");
             return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 

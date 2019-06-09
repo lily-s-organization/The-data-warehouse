@@ -58,6 +58,8 @@ namespace Mooc.Web.UI.Controllers
                 db.SaveChanges();
 
                 CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
+                CookieHelper.SetCookie(CommonVariables.LoginCookieID, user.Id.ToString(), CookieHelper.TimeUtil.H, "1");
+                CookieHelper.SetCookie(CommonVariables.LoginCookieType, user.RoleType.ToString(), CookieHelper.TimeUtil.H, "1");
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
             }
             catch (Exception ex)

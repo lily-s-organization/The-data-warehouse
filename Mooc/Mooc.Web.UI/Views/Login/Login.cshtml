@@ -51,6 +51,12 @@
 
             var username = $("#UserName").val();
             var password = $("#PassWord").val();
+            if (!username) {
+                alert("user name can't be empty");
+            }
+            if (!password) {
+                alert("password can't be empty");
+            }
              $.ajax({
                 url: "@Url.Content("~/Login/Login")",
                  data: { "UserName": username, "PassWord": password},
