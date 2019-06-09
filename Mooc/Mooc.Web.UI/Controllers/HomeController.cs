@@ -13,21 +13,24 @@ using Mooc.Common.Utils;
 
 namespace Mooc.Web.UI.Controllers
 {
+    
     public class HomeController : Controller
     {
         private ILog logger = LogManager.GetLogger(typeof(HomeController));
 
         private readonly IUsersService _usersService;
 
+       
         public HomeController(IUsersService usersService)
         {
             this._usersService = usersService;
         }
         public ActionResult Index()
         {
-            CookieHelper.SetCookie(CommonVariables.LoginCookieName, "test", CookieHelper.TimeUtil.H, "2");//2h
+           // CookieHelper.SetCookie(CommonVariables.LoginCookieName, "test", CookieHelper.TimeUtil.H, "2");//2h
 
             string name = CookieHelper.GetCookie(CommonVariables.LoginCookieName);//get cookie
+           // CookieHelper.SetCookie(CommonVariables.LoginCookieName, "", CookieHelper.TimeUtil.H, "2");//2h
 
             using (DataContext db = new DataContext())
             {

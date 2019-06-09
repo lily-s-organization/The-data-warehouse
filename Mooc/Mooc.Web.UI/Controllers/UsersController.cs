@@ -17,142 +17,20 @@ using Mooc.DataAccess.Models.ViewModels;
 namespace Mooc.Web.UI.Controllers
 {
 
-    [AllowAnonymous]
+    
     public class UsersController : Controller
     {
         private DataContext db = new DataContext();
         private ILog logger = LogManager.GetLogger(typeof(UsersController));
 
 
-        
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public JsonResult Logout1()
-        {
-            CookieHelper.DelWithCurrentDomain(CommonVariables.LoginCookieName);
-            return Json(200);
-        }
-
-        public ActionResult Logout()
-        {
-            CookieHelper.DelCookie(CommonVariables.LoginCookieName);
-            CookieHelper.DelCookie(CommonVariables.LoginCookieID);
-            CookieHelper.DelCookie(CommonVariables.LoginCookieType);
-            return RedirectToAction("Login");
-        }
-
-        [HttpPost]
-        public JsonResult SignIn(User user)
-        {
-            var result = db.Users.Where(x => x.UserName == user.UserName && x.PassWord == user.PassWord&& x.UserState==0).SingleOrDefault();
-            if (result == null)
-            {
-                return Json(300);    
-            }
-            else
-            {
-                //用户登录后 默认存cookie一小时
-                CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
-                CookieHelper.SetCookie(CommonVariables.LoginCookieID, user.Id.ToString(), CookieHelper.TimeUtil.H, "1");
-                CookieHelper.SetCookie(CommonVariables.LoginCookieType, user.RoleType.ToString(), CookieHelper.TimeUtil.H, "1");
-                return Json(0);
-            }
-        }
-
-        public ActionResult ToRegister()
-        {
-            IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
-            ViewData["RoleType"] = new SelectList(RoleNamelistItem, "Value", "Text");
-            return View();
-        }
-        //JS 脚本提交数据 json
-        //Form 提交 actionresult -->跳转到其它的控制器
-        [HttpPost]
-        public JsonResult Register1(User user)
-        {
-            //try
-            //{
-            //    if (user.ImageUpload != null)
-            //    {
-            //        string fileName = Path.GetFileNameWithoutExtension(user.ImageUpload.FileName);
-            //        string extension = Path.GetExtension(user.ImageUpload.FileName);
-            //        fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            //        user.PhotoUrl = "~/App_Data/Images/" + fileName;
-            //        user.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/App_Data/Images/"), fileName));
-            //    }
-            //    db.Users.Add(user);
-            //    db.SaveChanges();
-            //    //用户注册后，默认为登录状态，用cookie存储用户状态一小时
-            //    CookieHelper.SetCookie(CommonVariables.LoginCookieName, user.UserName, CookieHelper.TimeUtil.H, "1");
-
-            //    return Json(0);
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    logger.Error(ex.Message);
-            //    return Json(400);
-            //}
-
-            return Json(0);
-        }
-
-
-        [HttpPost]
-        public ActionResult Register(User user, HttpPostedFileBase ImageUpload)
-        {
-
-            try
-            {
-                if (ImageUpload != null)
-                {
-                    string fileName = Path.GetFileNameWithoutExtension(ImageUpload.FileName);
-                    string extension = Path.GetExtension(ImageUpload.FileName);
-                    fileName = fileName +"_"+ DateTime.Now.ToString("yyyymmssfff") + extension;
-                    string savePath = Server.MapPath("~/Images/Upload/");
-                    if(!System.IO.Directory.Exists(savePath))
-                    {
-                        Directory.CreateDirectory(savePath);
-                    }
-                    string saveFile = savePath + fileName;
-                  
-                    ImageUpload.SaveAs(saveFile);
-                    user.PhotoUrl = fileName;//编辑时要写全路径--迁移的时候比较容易
-                }
-                user.AddTime = DateTime.Now;
-                user.UserState = 0;
-                db.Users.Add(user);
-                db.SaveChanges();
-
-
-                return RedirectToAction("ToSignIn");
-            }
-            catch (Exception ex)
-            {
-
-                logger.Error(ex.Message);
-                return RedirectToAction("ToRegister");
-            }
-
-
-        }
-
-        public ActionResult ToSignIn()
-        {
-            return View();
-        }
-
-
-
+     
 
         public ActionResult Add()
         {
@@ -193,12 +71,12 @@ namespace Mooc.Web.UI.Controllers
                 logger.Error(ex.Message);
                 return Json(400);
             }
-               
-            
+
+
 
         }
 
-        
+
         public ActionResult Details(int id)
         {
             try
@@ -235,9 +113,9 @@ namespace Mooc.Web.UI.Controllers
             catch (Exception ex)
             {
                 logger.Error(ex.Message);
-                return Json(new { code = 1});
+                return Json(new { code = 1 });
             }
-            
+
         }
 
         [HttpPost]
@@ -259,7 +137,7 @@ namespace Mooc.Web.UI.Controllers
                 return Json(300);
             }
         }
-           
-        
+
+
     }
 }
