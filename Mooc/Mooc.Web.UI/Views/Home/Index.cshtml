@@ -224,7 +224,7 @@
                        
                         <a id="btnLogin" href="/Login/Login"> 登录</a>
                         
-                        <a id="btnUpdate">Update  </a>
+                        <a id="btnUpdate">个人信息  </a>
                        
                         <a id="btnLogout"  style="float:right" href="@Url.Content("~/Login/Logout")"> Logout</a>
 
@@ -252,7 +252,7 @@
 
         $("#btnUpdate").click(function () {
             var id = getCookie("Login_Cookies_UserID");
-            window.location.href = "@Url.Content("~/User/Update/")" +id;
+            window.location.href = "@Url.Content("~/Users/Details/")" +id;
 
         });
 

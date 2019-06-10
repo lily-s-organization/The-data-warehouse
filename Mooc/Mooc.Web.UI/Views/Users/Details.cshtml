@@ -6,64 +6,141 @@
 <body>
 
 
-    <div class="form-horizontal">
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.AddTime)
-        <div class="form-group">
-            <label class="col-sm-2 control-label">用户名</label>
-            <div class="col-sm-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+    <form action="~/Users/Update" enctype="multipart/form-data" method="post">
+        <div class="form-horizontal">
 
+            <input type="hidden" value="@Model.Id" name="Id" />
+            <input type="hidden" value="@Model.AddTime" name="AddTime" />
+            <input type="hidden" value="@Model.PhotoUrl" name="PhotoUrl" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" value="@Model.UserName" id="UserName" name="UserName"
+                           placeholder="请输入用户名" maxlength="50">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="PassWord" name="PassWord"
+                           placeholder="请输入密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="confirmPassWord"
+                           placeholder="请确认密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" value="@Model.Email" id="email" name="Email"
+                           placeholder="请输入邮箱" maxlength="50">
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">个人头像</label>
+                <div class="col-sm-10">
+                    <img src="~/Images/Upload/@Model.PhotoUrl" style="max-height:250px;max-width:250px;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">更新头像</label>
+                <div class="col-sm-10">
+                    <input type="file" name="ImageUpload" id="ImageUpload" accept="image/jpeg, image/png" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户类型</label>
+                <div class="col-sm-10">
+
+                    @Html.DropDownListFor(m => m.RoleType, ViewData["RoleType"] as List<SelectListItem>, "---请选择---", new { @class = "form-control", @id = "roleType" })
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btnUpdate" type="submit">submit</button>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">密码</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="PassWord"
-                       placeholder="请输入密码">
-            </div>
-        </div>
+    </form>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">确认密码</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="confirmPassWord"
-                       placeholder="请确认密码">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">邮箱</label>
-            <div class="col-sm-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">头像路径</label>
-            <div class="col-sm-10">
-                @Html.EditorFor(model => model.PhotoUrl, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">用户类型</label>
-            <div class="col-sm-10">
-
-                @Html.DropDownListFor(m => m.RoleType, ViewData["RoleType"] as List<SelectListItem>, "---请选择---", new { @class = "form-control", @id = "roleType" })
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button onclick="Update()" class="btn btn-default">提交</button>
-            </div>
-        </div>
-    </div>
-
+   
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/Script.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $("#btnUpdate").click(function () {
+                //验证数据格式
+                var username = $("#UserName").val();
+                if (!username) {
+                    alert("user can't be empty");
+                    return false;
+                }
+                var password = $("#PassWord").val();
+                if (!password) {
+                    alert("password can't be empty");
+                    return false;
+                }
+                if (password.length < 6) {
+                    alert("password should be at least 6 letters");
+                    return false;
+                }
+                var roleType = $("#roleType").val();
+                if (!roleType) {
+                    alert("roleType can't be empty");
+                    return false;
+                }
+
+                var confirmPassWord = $("#confirmPassWord").val();
+                if (!confirmPassWord) {
+                    alert("Re-type password");
+                    return false;
+                }
+                if (confirmPassWord != password) {
+                    alert("Please confirm your password again");
+                    return false;
+                }
+
+                var ImageUpload = $("#ImageUpload").val();
+                if (!ImageUpload) {
+                    alert("Photo can't be empty");
+                    return false;
+                }
+
+                var email = $("#email").val();
+                if (!email) {
+                    alert("email can't be empty");
+                    return false;
+                }
+
+                if (!TestEmail(email)) {
+                    return false;
+                }
+
+
+
+            });
+        });
+
+
+
+    </script>
 </body>
 
 <script>

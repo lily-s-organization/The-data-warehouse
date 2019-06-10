@@ -76,6 +76,50 @@ namespace Mooc.Web.UI.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult Update(User user, HttpPostedFileBase ImageUpload)
+        {
+            try
+            {
+                if (ImageUpload != null)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(ImageUpload.FileName);
+                    string extension = Path.GetExtension(ImageUpload.FileName);
+                    fileName = fileName + "_" + DateTime.Now.ToString("yyyymmssfff") + extension;
+                    string savePath = Server.MapPath("~/Images/Upload/");
+                    if (!System.IO.Directory.Exists(savePath))
+                    {
+                        Directory.CreateDirectory(savePath);
+                    }
+                    string saveFile = savePath + fileName;
+
+                    string deleteFile = savePath + user.PhotoUrl;      //在更新头像前 先删除旧的头像
+                    if (System.IO.File.Exists(deleteFile))
+                    {
+                        System.IO.File.Delete(deleteFile);
+                    }
+
+                    ImageUpload.SaveAs(saveFile);
+                    user.PhotoUrl = fileName;//更新图片的路径
+                }
+
+
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+
+
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
+                ViewData["RoleType"] = new SelectList(RoleNamelistItem, "Value", "Text");
+                return RedirectToAction("Details","Users",user);
+            }
+        }
+
 
         public ActionResult Details(int id)
         {

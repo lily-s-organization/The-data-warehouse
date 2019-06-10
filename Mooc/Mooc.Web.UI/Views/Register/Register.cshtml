@@ -4,7 +4,7 @@
 
 
 <body>
-    <form action="Register" enctype="multipart/form-data" method="post">
+    <form action="~/Register/Register" enctype="multipart/form-data" method="post">
         <div class="form-horizontal" style="margin-top:10px">
             <div class="form-group">
                 <label class="col-sm-2 control-label">用户名</label>
@@ -53,7 +53,7 @@
 
                 </div>
             </div>
-            <button type="submit">submit</button>
+            <button id="btnRegister" type="submit">submit</button>
 
 
         </div>
@@ -63,7 +63,68 @@
 
 
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-  
+    <script src="~/Scripts/Script.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+         
+
+
+            $("#btnRegister").click(function () {
+                //验证数据格式
+                var username = $("#UserName").val();
+                if (!username) {
+                    alert("user can't be empty");
+                    return false;
+                }
+                var password = $("#PassWord").val();
+                if (!password) {
+                    alert("password can't be empty");
+                    return false;
+                }
+                if (password.length < 6) {
+                    alert("password should be at least 6 letters");
+                    return false;
+                }
+                var roleType = $("#roleType").val();
+                if (!roleType) {
+                    alert("roleType can't be empty");
+                    return false;
+                }
+
+                var confirmPassWord = $("#confirmPassWord").val();
+                if (!confirmPassWord) {
+                    alert("Re-type password");
+                    return false;
+                }
+                if (confirmPassWord != password) {
+                    alert("Please confirm your password again");
+                    return false;
+                }
+             
+                var ImageUpload = $("#ImageUpload").val();
+                if (!ImageUpload) {
+                    alert("Photo can't be empty");
+                    return false;
+                }
+
+                var email = $("#email").val();
+                if (!email) {
+                    alert("email can't be empty");
+                    return false;
+                }
+
+                if (!TestEmail(email)) {
+                    return false;
+                }
+
+            
+
+            });
+        });
+
+
+     
+    </script>
 
 </body>
 

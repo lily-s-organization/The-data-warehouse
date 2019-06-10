@@ -51,8 +51,8 @@ namespace Mooc.Web.UI.Controllers
             CookieHelper.DelCookie(CommonVariables.LoginCookieName);
             CookieHelper.DelCookie(CommonVariables.LoginCookieID);
             CookieHelper.DelCookie(CommonVariables.LoginCookieType);
-          //  return RedirectToAction("Index", "Home");
-            return RedirectToRoute(new { controller = "Home", action = "Index" });
+           return RedirectToAction("Index", "Home");
+           // return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
        
