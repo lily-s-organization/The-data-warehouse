@@ -4,9 +4,6 @@
 }
 
 
-@{
-    ViewBag.Title = "ToSignIn";
-}
 
 <h2 style="text-align:center">User Login</h2>
 
@@ -29,13 +26,33 @@
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">
-                <button id="btnSignIn">
+                <button id="btnLogin">
                     Login
                 </button>
             </label>
             <div class="col-sm-6">
                 <div id="errorMsg" style="color:red"></div>
             </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">  找回密码</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="usernameCheck"
+                       placeholder="请输入你注册的用户名">
+               
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                <button id="btnPassWordBack">
+                    找回
+                </button>
+            </label>
+          
 
         </div>
 
@@ -47,7 +64,7 @@
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
     $(function () {
-        $("#btnSignIn").click(function () {
+        $("#btnLogin").click(function () {
 
             var username = $("#UserName").val();
             var password = $("#PassWord").val();
@@ -57,7 +74,8 @@
             if (!password) {
                 alert("password can't be empty");
             }
-             $.ajax({
+            if (username && password) {
+                $.ajax({
                 url: "@Url.Content("~/Login/Login")",
                  data: { "UserName": username, "PassWord": password},
                 dataType: 'json', type: "POST",
@@ -71,8 +89,39 @@
                      }
                 }
             });
+            }
 
         });
+
+        $("#btnPassWordBack").click(function () {
+
+            var usernameCheck = $("#usernameCheck").val();       
+            if (!usernameCheck) {
+                alert("please enter your username");
+            }
+            else {
+                 $.ajax({
+                url: "@Url.Content("~/Login/RegainPassword")",
+                 data: { "UserName": usernameCheck},
+                dataType: 'json', type: "POST",
+                 success: function (result) {
+                     if (result == 0) {
+
+                         alert("邮件已发送，请查收你的邮箱")
+                        
+                     }
+                     else {
+                         alert("没有匹配的用户名");
+                       
+                     }
+                }
+            });
+            }
+           
+            
+
+        });
+
     })
 
 </script>

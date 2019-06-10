@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using Mooc.Common.Utils;
@@ -51,8 +52,34 @@ namespace Mooc.Web.UI.Controllers
             CookieHelper.DelCookie(CommonVariables.LoginCookieName);
             CookieHelper.DelCookie(CommonVariables.LoginCookieID);
             CookieHelper.DelCookie(CommonVariables.LoginCookieType);
-           return RedirectToAction("Index", "Home");
-           // return RedirectToRoute(new { controller = "Home", action = "Index" });
+            return RedirectToAction("Index", "Home");
+          
+        }
+
+        public JsonResult RegainPassword(string username)
+        {
+            var result = db.Users.Where(x => x.UserName == username).SingleOrDefault();
+            if (result == null)
+            {
+                return Json(300);
+            }
+            else
+            {
+                //发送邮件
+               
+                MailMessage mailMessage = new MailMessage("from_@gmail.com", "to_@gmail.com");            
+                mailMessage.Body = "Hi,this is your password:" + result.PassWord; 
+                mailMessage.Subject = "Password of Your Mooc account";                
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);             
+                smtpClient.Credentials = new System.Net.NetworkCredential()
+                {
+                    UserName = "from_@gmail.com",
+                    Password = "password"
+                };
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(mailMessage);
+                return Json(0);
+            }
         }
 
        
