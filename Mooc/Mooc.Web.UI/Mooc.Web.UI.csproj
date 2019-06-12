@@ -190,6 +190,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\UsersTestController.cs" />
     <Compile Include="Filter\LoginAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -246,6 +247,13 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Register\Register.cshtml" />
     <Content Include="Views\AngularJSDemo\AngularJSDemo.cshtml" />
+    <Content Include="Views\Users\Add.cshtml" />
+    <Content Include="Views\Users\Update.cshtml" />
+    <Content Include="Views\UsersTest\Create.cshtml" />
+    <Content Include="Views\UsersTest\Delete.cshtml" />
+    <Content Include="Views\UsersTest\Details.cshtml" />
+    <Content Include="Views\UsersTest\Edit.cshtml" />
+    <Content Include="Views\UsersTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
