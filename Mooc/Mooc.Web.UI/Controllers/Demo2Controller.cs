@@ -60,5 +60,27 @@ namespace Mooc.Web.UI.Controllers
             }
         }
 
+
+        [HttpGet]
+        public JsonResult GetHttpUserList(int pageIndex, int pageSize)
+        {
+            int currentItems = (pageIndex - 1) * pageSize;// the items from which pages-当前页从第几条开始
+            using (DataContext db = new DataContext())
+            {
+                var list = db.Users.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).ToList();//paging in EF
+
+                List<UserViewModel> viewList = AutoMapper.Mapper.Map<List<UserViewModel>>(list);
+
+                return Json(new { code = 0, data = viewList },JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult Angular()
+        {
+            return View();
+        }
+
+
+
     }
 }

@@ -181,10 +181,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\MoocAdmin\MoocAdminAreaRegistration.cs" />
+    <Compile Include="Controllers\AngularJSDemoController.cs" />
     <Compile Include="Controllers\Demo1Controller.cs" />
     <Compile Include="Controllers\Demo2Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Filter\LoginAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +209,7 @@
     <Content Include="readme.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\MoocAdmin\Views\web.config" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -235,9 +242,17 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Demo2\Index.cshtml" />
     <Content Include="Views\Demo2\Add.cshtml" />
+    <Content Include="Views\Demo2\Angular.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Register\Register.cshtml" />
+    <Content Include="Views\AngularJSDemo\AngularJSDemo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\MoocAdmin\Models\" />
+    <Folder Include="Areas\MoocAdmin\Views\Home\" />
+    <Folder Include="Areas\MoocAdmin\Views\Shared\" />
+    <Folder Include="Scripts\angular1.7\" />
     <Folder Include="Views\Demo1\" />
   </ItemGroup>
   <ItemGroup>

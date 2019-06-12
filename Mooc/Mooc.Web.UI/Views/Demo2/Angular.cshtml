@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Angular";
+}
+
+<script src="~/Scripts/angular1.7/angular.js"></script>
+<div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+
+    <table class="table">
+        <caption>用户列表</caption>
+        <thead>
+            <tr>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>用户类型</th>
+                <th>用户状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in list">
+                <td>{{row.UserName}}</td>
+                <td>{{row.Email}}</td>
+                <td>{{row.ShowRoleType}}</td>
+                <td>{{row.ShowStatus}}</td>
+
+                <td><a ng-click="view(row.Id)" href="#">查看详情</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+        //getHttp($scope, $http);
+        ///postHttp($scope, $http);
+        //getHttpMethon($scope, $http);
+
+        postHttpMethon($scope, $http);
+
+        $scope.view = function (id) {
+            window.location.href = "@Url.Content("~/Users/Details/")" + id;
+        }
+    });
+
+    function getHttp($scope, $http) {
+        $http.get("@Url.Content("~/UserTest/GetHttpUserList")", { params: { pageIndex: 1,pageSize:10 } }).then(function (response) {
+            if (response.status == 200) {
+                // $scope.test =JSON.stringify(response.data);
+                $scope.list = response.data.data;
+            }
+        }).catch(function (data) {
+            console.log("catch:" + data);
+        });
+    }
+
+    function postHttp($scope, $http) {
+        $http.post("@Url.Content("~/UserTest/GetUserList")", { pageIndex: 1, pageSize: 10 }).then(function (response) {
+            if (response.status == 200) {
+                $scope.list = response.data.data;
+            }
+        }).catch(function (data) {
+            console.log("catch:" + data);
+        });
+    }
+
+    function getHttpMethon($scope, $http) {
+        // 简单的 GET 请求，可以改为 POST
+        $http({
+            method: 'GET',
+            url: "@Url.Content("~/UserTest/GetHttpUserList")",
+            params: { pageIndex: 1, pageSize: 100 },
+            //cache: true, //避免多次请求后台数据
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.list = response.data.data;
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+    function postHttpMethon($scope, $http) {
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/Demo2/GetUserList")",
+            data: { pageIndex: 1, pageSize: 100 }
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.list = response.data.data;
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+</script>
