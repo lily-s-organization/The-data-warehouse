@@ -13,5 +13,11 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             return View();
         }
+
+        public ActionResult Form()
+        {
+            return View();
+        }
+
     }
 }

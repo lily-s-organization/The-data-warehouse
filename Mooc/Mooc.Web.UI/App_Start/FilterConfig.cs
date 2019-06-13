@@ -9,8 +9,8 @@ namespace Mooc.Web.UI
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new LoginAuthorizeAttribute());
-           
+            // filters.Add(new LoginAuthorizeAttribute());//相当于过滤器对所有的控制器检验-[LoginAuthorize]
+
 
 
         }

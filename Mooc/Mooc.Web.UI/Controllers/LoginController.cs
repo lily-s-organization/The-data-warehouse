@@ -21,7 +21,7 @@ namespace Mooc.Web.UI.Controllers
         }
 
 
-        [HttpGet]
+
         public ActionResult Login()
         {
             return View();

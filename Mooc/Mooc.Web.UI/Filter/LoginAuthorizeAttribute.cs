@@ -23,7 +23,7 @@ namespace Mooc.Web.UI.Filter
 
             if (cookie == null )
             {
-                filterContext.Result = new RedirectResult("/Users/Login");
+                filterContext.Result = new RedirectResult("/Login/Login");
             }
             else
             {

@@ -17,7 +17,7 @@
             <tr>
                 <td><b>UserName</b></td>
                 <td>
-                    <input type="text" name="usernameInput" class="form-control" ng-model="UserName" required />
+                    <input type="text" name="usernameInput" class="form-control" ng-model="user.UserName" required />
                     <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid">UserName Required</span>
                 </td>
                 <td><b>Password</b></td>
@@ -62,38 +62,40 @@
     var app = angular.module("myapp", []);
     app.controller("myCtrl", function ($scope, $http) {
 
-        $scope.UserName = '@Model.UserName';      //绑定从控制器传回的数据
+        @*$scope.UserName = '@Model.UserName';      //绑定从控制器传回的数据
         $scope.Email = '@Model.Email';
         $scope.RoleType = '@Model.RoleType';
         $scope.PassWord = '@Model.PassWord';
         $scope.Id = '@Model.Id';
         $scope.AddTime = '@Model.AddTime';
-        $scope.PhotoUrl = '@Model.PhotoUrl';
+        $scope.PhotoUrl = '@Model.PhotoUrl';*@
+
+        $scope.Id = '@ViewBag.Id';
 
 
 
         getRoleTypeList($scope, $http);//初始化下拉列表
-       
-       
-       
-       
+
+
+
+
 
 
         $scope.Save = function () {
-          
+
             saveUser($scope, $http);
 
         };
         $scope.Cancel = function () {
             window.location.href = "@Url.Content("~/AngularJSDemo/Index/")";
         };
-       
+
     });
 
-    
+
 
     function getRoleTypeList($scope, $http) {
-       
+
         $http({
             method: 'GET',
             url: "@Url.Content("~/AngularJSDemo/GetRoleTypeList")",
@@ -102,13 +104,28 @@
                 $scope.names = response.data.data;
               //  console.log(response.data.data[0].Text);
                 $scope.selectedName = $scope.names[($scope.RoleType -1)];      //初始化select默认选中项，因为RoleTypes是1到3，为了对应数组下标，所以减去1
-              
+
             }
         }, function (data) {
             console.log(data);
         });
     }
 
+    function getUserDetail($scope, $http) {
+
+        $http({
+            method: 'GET',
+            url: "@Url.Content("~/AngularJSDemo/GetUserDetail")",
+            data: {"id":$scope.Id},
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.user = response.data.data;
+
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
 
     function saveUser($scope, $http) {
 
@@ -121,7 +138,7 @@
             AddTime: $scope.AddTime,
             PhotoUrl: $scope.PhotoUrl
         };
-       
+
         $http({
             method: 'POST',
             url: "@Url.Content("~/AngularJSDemo/AddUserList")",
@@ -136,7 +153,7 @@
         });
     }
 
- 
+
 </script>
 
    

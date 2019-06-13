@@ -32,24 +32,41 @@ namespace Mooc.Web.UI.Controllers
         {
             try
             {
+
                 if (user == null)
                     return Json(300);
-                else
-                {
-                    if (user.Id == 0)
-                    {
-                        user.UserState = 0;
-                        user.AddTime = DateTime.Now;
-                        db.Users.Add(user);
-                    }
-                    else
-                    {
-                        db.Entry(user).State = EntityState.Modified;
-                    }
 
-                    db.SaveChanges();
-                    return Json(0);
+                if (user.Id == 0)
+                {
+                    user.UserState = 0;
+                    user.AddTime = DateTime.Now;
+                    db.Users.Add(user);
                 }
+                else {
+                    db.Entry(user).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+                return Json(0);
+
+                //if (user == null)
+                //    return Json(300);
+                //else
+                //{
+                //    if (user.Id == 0)
+                //    {
+                //        user.UserState = 0;
+                //        user.AddTime = DateTime.Now;
+                //        db.Users.Add(user);
+                //    }
+                //    else
+                //    {
+                //        db.Entry(user).State = EntityState.Modified;
+                //    }
+
+                //    db.SaveChanges();
+                //    return Json(0);
+                //}
             }
             catch (Exception ex)
             {
@@ -72,16 +89,22 @@ namespace Mooc.Web.UI.Controllers
             
         }
 
+        [HttpGet]
+        public JsonResult GetUserDetail(long id)
+        {
+          return Json(db.Users.Find(id),JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Details(int id)
         {
             try
             {
-                
-                User user = new User();
-                user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
+                ViewBag.Id = id;
+                //User user = new User();
+                //user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
 
-                return View(user);
+                //return View(user);
+                return View();
             }
             catch (Exception ex)
             {

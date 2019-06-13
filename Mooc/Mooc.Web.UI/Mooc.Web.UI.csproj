@@ -181,6 +181,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\AdminController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
     <Compile Include="Areas\MoocAdmin\MoocAdminAreaRegistration.cs" />
     <Compile Include="Controllers\AngularJSDemoController.cs" />
@@ -199,6 +200,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\bootstrap-theme.min.css" />
+    <Content Include="assets\css\bootstrap.css" />
+    <Content Include="assets\css\custom-styles.css" />
+    <Content Include="assets\css\font-awesome.css" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.svg" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="assets\js\bootstrap.min.js" />
+    <Content Include="assets\js\jquery-1.10.2.js" />
+    <Content Include="assets\js\nav.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -211,6 +221,23 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\MoocAdmin\Views\web.config" />
+    <Content Include="Areas\MoocAdmin\Views\Admin\Index.cshtml" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.eot" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.ttf" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.woff" />
+    <Content Include="assets\font-awesome\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="assets\fonts\glyphicons-halflings-regulard41d.eot" />
+    <Content Include="Areas\MoocAdmin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Home\Form.cshtml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -221,6 +248,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -254,12 +282,14 @@
     <Content Include="Views\UsersTest\Details.cshtml" />
     <Content Include="Views\UsersTest\Edit.cshtml" />
     <Content Include="Views\UsersTest\Index.cshtml" />
+    <Content Include="Views\AngularJSDemo\Add.cshtml" />
+    <Content Include="Views\AngularJSDemo\Details.cshtml" />
+    <Content Include="Views\AngularJSDemo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\MoocAdmin\Models\" />
-    <Folder Include="Areas\MoocAdmin\Views\Home\" />
-    <Folder Include="Areas\MoocAdmin\Views\Shared\" />
+    <Folder Include="assets\img\" />
     <Folder Include="Scripts\angular1.7\" />
     <Folder Include="Views\Demo1\" />
   </ItemGroup>
