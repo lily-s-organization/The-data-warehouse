@@ -27,6 +27,7 @@
             </tr>
         </tbody>
     </table>
+    <a ng-click="add()" href="#">添加用户</a>
 </div>
 
 <script>
@@ -43,12 +44,16 @@
         $scope.delete = function (id) {
             $http.post("@Url.Content("~/AngularJSDemo/Delete/")" + id).then(function (response) {
                 if (response.status == 200) {
-                    getUserList($scope, $http);
+                    getUserList($scope, $http);//刷新页面
                 }
             }).catch(function (data) {
                 console.log("catch:" + data);
             })
         };
+
+        $scope.add = function () {
+             window.location.href = "@Url.Content("~/AngularJSDemo/Add/")";
+        }
     });
 
 

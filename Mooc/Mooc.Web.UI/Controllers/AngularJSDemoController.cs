@@ -22,6 +22,46 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult AddUserList(User user)
+        {
+            try
+            {
+                if (user == null)
+                    return Json(300);
+                else
+                {
+                    if (user.Id == 0)
+                    {
+                        user.UserState = 0;
+                        user.AddTime = DateTime.Now;
+                        db.Users.Add(user);
+                    }
+                    else
+                    {
+                        db.Entry(user).State = EntityState.Modified;
+                    }
+
+                    db.SaveChanges();
+                    return Json(0);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return Json(400);
+            }
+
+
+
+        }
+
         [HttpPost]
         public JsonResult GetUserList(int pageIndex, int pageSize)
         {
@@ -77,10 +117,9 @@ namespace Mooc.Web.UI.Controllers
         {
 
             try
-            {
-               
-                    db.Entry(user).State = EntityState.Modified;
-                    db.SaveChanges();
+            {              
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
                 return Json(0);
                 
             }
