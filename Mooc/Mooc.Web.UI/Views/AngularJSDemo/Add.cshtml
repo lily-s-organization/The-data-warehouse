@@ -6,7 +6,7 @@
 
    
 
-    <form name="myForm">
+    <form name="myForm" ng-submit="submitForm(userForm.$valid)">
         <table class="table">
             <tr>
                 <td>User</td>
@@ -19,37 +19,49 @@
                 <td><b>UserName</b></td>
                 <td>
                     <input type="text" name="usernameInput" class="form-control" ng-model="UserName" required />
-                    <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid">UserName Required</span>
+                    <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid" class="help-block">UserName Required</span>
                 </td>
-                <td><b>Password</b></td>
-                <td>
-                    <input type="password" class="form-control" ng-model="PassWord" ng-minlength="6" name="passwordInput" required />
-                    <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid">At least 6 letters</span>
-                </td>
-            </tr>
-            <tr>
                 <td><b>Email</b></td>
                 <td>
                     <input name="emailInput" type="email" class="form-control" ng-model="Email" required />
-                    <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid">Wrong Format</span>
+                    <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid" class="help-block">Wrong Format</span>
 
                 </td>
+            </tr>
+            <tr>
+                
+                <td><b>Password</b></td>
+                <td>
+                    <input type="password" class="form-control" ng-model="PassWord" ng-minlength="6" name="passwordInput" required />
+                    <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid" class="help-block">At least 6 letters</span>
+                </td>
+                <td><b>Confirm Password</b></td>
+                <td>
+                    <input type="password" class="form-control" ng-model="ConfirmPassWord" ng-minlength="6" name="confirmpasswordInput" required />
+                    <span ng-show="myForm.confirmpasswordInput.$touched && myForm.confirmpasswordInput.$invalid" class="help-block">At least 6 letters</span>
+                    <span>{{errorMsg}}</span>
+                </td>
+               
+            </tr>
+            <tr>
                 <td><b>Role</b></td>
                 <td>
                     <select ng-model="selectedName" ng-options="x.Text for x in names" name="roletypeInput" required>
                         <option value="">请选择</option>
                     </select>
-                    <span ng-show="!myForm.roletypeInput.$touched">please select</span>
+                    <span ng-show="myForm.roletypeInput.$touched && myForm.roletypeInput.$invalid" class="help-block">please select one role</span>
                 </td>
+                <td></td>
+                <td></td>
             </tr>
 
 
             <tr>
                 <td></td>
                 <td></td>
-
+                <td></td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="Save" ng-click="Save()" />
+                    <input type="submit" class="btn btn-primary" value="Save" ng-click="Save(PassWord,ConfirmPassWord)" ng-disabled="myForm.$invalid" />
                     <input type="button" class="btn btn-danger" value="Cancel" ng-click="Cancel()" />
                 </td>
 
@@ -67,15 +79,20 @@
    
         getRoleTypeList($scope, $http);//初始化下拉列表
 
-
-        $scope.Save = function () {
-
-            saveUser($scope, $http);
-
+        $scope.Save = function (PassWord, ConfirmPassWord) {
+            if (PassWord == ConfirmPassWord) {
+                saveUser($scope, $http);
+            }
+            else {
+                window.alert("check your password again");
+            }
         };
+
         $scope.Cancel = function () {
             window.location.href = "@Url.Content("~/AngularJSDemo/Index/")";
         };
+
+
 
     });
 
@@ -88,9 +105,7 @@
             url: "@Url.Content("~/AngularJSDemo/GetRoleTypeList")",
         }).then(function (response) {
             if (response.status == 200) {
-                $scope.names = response.data.data;
-              //  console.log(response.data.data[0].Text);
-               //scope.selectedName = $scope.names[($scope.RoleType -1)];      //初始化select默认选中项，因为RoleTypes是1到3，为了对应数组下标，所以减去1
+                $scope.names = response.data.data;           
 
             }
         }, function (data) {
