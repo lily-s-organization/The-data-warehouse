@@ -1,0 +1,145 @@
+﻿
+@model Mooc.DataAccess.Models.Entities.User
+<script src="~/Scripts/angular1.7/angular.js"></script>
+
+<div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+
+    <input type="hidden" value="@Model.Id" name="Id" />
+    <input type="hidden" value="@Model.AddTime" name="AddTime" />
+    <input type="hidden" value="@Model.PhotoUrl" name="PhotoUrl" />
+
+    <form name="myForm">
+        <table class="table">
+            <tr>
+                <td>User</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>UserName</b></td>
+                <td>
+                    <input type="text" name="usernameInput" class="form-control" ng-model="UserName" required />
+                    <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid">UserName Required</span>
+                </td>
+                <td><b>Password</b></td>
+                <td>
+                    <input type="password" class="form-control" ng-model="PassWord"  ng-minlength="6" name="passwordInput" required />
+                    <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid">At least 6 letters</span>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Email</b></td>
+                <td>
+                    <input name="emailInput" type="email" class="form-control" ng-model="Email" required />
+                    <span ng-show="!myForm.emailInput.$valid">Wrong Format</span>
+
+                </td>
+                <td><b>Role</b></td>
+                <td>
+                    <select ng-model="selectedName" ng-options="x.Text for x in names" name="roletypeInput"></select>
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td></td>
+                <td></td>
+
+                <td>
+                    <input type="button" class="btn btn-primary" value="Save" ng-click="Save()" />
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="Cancel()" />
+                </td>
+
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        $scope.UserName = '@Model.UserName';      //绑定从控制器传回的数据
+        $scope.Email = '@Model.Email';
+        $scope.RoleType = '@Model.RoleType';
+        $scope.PassWord = '@Model.PassWord';
+        $scope.Id = '@Model.Id';
+        $scope.AddTime = '@Model.AddTime';
+        $scope.PhotoUrl = '@Model.PhotoUrl';
+
+
+
+        getRoleTypeList($scope, $http);//初始化下拉列表
+       
+       
+       
+       
+
+
+        $scope.Save = function () {
+          
+            saveUser($scope, $http);
+
+        };
+        $scope.Cancel = function () {
+            window.location.href = "@Url.Content("~/AngularJSDemo/Index/")";
+        };
+       
+    });
+
+    
+
+    function getRoleTypeList($scope, $http) {
+        // 简单的 GET 请求，可以改为 POST
+        $http({
+            method: 'GET',
+            url: "@Url.Content("~/AngularJSDemo/GetRoleTypeList")",
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.names = response.data.data;
+              //  console.log(response.data.data[0].Text);
+                $scope.selectedName = $scope.names[($scope.RoleType -1)];      //初始化select默认选中项，因为RoleTypes是1到3，为了对应数组下标，所以减去1
+              
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+    function saveUser($scope, $http) {
+
+        var user = {
+            UserName: $scope.UserName,
+            Email: $scope.Email,
+            PassWord: $scope.PassWord,
+            RoleType: $scope.selectedName.Value,
+            Id: $scope.Id,
+            AddTime: $scope.AddTime,
+            PhotoUrl: $scope.PhotoUrl
+        };
+       
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/AngularJSDemo/UpdateUser")",
+            data: JSON.stringify(user),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.status == 200) {
+                window.location.href = "@Url.Content("~/AngularJSDemo/Index/")";
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+ 
+</script>
+
+   

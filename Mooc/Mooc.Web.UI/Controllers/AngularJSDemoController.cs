@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
 using Mooc.DataAccess.Models.Utils;
@@ -14,6 +15,7 @@ namespace Mooc.Web.UI.Controllers
     public class AngularJSDemoController : Controller
     {
         private DataContext db = new DataContext();
+        private ILog logger = LogManager.GetLogger(typeof(AngularJSDemoController));
         // GET: AngularJSDemo
         public ActionResult Index()
         {
@@ -35,9 +37,7 @@ namespace Mooc.Web.UI.Controllers
         {
             try
             {
-                //IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
-                // ViewData["RoleType"] = new SelectList(RoleNamelistItem, "Value", "Text");
-               // var list = RoleNamelistItem.ToList();
+                
                 User user = new User();
                 user = db.Users.Where(x => x.Id == id).FirstOrDefault<User>();
 
@@ -46,7 +46,7 @@ namespace Mooc.Web.UI.Controllers
             catch (Exception ex)
             {
 
-              //  logger.Error(ex.Message);
+                logger.Error(ex.Message);
                 return RedirectToAction("Index");
             }
         }
@@ -66,7 +66,7 @@ namespace Mooc.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                
+                logger.Error(ex.Message);
                 return Json(300);
             }
         }
@@ -86,7 +86,7 @@ namespace Mooc.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-               
+                logger.Error(ex.Message);
 
             }
 
@@ -97,9 +97,9 @@ namespace Mooc.Web.UI.Controllers
         [HttpGet]
         public JsonResult GetRoleTypeList()
         {
-           // List<string> list1 = new List<string> {"a","b","c" };
+          
             return Json(new{ data = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum)) }, JsonRequestBehavior.AllowGet);
-            //return Json(new { data = list1 }, JsonRequestBehavior.AllowGet);
+            
         }
     }
 }
