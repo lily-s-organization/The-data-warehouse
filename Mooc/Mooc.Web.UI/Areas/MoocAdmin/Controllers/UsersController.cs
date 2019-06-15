@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
+using Mooc.DataAccess.Models.ViewModels;
 using Mooc.Web.UI.Filter;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
@@ -55,9 +56,20 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 logger.Error(ex.Message);
                 return Json(400);
             }
+        }
 
-
+        [HttpPost]
+        public JsonResult GetUserList(int pageIndex, int pageSize)
+        {
+            int currentItems = (pageIndex - 1) * pageSize;// the items from which pages-当前页从第几条开始        
+            var list = db.Users.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).ToList();//paging in EF
+            List<UserViewModel> viewList = AutoMapper.Mapper.Map<List<UserViewModel>>(list);
+            return Json(new { code = 0, data = viewList });
 
         }
+
+
+
+
     }
 }

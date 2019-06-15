@@ -36,13 +36,13 @@
                                 <td>{{row.ShowRoleType}}</td>
                                 <td>{{row.ShowStatus}}</td>
 
-                                <td><a class="btn btn-info" ng-click="update(row.Id)" href="#">查看详情</a></td>
-                                <td><a class="btn btn-danger" ng-click="delete(row.Id)" href="#">删除用户</a></td>
+                                <td><a class="btn btn-primary" ng-click="update(row.Id)" href="#"><i class="fa fa-edit"></i>  查看详情</a></td>
+                                <td><a class="btn btn-danger" ng-click="delete(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除用户</a></td>
 
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" ng-click="add()" href="#">添加用户</a>
+                    <a class="btn btn-primary" ng-click="add()" href="#"><i class="fa"></i>  添加用户</a>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
 
 
     function getUserList($scope, $http) {
-        $http.post("@Url.Content("~/AngularJSDemo/GetUserList")", { pageIndex: 1, pageSize: 10 }).then(function (response) {
+        $http.post("@Url.Content("~/MoocAdmin/Users/GetUserList")", { pageIndex: 1, pageSize: 10 }).then(function (response) {
             if (response.status == 200) {
                 $scope.list = response.data.data;
             }
