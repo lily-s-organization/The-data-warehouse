@@ -4,40 +4,52 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mooc.Common.Utils;
+using Mooc.DataAccess.Models.Context;
 
 namespace Mooc.Web.UI.Filter
 {
     public class LoginAuthorizeAttribute : AuthorizeAttribute
     {
+       // private DataContext db = new DataContext();
+
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            //跳过免验证的controller
-            if (filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
-               || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
-            {
-                return;
-            }
-
+   
             //得到前端发来的cookie值
-            HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get(CommonVariables.LoginCookieName);
+            HttpCookie name = filterContext.HttpContext.Request.Cookies.Get(CommonVariables.LoginCookieName);
+            HttpCookie id = filterContext.HttpContext.Request.Cookies.Get(CommonVariables.LoginCookieID);
+            HttpCookie roletype = filterContext.HttpContext.Request.Cookies.Get(CommonVariables.LoginCookieType);
 
-            if (cookie == null )
+            if (roletype == null || name == null || id == null)
             {
-                filterContext.Result = new RedirectResult("/Login/Login");
+                filterContext.Result = new RedirectResult("/MoocAdmin/Admin/Index");
             }
             else
             {
-                //var cookieUserName = cookie.Value;
-                //var localCookie = CookieHelper.GetCookie(CommonVariables.LoginCookieName);
-                //if (localCookie != cookieUserName)
-                //{
-                //    filterContext.Result = new RedirectResult("/Users/Login");
-                //}
-                //else
-                //{
-                //    return;
-                //}
-                return;
+                var userName = name.Value;
+                var userId = Convert.ToInt64(id.Value);
+                var userRoleType = Convert.ToInt64(roletype.Value);
+
+               // var result = db.Users.Where(x => x.UserName == userName && x.Id == userId && x.UserState == 0 && x.RoleType == userRoleType).SingleOrDefault();
+
+                using (DataContext db = new DataContext())
+                {
+                    var result = db.Users.Where(x => x.UserName == userName && x.Id == userId && x.UserState == 0 && x.RoleType == userRoleType).SingleOrDefault();
+
+                    if (result == null)
+                    {
+                        filterContext.Result = new RedirectResult("/MoocAdmin/Admin/Index");
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                }
+
+               
+                
+               
             }
             
 

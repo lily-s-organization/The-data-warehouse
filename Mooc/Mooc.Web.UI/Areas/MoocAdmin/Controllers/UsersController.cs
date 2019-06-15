@@ -13,7 +13,7 @@ using Mooc.Web.UI.Filter;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
-    //[LoginAuthorize]
+    [LoginAuthorize]
     public class UsersController : Controller
     {
         private DataContext db = new DataContext();

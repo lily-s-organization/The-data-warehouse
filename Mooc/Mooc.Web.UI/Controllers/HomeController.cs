@@ -27,9 +27,9 @@ namespace Mooc.Web.UI.Controllers
         }
         public ActionResult Index()
         {
-           // CookieHelper.SetCookie(CommonVariables.LoginCookieName, "test", CookieHelper.TimeUtil.H, "2");//2h
+            //CookieHelper.SetCookie(CommonVariables.LoginCookieName, "test", CookieHelper.TimeUtil.H, "2");//2h
 
-            string name = CookieHelper.GetCookie(CommonVariables.LoginCookieName);//get cookie
+           // string name = CookieHelper.GetCookie(CommonVariables.LoginCookieName);//get cookie
            // CookieHelper.SetCookie(CommonVariables.LoginCookieName, "", CookieHelper.TimeUtil.H, "2");//2h
 
             using (DataContext db = new DataContext())
