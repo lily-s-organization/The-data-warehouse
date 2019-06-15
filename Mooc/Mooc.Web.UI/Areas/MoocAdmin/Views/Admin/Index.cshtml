@@ -1,79 +1,38 @@
-﻿<script src="~/Scripts/angular1.7/angular.js"></script>
+﻿<script src="~/assets/js/bootstrap.min.js"></script>
+<div  ng-app="myapp" ng-controller="myCtrl">
 
-<div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-               <h2>User table</h2>
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive table-striped">
-                    <table class="table">
-                        <caption>用户列表</caption>
-                        <thead>
-                            <tr>
-                                <th>用户名</th>
-                                <th>邮箱</th>
-                                <th>用户类型</th>
-                                <th>用户状态</th>
-                                <th>查看</th>
-                                <th>删除</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="row in list">
-                                <td>{{row.UserName}}</td>
-                                <td>{{row.Email}}</td>
-                                <td>{{row.ShowRoleType}}</td>
-                                <td>{{row.ShowStatus}}</td>
+    <h2 style="text-align:center">Welcome to Mooc</h2>
 
-                                <td><a class="btn btn-info" ng-click="update(row.Id)" href="#">查看详情</a></td>
-                                <td><a class="btn btn-danger" ng-click="delete(row.Id)" href="#">删除用户</a></td>
+    <div class="row">
 
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a class="btn btn-primary" ng-click="add()" href="#">添加用户</a>
-                </div>
-            </div>
+        <div class="form-group col-md-4 col-md-offset-4" style="text-align:center">
+            <input class="form-control" placeholder="username" style="margin:10px" ng-model="username"/>
+            <input type="password" class="form-control" placeholder="password" style="margin:10px" ng-model="password"/>
+            <a class="btn btn-primary" ng-click="login()">Login</a>
+
         </div>
+
+
     </div>
 
 </div>
-
 
 <script>
 
     var app = angular.module("myapp", []);
     app.controller("myCtrl", function ($scope, $http) {
 
-        getUserList($scope, $http);//载入页面数据
-
-        $scope.update = function (id) {
-            window.location.href = "@Url.Content("~/AngularJSDemo/Details/")" + id;
-        };
-
-        $scope.delete = function (id) {
-            $http.post("@Url.Content("~/AngularJSDemo/Delete/")" + id).then(function (response) {
-                if (response.status == 200) {
-                    getUserList($scope, $http);//刷新页面
-                }
-            }).catch(function (data) {
-                console.log("catch:" + data);
-            })
-        };
-
-        $scope.add = function () {
-             window.location.href = "@Url.Content("~/AngularJSDemo/Add/")";
+        $scope.login = function () {
+            login($scope, $http);
         }
     });
 
 
 
-    function getUserList($scope, $http) {
-        $http.post("@Url.Content("~/AngularJSDemo/GetUserList")", { pageIndex: 1, pageSize: 10 }).then(function (response) {
-            if (response.status == 200) {
-                $scope.list = response.data.data;
+    function login($scope, $http) {
+        $http.post("@Url.Content("~/MoocAdmin/Admin/Login")", { username: $scope.username, password: $scope.password }).then(function (response) {
+            if (response.status == 200 && response.data == 200) {
+                window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
             }
         }).catch(function (data) {
             console.log("catch:" + data);
@@ -82,4 +41,3 @@
 
 
 </script>
-
