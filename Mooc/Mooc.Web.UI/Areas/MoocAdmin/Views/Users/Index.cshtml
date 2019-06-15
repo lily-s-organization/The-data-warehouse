@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+
+}
+<script src="~/Scripts/angular1.7/angular-cookies.js"></script>
+<script src="~/assets/js/bootstrap.min.js"></script>
+
+
+<div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl" >
+   
+    
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 style="display:inline-block">User table</h2>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive table-striped">
+                    <table class="table">
+                        <caption>用户列表</caption>
+                        <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>用户类型</th>
+                                <th>用户状态</th>
+                                <th>查看</th>
+                                <th>删除</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in list">
+                                <td>{{row.UserName}}</td>
+                                <td>{{row.Email}}</td>
+                                <td>{{row.ShowRoleType}}</td>
+                                <td>{{row.ShowStatus}}</td>
+
+                                <td><a class="btn btn-info" ng-click="update(row.Id)" href="#">查看详情</a></td>
+                                <td><a class="btn btn-danger" ng-click="delete(row.Id)" href="#">删除用户</a></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-primary" ng-click="add()" href="#">添加用户</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+
+
+    var app = angular.module("myapp", ['ngCookies']);
+    app.controller("myCtrl", function ($scope, $http, $cookies) {
+
+        getUserList($scope, $http);//载入页面数据
+        var cookie = $cookies.get('Login_Cookies_UserID');
+        console.log(cookie)
+        if (cookie) {
+            //如果cookie有值 表示用户登录 显示用户名
+
+        }
+        $scope.update = function (id) {
+            window.location.href = "@Url.Content("~/MoocAdmin/Users/Details/")" + id;
+        };
+
+        $scope.delete = function (id) {
+            $http.post("@Url.Content("~/MoocAdmin/Users/Delete/")" + id).then(function (response) {
+                if (response.status == 200) {
+                    getUserList($scope, $http);//刷新页面
+                }
+            }).catch(function (data) {
+                console.log("catch:" + data);
+            })
+        };
+
+        $scope.add = function () {
+             window.location.href = "@Url.Content("~/MoocAdmin/Users/Add/")";
+        }
+    });
+
+
+
+
+    function getUserList($scope, $http) {
+        $http.post("@Url.Content("~/AngularJSDemo/GetUserList")", { pageIndex: 1, pageSize: 10 }).then(function (response) {
+            if (response.status == 200) {
+                $scope.list = response.data.data;
+            }
+        }).catch(function (data) {
+            console.log("catch:" + data);
+        });
+    }
+
+
+</script>
+

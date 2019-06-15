@@ -20,21 +20,25 @@
 <script>
 
     var app = angular.module("myapp", []);
-    app.controller("myCtrl", function ($scope, $http) {
+    app.controller("myCtrl", function ($scope, $http, $window) {
 
         $scope.login = function () {
-            login($scope, $http);
+            login($scope, $http, $window);
         }
     });
 
 
 
-    function login($scope, $http) {
+    function login($scope, $http, $window) {
         $http.post("@Url.Content("~/MoocAdmin/Admin/Login")", { username: $scope.username, password: $scope.password }).then(function (response) {
             if (response.status == 200 && response.data == 200) {
                 window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
             }
+            else {
+                window.alert("wrong username or password");
+            }
         }).catch(function (data) {
+            
             console.log("catch:" + data);
         });
     }
