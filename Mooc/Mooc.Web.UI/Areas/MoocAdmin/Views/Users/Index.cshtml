@@ -5,11 +5,11 @@
 }
 <script src="~/Scripts/angular1.7/angular-cookies.js"></script>
 <script src="~/assets/js/bootstrap.min.js"></script>
+<script src="~/Scripts/jqPaginator.js"></script>
 
 
-<div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl" >
+<div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
    
-    
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -18,7 +18,7 @@
             <div class="panel-body">
                 <div class="table-responsive table-striped">
                     <table class="table">
-                       
+
                         <thead>
                             <tr>
                                 <th>用户名</th>
@@ -42,21 +42,51 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" ng-click="add()" href="#"><i class="fa"></i>  添加用户</a>
+
+                    <div class="col-md-2">
+                        <a class="btn btn-primary" ng-click="add()" href="#"><i class="fa"></i>  添加用户</a>
+                    </div>
+                    <div class="col-md-6 col-md-offset-4">
+                        <ul class="pagination" id="paginationBtn" style="margin:auto"></ul>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
-<script>
 
+
+
+
+
+<script>
+   
 
 
     var app = angular.module("myapp", ['ngCookies']);
-    app.controller("myCtrl", function ($scope, $http, $cookies) {
+    app.controller("myCtrl", function ($scope, $http, $cookies, $window) {
+
+
+        $('#paginationBtn').jqPaginator({
+            totalPages: 100,
+            visiblePages: 10,
+            currentPage: 1,
+
+            first: '<li class="first"><a href="javascript:void(0);">First</a></li>',
+            prev: '<li class="prev"><a href="javascript:void(0);">Previous</a></li>',
+            next: '<li class="next"><a href="javascript:void(0);">Next</a></li>',
+            last: '<li class="last"><a href="javascript:void(0);">Last</a></li>',
+            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+            onPageChange: function (number) {
+                //  $('#text').html('当前第' + num + '页');
+                getSelectedList($scope, $http, $window, number)
+            }
+        });
+
+
 
         getUserList($scope, $http);//载入页面数据
         var cookie = $cookies.get('Login_Cookies_UserID');
@@ -96,6 +126,26 @@
             console.log("catch:" + data);
         });
     }
+
+     function getSelectedList($scope, $http,$window,page) {
+        $http.post("@Url.Content("~/MoocAdmin/Users/GetUserList")", { pageIndex: page, pageSize: 10 }).then(function (response) {
+            if (response.status == 200) {
+                if (response.data.data.length != 0) {
+                    $scope.list = response.data.data;
+                    
+                }
+                else {
+                    $scope.list = null;
+                    window.alert("no record in this page");
+                    
+                }
+            }
+        }).catch(function (data) {
+            console.log("catch:" + data);
+        });
+    }
+
+   
 
 
 </script>
