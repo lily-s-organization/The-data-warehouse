@@ -127,12 +127,12 @@
 
         $http({
             method: 'POST',
-            url: "@Url.Content("~/MoocAdmin/User/AddUserList")",
+            url: "@Url.Content("~/MoocAdmin/Users/AddUserList")",
             data: JSON.stringify(user),
             dataType: "json"
         }).then(function (response) {
             if (response.status == 200) {
-                window.location.href = "@Url.Content("~/MoocAdmin/User/Index/")";
+                window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
             }
         }, function (data) {
             console.log(data);
