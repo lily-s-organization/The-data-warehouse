@@ -235,6 +235,7 @@
     <Content Include="Areas\MoocAdmin\Views\Home\Index.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Home\Form.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jqPaginator.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
