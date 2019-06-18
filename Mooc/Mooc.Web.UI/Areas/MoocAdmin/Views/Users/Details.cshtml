@@ -1,0 +1,155 @@
+﻿
+<div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+
+
+    <form name="myForm">
+        <table class="table">
+            <tr>
+                <td>User Detail</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>UserName</b></td>
+                <td>
+                    <input type="text" name="usernameInput" class="form-control" ng-model="user.UserName" required />
+                    <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid">UserName Required</span>
+                </td>
+                <td><b>Password</b></td>
+                <td>
+                    <input type="password" class="form-control" ng-model="user.PassWord" ng-minlength="6" name="passwordInput" required />
+                    <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid">At least 6 letters</span>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Email</b></td>
+                <td>
+                    <input name="emailInput" type="email" class="form-control" ng-model="user.Email" required />
+                    <span ng-show="!myForm.emailInput.$valid">Wrong Format</span>
+
+                </td>
+                <td><b>Role</b></td>
+                <td>
+                    <select  ng-model="user.RoleType" ng-options="x.Text for x in names" name="roletypeInput"></select>                 
+                </td>
+               
+            </tr>
+
+
+            <tr>
+                <td></td>
+                <td></td>
+
+                <td>
+                    <input type="button" class="btn btn-primary" value="Save" ng-click="Save()" />
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="Cancel()" />
+                </td>
+
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        @*$scope.UserName = '@Model.UserName';      //绑定从控制器传回的数据
+        $scope.Email = '@Model.Email';
+        $scope.RoleType = '@Model.RoleType';
+        $scope.PassWord = '@Model.PassWord';
+        $scope.Id = '@Model.Id';
+        $scope.AddTime = '@Model.AddTime';
+        $scope.PhotoUrl = '@Model.PhotoUrl';*@
+
+        $scope.Id = '@ViewBag.Id';
+        var id = $scope.Id;
+       // window.alert(id);
+
+       
+        getRoleTypeList($scope, $http);//初始化下拉列表
+    
+
+        getUserDetail($scope, $http);
+       
+     
+
+        $scope.Save = function () {
+
+            saveUser($scope, $http);
+
+        };
+        $scope.Cancel = function () {
+            window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
+        };
+
+    });
+
+
+
+    function getRoleTypeList($scope, $http) {
+
+        $http({
+            method: 'GET',
+            url: "@Url.Content("~/MoocAdmin/Users/GetRoleTypeList")",
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.names = response.data.data;
+                console.log(response.data.data);          
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+    function getUserDetail($scope, $http) {
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/Users/GetUserDetail")",
+            data: {"id":$scope.Id},
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.user = response.data;
+                console.log($scope.user);
+                $scope.user.RoleType = $scope.names[($scope.user.RoleType - 1)]; //初始化select列表的默认选中项，因为RoleTypes是1到3，为了对应数组下标，所以减去1
+
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+    function saveUser($scope, $http) {
+
+        var user = {
+            UserName: $scope.user.UserName,
+            Email: $scope.user.Email,
+            PassWord: $scope.user.PassWord,
+            RoleType: $scope.user.RoleType.Value,
+            Id: $scope.Id,          
+            PhotoUrl: $scope.user.PhotoUrl
+        };
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/Users/AddUserList")",
+            data: JSON.stringify(user),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.status == 200) {
+                window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+</script>
+

@@ -12,13 +12,14 @@
     <!-- Morris Chart Styles-->
     <!-- Custom Styles-->
     <link href="~/assets/css/custom-styles.css" rel="stylesheet" />
-
     <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/angular1.7/angular.js"></script>
+    <script src="~/Scripts/angular1.7/angular-cookies.js"></script>
     @RenderSection("head", required: false)
 </head>
 
 <body>
-    <div id="wrapper">
+    <div id="wrapper" >
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -30,7 +31,7 @@
                 <a class="navbar-brand" href="index.html"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
             </div>
 
-            <ul class="nav navbar-top-links navbar-right">
+            <ul class="nav navbar-top-links navbar-right" id="ulLogout">
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
@@ -45,16 +46,16 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <a href="@Url.Content("~/MoocAdmin/Admin/Logout")"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
-       
+
             </ul>
         </nav>
         <!--/. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
+        <nav class="navbar-default navbar-side" role="navigation"  >
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
 
@@ -97,4 +98,35 @@
 
 </html>
 
+<script>
+    $(function () {
 
+       
+
+        //如果cookie有值，则显示用户名字
+        var username = getCookie("Login_Cookies_UserName");
+        var id = getCookie("Login_Cookies_UserID");
+        var ulLogout = document.getElementById('ulLogout');
+          
+        ulLogout.style.visibility = 'visible';
+        if (!id) {
+            ulLogout.style.visibility = 'hidden'; 
+           
+        }
+
+    })
+
+
+
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+
+</script>
