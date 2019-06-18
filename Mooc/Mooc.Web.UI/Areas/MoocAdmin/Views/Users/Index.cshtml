@@ -44,7 +44,7 @@
                     </table>
 
                     <div class="col-md-2">
-                        <a class="btn btn-primary" ng-click="add()" href="#"><i class="fa"></i>  添加用户</a>
+                        <a class="btn btn-primary" ng-click="add()" href="#"><i class="fa"></i> 添加用户</a>
                     </div>
                     <div class="col-md-6 col-md-offset-4">
                         <ul class="pagination" id="paginationBtn" style="margin:auto"></ul>
@@ -56,12 +56,6 @@
     </div>
 </div>
 
-
-
-
-
-
-
 <script>
    
 
@@ -70,31 +64,31 @@
     app.controller("myCtrl", function ($scope, $http, $cookies, $window) {
 
 
-        $('#paginationBtn').jqPaginator({
-            totalPages: 100,
-            visiblePages: 10,
-            currentPage: 1,
+        //$('#paginationBtn').jqPaginator({
+        //    totalPages: 100,
+        //    visiblePages: 5,
+        //    currentPage: 1,
 
-            first: '<li class="first"><a href="javascript:void(0);">First</a></li>',
-            prev: '<li class="prev"><a href="javascript:void(0);">Previous</a></li>',
-            next: '<li class="next"><a href="javascript:void(0);">Next</a></li>',
-            last: '<li class="last"><a href="javascript:void(0);">Last</a></li>',
-            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
-            onPageChange: function (number) {
-                //  $('#text').html('当前第' + num + '页');
-                getSelectedList($scope, $http, $window, number)
-            }
-        });
+        //    first: '<li class="first"><a href="javascript:void(0);">First</a></li>',
+        //    prev: '<li class="prev"><a href="javascript:void(0);">Previous</a></li>',
+        //    next: '<li class="next"><a href="javascript:void(0);">Next</a></li>',
+        //    last: '<li class="last"><a href="javascript:void(0);">Last</a></li>',
+        //    page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+        //    onPageChange: function (number) {
+        //        //  $('#text').html('当前第' + num + '页');
+        //        getSelectedList($scope, $http, $window, number)
+        //    }
+        //});
 
-
-
+        $scope.pageIndex = 1;
+        $scope.pageSize = 10;
         getUserList($scope, $http);//载入页面数据
-        var cookie = $cookies.get('Login_Cookies_UserID');
+       // var cookie = $cookies.get('Login_Cookies_UserID');
        // console.log(cookie)
-        if (cookie) {
-            //如果cookie有值 表示用户登录 显示用户名
+        //if (cookie) {
+        //    //如果cookie有值 表示用户登录 显示用户名
 
-        }
+        //}
         $scope.update = function (id) {
             window.location.href = "@Url.Content("~/MoocAdmin/Users/Details/")" + id;
         };
@@ -118,8 +112,36 @@
 
 
     function getUserList($scope, $http) {
-        $http.post("@Url.Content("~/MoocAdmin/Users/GetUserList")", { pageIndex: 1, pageSize: 10 }).then(function (response) {
+
+        $http.post("@Url.Content("~/MoocAdmin/Users/GetUserList")", { pageIndex: $scope.pageIndex, pageSize: $scope.pageSize }).then(function (response) {
             if (response.status == 200) {
+
+                $('#paginationBtn').jqPaginator({
+                    totalCounts: response.data.iCount,
+                    pageSize:$scope.pageSize,
+                    visiblePages: 5,
+                    currentPage: $scope.pageIndex,
+
+                    first: '<li class="first"><a href="javascript:void(0);">First</a></li>',
+                    prev: '<li class="prev"><a href="javascript:void(0);">Previous</a></li>',
+                    next: '<li class="next"><a href="javascript:void(0);">Next</a></li>',
+                    last: '<li class="last"><a href="javascript:void(0);">Last</a></li>',
+                    page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+                    onPageChange: function (number) {
+                        //  $('#text').html('当前第' + num + '页');
+                        //alert(number)
+                        $scope.pageIndex = number;
+
+                        if ($('#paginationBtn .active').eq(0).attr('jp-data') !== number.toString()) {
+                            getUserList($scope, $http);
+                        }
+
+                        
+                       // getSelectedList($scope, $http, $window, number)
+                    }
+                });
+
+
                 $scope.list = response.data.data;
             }
         }).catch(function (data) {
@@ -127,7 +149,9 @@
         });
     }
 
-     function getSelectedList($scope, $http,$window,page) {
+
+
+     @*function getSelectedList($scope,$http,$window,page) {
         $http.post("@Url.Content("~/MoocAdmin/Users/GetUserList")", { pageIndex: page, pageSize: 10 }).then(function (response) {
             if (response.status == 200) {
                 if (response.data.data.length != 0) {
@@ -143,10 +167,7 @@
         }).catch(function (data) {
             console.log("catch:" + data);
         });
-    }
-
-   
-
+    }*@
 
 </script>
 

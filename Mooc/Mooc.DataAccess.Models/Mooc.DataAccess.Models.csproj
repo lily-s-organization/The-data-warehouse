@@ -118,6 +118,11 @@
     <Compile Include="App_Start\IDependency.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Context\DataContext.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Course.cs" />
+    <Compile Include="Entities\Follower.cs" />
+    <Compile Include="Entities\SubjectCategory.cs" />
+    <Compile Include="Entities\Teacher.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\201905241611268_test01.cs" />
     <Compile Include="Migrations\201905241611268_test01.Designer.cs">

@@ -15,6 +15,10 @@ namespace Mooc.DataAccess.Models.Entities
         public long Id { get; set; }
 
         [Required]
+        public string CategoryName { get; set; }
+
+
+       // [Required]
         public string CategoryDescription { get; set; }
     }
 }

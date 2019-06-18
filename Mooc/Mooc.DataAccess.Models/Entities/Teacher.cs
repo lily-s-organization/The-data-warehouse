@@ -17,24 +17,24 @@ namespace Mooc.DataAccess.Models.Entities
         [Required]
         public string TeacherName { get; set; }
 
-        [Required]
+       // [Required]
         public string Email { get; set; }
 
-        [Required]
+       // [Required]
         public string PhotoUrl { get; set;}
 
-        [Required]
-        [Range(1, 3)]//1=教授 2=副教授 3=讲师
-        public int Title { get; set; }
+       // [Required]
+       // [Range(1, 3)]//1=教授 2=副教授 3=讲师
+        public string Level { get; set; }
 
-        [Required]
-        [Range(1, 3)]//1=清华大学 2=北京大学 3=同济大学
-        public int Department { get; set; }
+       // [Required]
+       // [Range(1, 3)]//1=清华大学 2=北京大学 3=同济大学
+        public string Department { get; set; }
 
-        [Required]//讲师个人简介
+       // [Required]//讲师个人简介
         public string Description { get; set; }
 
-        public int UserState { get; set; }  //0为正常 1为异常
+        public int State { get; set; }  //0为正常 1为异常
 
         public DateTime? AddTime { get; set; }       //用户注册时间
 

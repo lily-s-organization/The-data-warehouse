@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mooc.Common.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         // GET: MoocAdmin/Home
         public ActionResult Index()
         {
+           
             return View();
         }
 

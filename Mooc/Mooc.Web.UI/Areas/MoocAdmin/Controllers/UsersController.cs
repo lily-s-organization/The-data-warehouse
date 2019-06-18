@@ -10,6 +10,7 @@ using Mooc.DataAccess.Models.Entities;
 using Mooc.DataAccess.Models.Utils;
 using Mooc.DataAccess.Models.ViewModels;
 using Mooc.Web.UI.Filter;
+using Mooc.Common.Utils;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
@@ -21,6 +22,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         // GET: MoocAdmin/Users
         public ActionResult Index()
         {
+            var userName = LoginHelper.UserName;
             return View();
         }
 
@@ -46,13 +48,14 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 else
                 {
                     var tmp = db.Users.Find(user.Id);
+                    user.UserState = tmp.UserState;
                     user.AddTime = tmp.AddTime;       //在前端获得的日期格式为"/Date(1560579721727)/"，无法在js里转换成c#的datetime格式                 
                     db.Entry(tmp).State = EntityState.Detached;
                     db.Entry(user).State = EntityState.Modified;
                 }
 
                 db.SaveChanges();
-                return Json(0);           
+                return Json(0);
             }
             catch (Exception ex)
             {
@@ -68,7 +71,8 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             int currentItems = (pageIndex - 1) * pageSize;// the items from which pages-当前页从第几条开始        
             var list = db.Users.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).ToList();//paging in EF
             List<UserViewModel> viewList = AutoMapper.Mapper.Map<List<UserViewModel>>(list);
-            return Json(new { code = 0, data = viewList });
+            int iCount = db.Users.Count(x => x.Id > 0);
+            return Json(new { code = 0, data = viewList, iCount = iCount });
 
         }
 
@@ -76,7 +80,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             try
             {
-                ViewBag.Id = id;               
+                ViewBag.Id = id;
                 return View();
             }
             catch (Exception ex)
@@ -123,7 +127,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             }
         }
 
-     
+
 
     }
 }

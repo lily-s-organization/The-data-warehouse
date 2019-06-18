@@ -183,6 +183,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\AdminController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\UsersController.cs" />
     <Compile Include="Areas\MoocAdmin\MoocAdminAreaRegistration.cs" />
     <Compile Include="Controllers\AngularJSDemoController.cs" />
     <Compile Include="Controllers\Demo1Controller.cs" />
@@ -234,6 +235,10 @@
     <Content Include="Areas\MoocAdmin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Home\Index.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Home\Form.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Users\Add.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Users\Details.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Shared\_LayoutLogin.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jqPaginator.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
