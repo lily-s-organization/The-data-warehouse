@@ -13,7 +13,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         private DataContext db = new DataContext();
 
         // GET: MoocAdmin/Admin
-        public ActionResult Index()
+        public ActionResult Login()
         {
             return View();
         }
@@ -42,7 +42,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             CookieHelper.DelCookie(CommonVariables.LoginCookieName);
             CookieHelper.DelCookie(CommonVariables.LoginCookieID);
             CookieHelper.DelCookie(CommonVariables.LoginCookieType);
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
 
         }
     }

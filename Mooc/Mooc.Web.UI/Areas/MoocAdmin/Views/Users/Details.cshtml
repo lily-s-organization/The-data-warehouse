@@ -1,4 +1,4 @@
-﻿
+﻿<script src="~/Scripts/bootstrap.min.js"></script>
 <div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
 
 
@@ -58,26 +58,13 @@
 
     var app = angular.module("myapp", []);
     app.controller("myCtrl", function ($scope, $http) {
-
-        @*$scope.UserName = '@Model.UserName';      //绑定从控制器传回的数据
-        $scope.Email = '@Model.Email';
-        $scope.RoleType = '@Model.RoleType';
-        $scope.PassWord = '@Model.PassWord';
-        $scope.Id = '@Model.Id';
-        $scope.AddTime = '@Model.AddTime';
-        $scope.PhotoUrl = '@Model.PhotoUrl';*@
-
+     
         $scope.Id = '@ViewBag.Id';
         var id = $scope.Id;
-       // window.alert(id);
 
-       
         getRoleTypeList($scope, $http);//初始化下拉列表
-    
-
         getUserDetail($scope, $http);
        
-     
 
         $scope.Save = function () {
 
@@ -99,8 +86,7 @@
             url: "@Url.Content("~/MoocAdmin/Users/GetRoleTypeList")",
         }).then(function (response) {
             if (response.status == 200) {
-                $scope.names = response.data.data;
-                console.log(response.data.data);          
+                $scope.names = response.data.data;                      
             }
         }, function (data) {
             console.log(data);
