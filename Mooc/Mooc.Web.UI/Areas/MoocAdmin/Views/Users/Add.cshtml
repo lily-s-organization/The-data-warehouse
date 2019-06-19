@@ -58,8 +58,8 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <input type="submit" class="btn btn-primary" value="Save" ng-click="Save(PassWord,ConfirmPassWord)" ng-disabled="myForm.$invalid" />
-                        <input type="button" class="btn btn-danger" value="Cancel" ng-click="Cancel()" />
+                        <input type="submit" class="btn btn-primary" value="Save" ng-click="saveUser(PassWord,ConfirmPassWord)" ng-disabled="myForm.$invalid" />
+                        <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" />
                     </td>
 
                 </tr>
@@ -77,7 +77,7 @@
 
         getRoleTypeList($scope, $http);//初始化下拉列表
 
-        $scope.Save = function (PassWord, ConfirmPassWord) {
+        $scope.saveUser = function (PassWord, ConfirmPassWord) {
             if (PassWord == ConfirmPassWord) {
                 saveUser($scope, $http);
             }
@@ -86,7 +86,7 @@
             }
         };
 
-        $scope.Cancel = function () {
+        $scope.cancelSubmit = function () {
             window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
         };
 

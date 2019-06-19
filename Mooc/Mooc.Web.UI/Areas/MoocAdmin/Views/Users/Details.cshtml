@@ -43,8 +43,8 @@
                 <td></td>
 
                 <td>
-                    <input type="button" class="btn btn-primary" value="Save" ng-click="Save()" />
-                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="Cancel()" />
+                    <input type="button" class="btn btn-primary" value="Save" ng-click="saveUser()" />
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" />
                 </td>
 
             </tr>
@@ -66,12 +66,12 @@
         getUserDetail($scope, $http);
        
 
-        $scope.Save = function () {
+        $scope.saveUser = function () {
 
             saveUser($scope, $http);
 
         };
-        $scope.Cancel = function () {
+        $scope.cancelSubmit = function () {
             window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
         };
 
