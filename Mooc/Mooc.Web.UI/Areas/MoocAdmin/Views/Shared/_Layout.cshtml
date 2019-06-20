@@ -98,35 +98,4 @@
 
 </html>
 
-<script>
-    $(function () {
 
-       
-
-        //如果cookie有值，则显示用户名字
-        var username = getCookie("Login_Cookies_UserName");
-        var id = getCookie("Login_Cookies_UserID");
-        var ulLogout = document.getElementById('ulLogout');
-          
-        ulLogout.style.visibility = 'visible';
-        if (!id) {
-            ulLogout.style.visibility = 'hidden'; 
-           
-        }
-
-    })
-
-
-
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i].trim();
-            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-        }
-        return "";
-    }
-
-</script>

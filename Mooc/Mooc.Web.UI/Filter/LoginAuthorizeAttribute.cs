@@ -22,7 +22,7 @@ namespace Mooc.Web.UI.Filter
 
             if (roletype == null || name == null || id == null)
             {
-                filterContext.Result = new RedirectResult("/MoocAdmin/Admin/Index");
+                filterContext.Result = new RedirectResult("/MoocAdmin/Admin/Login");
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Mooc.Web.UI.Filter
 
                     if (result == null)
                     {
-                        filterContext.Result = new RedirectResult("/MoocAdmin/Admin/Index");
+                        filterContext.Result = new RedirectResult("/MoocAdmin/Admin/Login");
                     }
                     else
                     {

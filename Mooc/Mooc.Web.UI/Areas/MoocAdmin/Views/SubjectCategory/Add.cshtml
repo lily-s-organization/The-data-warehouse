@@ -1,0 +1,69 @@
+﻿
+<div ng-app="myapp" ng-controller="myCtrl">
+    <form name="myForm" ng-submit="submitForm(userForm.$valid)" enctype='multipart/form-data'>
+        <h2 style="text-align:center;margin-bottom:20px">Add New SubjectCategory </h2>
+        <div class="container">
+            <div class="form-group row" >
+                <label class="col-md-1 col-md-offset-2 col-form-label">Name</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="subjectCategoryNameInput" ng-model="SubjectCategoryName" required>
+                    <span ng-show="myForm.subjectCategoryNameInput.$touched && myForm.subjectCategoryNameInput.$invalid" class="help-block">SubjectCategoryName Required</span>
+                </div>
+            </div>
+            <div class="form-group row" >
+                <label class="col-md-1 col-md-offset-2 col-form-label" >Description</label>
+                <div class="col-md-6" >
+                    <input type="text" class="form-control" name="subjectCategoryDescriptionInput" ng-model="SubjectCategoryDescription" >                 
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-offset-7">
+                    <input type="submit" class="btn btn-primary" value="Save" ng-click="saveSubjectCategory()" ng-disabled="myForm.$invalid" style="margin-left:35px;"/>
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" style="margin-left:15px;"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        $scope.saveSubjectCategory = function () {
+            saveSubjectCategory($scope, $http);
+        };
+
+        $scope.cancelSubmit = function () {
+            window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Index/")";
+        };
+
+    });
+
+
+    function saveSubjectCategory($scope, $http) {
+
+        var subjectCategory = {
+            CategoryName: $scope.SubjectCategoryName,
+            CategoryDescription: $scope.SubjectCategoryDescription,
+        };
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/SubjectCategory/AddSubjectCategoryList")",
+            data: JSON.stringify(subjectCategory),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.status == 200) {
+                window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Index/")";
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+</script>

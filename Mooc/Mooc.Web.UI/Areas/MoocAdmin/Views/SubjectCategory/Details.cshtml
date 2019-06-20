@@ -1,0 +1,109 @@
+﻿<script src="~/Scripts/bootstrap.min.js"></script>
+<div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+
+
+    <form name="myForm">
+        <table class="table">
+            <tr>
+                <td>User Detail</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>UserName</b></td>
+                <td>
+                    <input type="text" name="categoryNameInput" class="form-control" ng-model="subjectCategory.CategoryName" required />
+                    <span ng-show="myForm.categoryNameInput.$touched && myForm.categoryNameInput.$invalid">CategoryName Required</span>
+                </td>
+                <td><b>UserName</b></td>
+                <td>
+                    <input type="text"  class="form-control" ng-model="subjectCategory.CategoryDescription" />                   
+                </td>
+            </tr>
+           
+
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="button" class="btn btn-primary" value="Save" ng-click="saveSubjectCategory()" />
+                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" />
+                </td>
+
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        $scope.Id = '@ViewBag.Id';
+        var id = $scope.Id;
+
+        getSubjectCategoryDetail($scope, $http);
+
+
+        $scope.saveSubjectCategory = function () {
+
+            saveSubjectCategory($scope, $http);
+
+        };
+        $scope.cancelSubmit = function () {
+            window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Index/")";
+        };
+
+    });
+
+
+    function getSubjectCategoryDetail($scope, $http) {
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/SubjectCategory/GetSubjectCategoryDetail")",
+            data: {"id":$scope.Id},
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.subjectCategory = response.data;
+                console.log(response);
+                console.log($scope.subjectCategory);
+               
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+    function saveSubjectCategory($scope, $http) {
+
+        var subjectCategory = {
+            CategoryName: $scope.subjectCategory.CategoryName,
+            CategoryDescription: $scope.subjectCategory.CategoryDescription,
+            Id: $scope.Id
+        };
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/SubjectCategory/AddSubjectCategoryList")",
+            data: JSON.stringify(subjectCategory),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.status == 200) {
+                window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Index/")";
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+</script>
+

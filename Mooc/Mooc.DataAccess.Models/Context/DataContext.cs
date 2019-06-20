@@ -23,7 +23,9 @@ namespace Mooc.DataAccess.Models.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<SubjectCategory> SubjectCategorys { get; set; }
 
-       
+
+
     }
 }
