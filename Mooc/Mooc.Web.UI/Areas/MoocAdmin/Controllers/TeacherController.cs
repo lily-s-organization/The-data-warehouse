@@ -7,17 +7,16 @@ using System.Web.Mvc;
 using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
-using Mooc.DataAccess.Models.ViewModels;
 using Mooc.Web.UI.Filter;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
     [LoginAuthorize]
-    public class SubjectCategoryController : Controller
+    public class TeacherController : Controller
     {
         private DataContext db = new DataContext();
-        private ILog logger = LogManager.GetLogger(typeof(SubjectCategoryController));
-        // GET: MoocAdmin/SubjectCategory
+        private ILog logger = LogManager.GetLogger(typeof(TeacherController));
+        // GET: MoocAdmin/Teacher
         public ActionResult Index()
         {
             return View();
@@ -29,11 +28,11 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSubjectCategoryList(int pageIndex, int pageSize)
+        public JsonResult GetTeacherList(int pageIndex, int pageSize)
         {
-            int currentItems = (pageIndex - 1) * pageSize;      
-            var list = db.SubjectCategorys.Where(x => x.Id > 0).OrderByDescending(p => p.CategoryName).Skip(currentItems).Take(pageSize).ToList();          
-            int iCount = db.SubjectCategorys.Count(x => x.Id > 0);
+            int currentItems = (pageIndex - 1) * pageSize;
+            var list = db.Teachers.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).ToList();
+            int iCount = db.Teachers.Count(x => x.Id > 0);
             return Json(new { code = 0, data = list, iCount = iCount });
 
         }
@@ -54,22 +53,28 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddSubjectCategoryList(SubjectCategory subjectCategory)
+        public JsonResult AddTeacherList(Teacher teacher)
         {
             try
             {
-                if (subjectCategory == null)
+                if (teacher == null)
                     return Json(300);
 
-                if (subjectCategory.Id == 0)
+                if (teacher.Id == 0)
                 {
-                    db.SubjectCategorys.Add(subjectCategory);
+                    teacher.State = 0;
+                    teacher.AddTime = DateTime.Now;
+                    db.Teachers.Add(teacher);
                 }
                 else
                 {
-                    db.Entry(subjectCategory).State = EntityState.Modified;
+                    var tmp = db.Teachers.Find(teacher.Id);
+                    teacher.State = tmp.State;
+                    teacher.AddTime = tmp.AddTime;                     
+                    db.Entry(tmp).State = EntityState.Detached;
+                    db.Entry(teacher).State = EntityState.Modified;
                 }
-                
+
                 db.SaveChanges();
                 return Json(0);
             }
@@ -82,12 +87,12 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSubjectCategoryDetail(long id)
+        public JsonResult GetTeacherDetail(long id)
         {
-            return Json(db.SubjectCategorys.Find(id));
+            return Json(db.Teachers.Find(id));
         }
 
-       
+
 
 
         [HttpPost]
@@ -95,11 +100,11 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             try
             {
-                SubjectCategory subjectCategory = db.SubjectCategorys.Find(id);
-                if (subjectCategory == null)
+                Teacher teacher = db.Teachers.Find(id);
+                if (teacher == null)
                     return Json(500);
 
-                db.SubjectCategorys.Remove(subjectCategory);
+                db.Teachers.Remove(teacher);
                 db.SaveChanges();
                 return Json(0);
             }
@@ -109,6 +114,5 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 return Json(300);
             }
         }
-
     }
 }

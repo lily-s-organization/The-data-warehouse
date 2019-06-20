@@ -2,22 +2,22 @@
 <div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
 
 
-    <form name="myForm">
+    <form name="myForm" ng-submit="submitForm(userForm.$valid)">
         <table class="table">
             <tr>
-                <td>User Detail</td>
+                <td>Subject Category Detail</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><b>UserName</b></td>
+                <td><b>Category Name</b></td>
                 <td>
                     <input type="text" name="categoryNameInput" class="form-control" ng-model="subjectCategory.CategoryName" required />
                     <span ng-show="myForm.categoryNameInput.$touched && myForm.categoryNameInput.$invalid">CategoryName Required</span>
                 </td>
-                <td><b>UserName</b></td>
+                <td><b>Category Description</b></td>
                 <td>
                     <input type="text"  class="form-control" ng-model="subjectCategory.CategoryDescription" />                   
                 </td>
@@ -30,7 +30,7 @@
                 <td></td>
                 <td></td>
                 <td>
-                    <input type="button" class="btn btn-primary" value="Save" ng-click="saveSubjectCategory()" />
+                    <input type="button" class="btn btn-primary" value="Save" ng-click="saveSubjectCategory()" ng-disabled="myForm.$invalid"  />
                     <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" />
                 </td>
 

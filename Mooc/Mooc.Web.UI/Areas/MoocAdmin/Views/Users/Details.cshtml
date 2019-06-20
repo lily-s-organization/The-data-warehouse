@@ -2,7 +2,7 @@
 <div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
 
 
-    <form name="myForm">
+    <form name="myForm" ng-submit="submitForm(userForm.$valid)">
         <table class="table">
             <tr>
                 <td>User Detail</td>
@@ -43,7 +43,7 @@
                 <td></td>
 
                 <td>
-                    <input type="button" class="btn btn-primary" value="Save" ng-click="saveUser()" />
+                    <input type="button" class="btn btn-primary" value="Save" ng-click="saveUser()" ng-disabled="myForm.$invalid" />
                     <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" />
                 </td>
 
