@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -37,6 +38,19 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 
         }
 
+        public ActionResult test()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult AddPhoto(HttpPostedFileBase ImageUpload)
+        {
+           
+            return Json(new { code = 0});
+
+        }
+
         public ActionResult Details(int id)
         {
             try
@@ -53,12 +67,37 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddTeacherList(Teacher teacher)
+        public ActionResult AddTeacherList(Teacher teacher, HttpPostedFileBase ImageUpload)
         {
             try
             {
                 if (teacher == null)
                     return Json(300);
+
+                if (ImageUpload != null)            //如果上传了图片，则先更新PhotoUrl
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(ImageUpload.FileName);
+                    string extension = Path.GetExtension(ImageUpload.FileName);
+                    fileName = fileName + "_" + DateTime.Now.ToString("yyyymmssfff") + extension;
+                    string savePath = Server.MapPath("~/Images/Upload/");
+                    if (!System.IO.Directory.Exists(savePath))
+                    {
+                        Directory.CreateDirectory(savePath);
+                    }
+                    string saveFile = savePath + fileName;
+
+                    if (teacher.PhotoUrl != null)      //如果旧头像存在 则先删除旧的头像
+                    {
+                        string deleteFile = savePath + teacher.PhotoUrl;     
+                        if (System.IO.File.Exists(deleteFile))
+                        {
+                            System.IO.File.Delete(deleteFile);
+                        }
+                    }
+
+                    ImageUpload.SaveAs(saveFile);
+                    teacher.PhotoUrl = fileName;//更新图片的路径
+                }
 
                 if (teacher.Id == 0)
                 {
@@ -76,13 +115,13 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 }
 
                 db.SaveChanges();
-                return Json(0);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
 
                 logger.Error(ex.Message);
-                return Json(400);
+                return RedirectToAction("Add");
             }
         }
 

@@ -1,52 +1,56 @@
 ﻿<script src="~/Scripts/bootstrap.min.js"></script>
 <div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
-
-
-    <form name="myForm" ng-submit="submitForm(userForm.$valid)">
+    <form name="myForm" ng-submit="submitForm(userForm.$valid)" action="~/MoocAdmin/Teacher/AddTeacherList" enctype="multipart/form-data" method="post">
         <h2 style="text-align:center;margin-bottom:20px">Update Teacher Info </h2>
         <div class="container">
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Name</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="teacherNameInput" ng-model="teacher.TeacherName" required>
-                    <span ng-show="myForm.teacherNameInput.$touched && myForm.teacherNameInput.$invalid" class="help-block">Name Required</span>
+                    <input type="text" class="form-control" name="TeacherName" ng-model="teacher.TeacherName" required>
+                    <span ng-show="myForm.TeacherName.$touched && myForm.TeacherName.$invalid" class="help-block">Name Required</span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Email</label>
                 <div class="col-md-6">
-                    <input type="email" class="form-control" name="emailInput" ng-model="teacher.Email">
-                    <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid" class="help-block">Wrong format</span>
+                    <input type="email" class="form-control" name="Email" ng-model="teacher.Email">
+                    <span ng-show="myForm.Email.$touched && myForm.Email.$invalid" class="help-block">Wrong format</span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Level</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="teacher.Level">
+                    <input type="text" class="form-control" ng-model="teacher.Level" name="Level">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Department</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="teacher.Department">
+                    <input type="text" class="form-control" ng-model="teacher.Department" name="Department">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-1 col-md-offset-2 col-form-label">PhotoUrl</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label">Photo</label>
+                <div class="col-md-6">                   
+                    <img ng-src="~/Images/Upload/{{teacher.PhotoUrl}}" style="max-height:250px;max-width:250px;"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">New Photo</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="teacher.PhotoUrl">
+                    <input type="file" accept="image/jpeg, image/png" name="ImageUpload" id="ImageUpload">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Description</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="teacher.Description">
+                    <input type="text" class="form-control" ng-model="teacher.Description" name="Description">
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-offset-7">
-                    <input type="submit" class="btn btn-primary" value="Save" ng-click="saveTeacher()" ng-disabled="myForm.$invalid" style="margin-left:35px;" />
+                    <input type="submit" class="btn btn-primary" value="Save" ng-disabled="myForm.$invalid" style="margin-left:35px;" />
                     <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" style="margin-left:15px;" />
                 </div>
             </div>
@@ -65,13 +69,7 @@
         var id = $scope.Id;
 
         getTeacherDetail($scope, $http);
-
-
-        $scope.saveTeacher = function () {
-
-            saveTeacher($scope, $http);
-
-        };
+  
         $scope.cancelSubmit = function () {
             window.location.href = "@Url.Content("~/MoocAdmin/Teacher/Index/")";
         };
@@ -90,40 +88,13 @@
                 $scope.teacher = response.data;
                 console.log($scope.teacher);
                 console.log(response);
-                
-
             }
         }, function (data) {
             console.log(data);
         });
     }
 
-    function saveTeacher($scope, $http) {
-
-        var teacher = {
-            TeacherName: $scope.teacher.TeacherName,
-            Email: $scope.teacher.Email,
-            Id: $scope.teacher.Id,
-            Level: $scope.teacher.Level,
-            Department: $scope.teacher.Department,
-            PhotoUrl: $scope.teacher.PhotoUrl,
-            Description: $scope.teacher.Description
-
-        };
-
-        $http({
-            method: 'POST',
-            url: "@Url.Content("~/MoocAdmin/Teacher/AddTeacherList")",
-            data: JSON.stringify(teacher),
-            dataType: "json"
-        }).then(function (response) {
-            if (response.status == 200) {
-                window.location.href = "@Url.Content("~/MoocAdmin/Teacher/Index/")";
-            }
-        }, function (data) {
-            console.log(data);
-        });
-    }
+   
 
 
 </script>
