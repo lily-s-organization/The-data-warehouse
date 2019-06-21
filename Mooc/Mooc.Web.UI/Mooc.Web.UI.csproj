@@ -183,6 +183,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\AdminController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\SubjectCategoryController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\TeacherController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\UsersController.cs" />
     <Compile Include="Areas\MoocAdmin\MoocAdminAreaRegistration.cs" />
     <Compile Include="Controllers\AngularJSDemoController.cs" />
@@ -219,10 +221,16 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="readme.txt" />
+    <Content Include="Scripts\angular1.7\angular-cookies.js" />
+    <Content Include="Scripts\angular1.7\angular-resource.js" />
+    <Content Include="Scripts\angular1.7\angular-route.js" />
+    <Content Include="Scripts\angular1.7\angular-touch.js" />
+    <Content Include="Scripts\angular1.7\angular.js" />
+    <Content Include="Scripts\angular1.7\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\MoocAdmin\Views\web.config" />
-    <Content Include="Areas\MoocAdmin\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Admin\Login.cshtml" />
     <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.eot" />
     <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.ttf" />
     <Content Include="assets\font-awesome\fonts\fontawesome-webfontba72.woff" />
@@ -239,6 +247,12 @@
     <Content Include="Areas\MoocAdmin\Views\Users\Details.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Users\Index.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\SubjectCategory\Index.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\SubjectCategory\Add.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\SubjectCategory\Details.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Teacher\Index.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Teacher\Add.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Teacher\Details.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jqPaginator.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -296,7 +310,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\MoocAdmin\Models\" />
     <Folder Include="assets\img\" />
-    <Folder Include="Scripts\angular1.7\" />
     <Folder Include="Views\Demo1\" />
   </ItemGroup>
   <ItemGroup>

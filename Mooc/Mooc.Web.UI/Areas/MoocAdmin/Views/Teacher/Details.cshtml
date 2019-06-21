@@ -1,7 +1,7 @@
 ﻿<script src="~/Scripts/bootstrap.min.js"></script>
 <div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
     <form name="myForm" ng-submit="submitForm(userForm.$valid)" action="~/MoocAdmin/Teacher/AddTeacherList" enctype="multipart/form-data" method="post">
-        <h2 style="text-align:center;margin-bottom:20px">Update Teacher Info </h2>
+        <h2 style="text-align:center;margin-bottom:20px">Update Teacher Infomation </h2>
         <div class="container">
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Name</label>
@@ -31,8 +31,8 @@
             </div>
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Photo</label>
-                <div class="col-md-6">                   
-                    <img ng-src="~/Images/Upload/{{teacher.PhotoUrl}}" style="max-height:250px;max-width:250px;"/>
+                <div class="col-md-6">
+                    <img ng-src="~/Images/Upload/{{teacher.PhotoUrl}}" style="max-height:250px;max-width:250px;" />
                 </div>
             </div>
             <div class="form-group row">
@@ -47,7 +47,7 @@
                     <input type="text" class="form-control" ng-model="teacher.Description" name="Description">
                 </div>
             </div>
-
+            <input type="hidden" class="form-control" name="Id" value="{{teacher.Id}}" >
             <div class="form-group row">
                 <div class="col-md-offset-7">
                     <input type="submit" class="btn btn-primary" value="Save" ng-disabled="myForm.$invalid" style="margin-left:35px;" />

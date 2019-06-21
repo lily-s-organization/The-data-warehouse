@@ -37,19 +37,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             return Json(new { code = 0, data = list, iCount = iCount });
 
         }
-
-        public ActionResult test()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public JsonResult AddPhoto(HttpPostedFileBase ImageUpload)
-        {
-           
-            return Json(new { code = 0});
-
-        }
+     
 
         public ActionResult Details(int id)
         {
@@ -109,7 +97,8 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 {
                     var tmp = db.Teachers.Find(teacher.Id);
                     teacher.State = tmp.State;
-                    teacher.AddTime = tmp.AddTime;                     
+                    teacher.AddTime = tmp.AddTime;
+                    teacher.PhotoUrl = tmp.PhotoUrl;
                     db.Entry(tmp).State = EntityState.Detached;
                     db.Entry(teacher).State = EntityState.Modified;
                 }
@@ -131,9 +120,6 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             return Json(db.Teachers.Find(id));
         }
 
-
-
-
         [HttpPost]
         public JsonResult Delete(int id)
         {
@@ -142,6 +128,16 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 Teacher teacher = db.Teachers.Find(id);
                 if (teacher == null)
                     return Json(500);
+                
+                if (teacher.PhotoUrl != null)      //如果用户有头像照片的话 删除照片
+                {
+                    string savePath = Server.MapPath("~/Images/Upload/");
+                    string deleteFile = savePath + teacher.PhotoUrl;
+                    if (System.IO.File.Exists(deleteFile))
+                    {
+                        System.IO.File.Delete(deleteFile);
+                    }
+                }
 
                 db.Teachers.Remove(teacher);
                 db.SaveChanges();
