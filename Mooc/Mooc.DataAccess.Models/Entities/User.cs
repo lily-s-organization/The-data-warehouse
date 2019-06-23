@@ -40,6 +40,8 @@ namespace Mooc.DataAccess.Models.Entities
         public int RoleType { get; set; }       //通过枚举来区别是学生还是老师
         public DateTime? AddTime { get; set; }       //用户注册时间
 
+        public Teacher Teacher { get; set; } //讲师表外键
+
 
 
     }
