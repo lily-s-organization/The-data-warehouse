@@ -1,71 +1,62 @@
 ﻿<script src="~/Scripts/bootstrap.min.js"></script>
 
 <div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
-
-    <form name="myForm" ng-submit="submitForm(userForm.$valid)">
-        <div class="table-responsive">
-            <table class="table ">
-                <tr>
-                    <td>User Registration</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><b>UserName</b></td>
-                    <td>
-                        <input type="text" name="usernameInput" class="form-control" ng-model="UserName" required />
-                        <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid" class="help-block">UserName Required</span>
-                    </td>
-                    <td><b>Email</b></td>
-                    <td>
-                        <input name="emailInput" type="email" class="form-control" ng-model="Email" required />
-                        <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid" class="help-block">Wrong Format</span>
-
-                    </td>
-                </tr>
-                <tr>
-
-                    <td><b>Password</b></td>
-                    <td>
-                        <input type="password" class="form-control" ng-model="PassWord" ng-minlength="6" name="passwordInput" required />
-                        <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid" class="help-block">At least 6 letters</span>
-                    </td>
-                    <td><b>Confirm Password</b></td>
-                    <td>
-                        <input type="password" class="form-control" ng-model="ConfirmPassWord" ng-minlength="6" name="confirmpasswordInput" required />
-                        <span ng-show="myForm.confirmpasswordInput.$touched && myForm.confirmpasswordInput.$invalid" class="help-block">At least 6 letters</span>
-                        <span>{{errorMsg}}</span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td><b>Role</b></td>
-                    <td>
-                        <select ng-model="selectedName" ng-options="x.Text for x in names" name="roletypeInput" required>
-                            <option value="">请选择</option>
-                        </select>
-                        <span ng-show="myForm.roletypeInput.$touched && myForm.roletypeInput.$invalid" class="help-block">please select one role</span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
+    <h2 style="text-align:center;margin-bottom:20px">添加用户 </h2>
+    <form name="myForm">
+        <div class="container">
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">姓名</label>
+                <div class="col-md-6">
+                    <input type="text" name="usernameInput" class="form-control" ng-model="UserName" required />
+                    <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid" class="help-block">请填写姓名</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">Email</label>
+                <div class="col-md-6">
+                    <input name="emailInput" type="email" class="form-control" ng-model="Email" required />
+                    <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid" class="help-block">错误格式</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">密码</label>
+                <div class="col-md-6">
+                    <input type="password" class="form-control" ng-model="PassWord" ng-minlength="6" name="passwordInput" required />
+                    <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid" class="help-block">最少六位</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">确认密码</label>
+                <div class="col-md-6">
+                    <input type="password" class="form-control" ng-model="ConfirmPassWord" ng-minlength="6" name="confirmpasswordInput" required />
+                    <span ng-show="myForm.confirmpasswordInput.$touched && myForm.confirmpasswordInput.$invalid" class="help-block">最少六位</span>
+                    <span>{{errorMsg}}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">角色</label>
+                <div class="col-md-6">
+                    <select ng-model="selectedName" ng-options="x.Text for x in names" name="roletypeInput" required>
+                        <option value="">请选择</option>
+                    </select>
+                    <span ng-show="myForm.roletypeInput.$touched && myForm.roletypeInput.$invalid" class="help-block">请选择一个角色</span>
+                </div>
+            </div>
 
 
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <input type="submit" class="btn btn-primary" value="Save" ng-click="saveUser(PassWord,ConfirmPassWord)" ng-disabled="myForm.$invalid" />
-                        <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" />
-                    </td>
-
-                </tr>
-            </table>
-        </div>  
+            <div class="form-group row">
+                <div class="col-md-offset-5" style="padding-left:20px">
+                    <input type="submit" class="btn btn-primary" value="保存" ng-click="saveUser(PassWord,ConfirmPassWord)" />
+                    <input type="button" class="btn btn-danger" value="取消" ng-click="cancelSubmit()" />
+                </div>
+            </div>
+        </div>
     </form>
+    
+   
+
+
+
 
 </div>
 
@@ -82,7 +73,7 @@
                 saveUser($scope, $http);
             }
             else {
-                window.alert("check your password again");
+                window.alert("密码不一致");
             }
         };
 
@@ -129,6 +120,7 @@
             dataType: "json"
         }).then(function (response) {
             if (response.status == 200) {
+                alert("添加成功");
                 window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
             }
         }, function (data) {

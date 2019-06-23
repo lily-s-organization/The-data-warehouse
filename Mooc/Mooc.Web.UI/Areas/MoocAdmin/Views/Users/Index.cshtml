@@ -7,8 +7,8 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">               
-                <h2 style="display:inline-block">用户列表</h2>
-                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addUser()" href="#"><i class="fa"></i> 添加用户</a>
+                <h2 style="display:inline-block">用户维护</h2>
+                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addUser()" href="#"><i class="fa"></i> 添加</a>
             </div>
             
             <div class="panel-body">
@@ -32,8 +32,8 @@
                                 <td>{{row.ShowRoleType}}</td>
                                 <td>{{row.ShowStatus}}</td>
 
-                                <td><a class="btn btn-primary" ng-click="updateUser(row.Id)" href="#"><i class="fa fa-edit"></i>  更新信息</a></td>
-                                <td><a class="btn btn-danger" ng-click="deleteUser(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除用户</a></td>
+                                <td><a class="btn btn-primary" ng-click="updateUser(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
+                                <td><a class="btn btn-danger" ng-click="deleteUser(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
 
                             </tr>
                         </tbody>
@@ -66,13 +66,18 @@
         };
 
         $scope.deleteUser = function (id) {
-            $http.post("@Url.Content("~/MoocAdmin/Users/Delete/")" + id).then(function (response) {
-                if (response.status == 200) {
+            if (confirm("确定删除该条数据?"))
+            {
+                $http.post("@Url.Content("~/MoocAdmin/Users/Delete/")" + id).then(function (response) {
+                    if (response.status == 200) {
+                        alert("删除成功");
                     getUserList($scope, $http);//刷新页面
                 }
             }).catch(function (data) {
-                console.log("catch:" + data);
+                     console.log("catch:" + data);
+                     alert("删除失败");
             })
+            }
         };
 
         $scope.addUser = function () {

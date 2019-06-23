@@ -49,8 +49,8 @@
                         _html += '<td>' + item.PhotoUrl + '</td>';
                         _html += '<td>' + item.ShowRoleType + '</td>';
                         _html += '<td>' + item.ShowStatus + '</td>';
-                        _html += '<td><a href="@Url.Content("~/Users/Details/")' + item.Id + '">查看详情</a></td>';
-                        _html += '<td> <button class="Btn" onclick="Delete(' + item.Id + ')" class="btn btn-default">删除记录</button></td>';
+                        _html += '<td><a href="@Url.Content("~/Users/Details/")' + item.Id + '">修改</a></td>';
+                        _html += '<td> <button class="Btn" onclick="Delete(' + item.Id + ')" class="btn btn-default">删除</button></td>';
                         _html += '</tr>';
                     }
                 } else {

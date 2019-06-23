@@ -1,26 +1,26 @@
 ﻿
 <div ng-app="myapp" ng-controller="myCtrl">
-    <form name="myForm" ng-submit="submitForm(userForm.$valid)" enctype='multipart/form-data'>
-        <h2 style="text-align:center;margin-bottom:20px">Add New SubjectCategory </h2>
+    <form name="myForm"  enctype='multipart/form-data'>
+        <h2 style="text-align:center;margin-bottom:20px">添加课程类别 </h2>
         <div class="container">
             <div class="form-group row" >
-                <label class="col-md-1 col-md-offset-2 col-form-label">Name</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label">课程类别名</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="subjectCategoryNameInput" ng-model="SubjectCategoryName" required>
-                    <span ng-show="myForm.subjectCategoryNameInput.$touched && myForm.subjectCategoryNameInput.$invalid" class="help-block">SubjectCategoryName Required</span>
+                    <span ng-show="myForm.subjectCategoryNameInput.$touched && myForm.subjectCategoryNameInput.$invalid" class="help-block">课程类别名必填</span>
                 </div>
             </div>
             <div class="form-group row" >
-                <label class="col-md-1 col-md-offset-2 col-form-label" >Description</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label" >课程类别描述</label>
                 <div class="col-md-6" >
                     <input type="text" class="form-control" name="subjectCategoryDescriptionInput" ng-model="SubjectCategoryDescription" >                 
                 </div>
             </div>
 
             <div class="form-group row">
-                <div class="col-md-offset-7">
-                    <input type="submit" class="btn btn-primary" value="Save" ng-click="saveSubjectCategory()" ng-disabled="myForm.$invalid" style="margin-left:35px;"/>
-                    <input type="button" class="btn btn-danger" value="Cancel" ng-click="cancelSubmit()" style="margin-left:15px;"/>
+                <div class="col-md-offset-5" style="padding-left:20px">
+                    <input type="submit" class="btn btn-primary" value="保存" ng-click="saveSubjectCategory()" />
+                    <input type="button" class="btn btn-danger" value="取消" ng-click="cancelSubmit()" />
                 </div>
             </div>
         </div>
@@ -58,6 +58,7 @@
             dataType: "json"
         }).then(function (response) {
             if (response.status == 200) {
+                alert("添加成功");
                 window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Index/")";
             }
         }, function (data) {

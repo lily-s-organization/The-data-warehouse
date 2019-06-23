@@ -7,8 +7,8 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 style="display:inline-block">课程类别表</h2>
-                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addSubjectCategory()" href="#"><i class="fa"></i> 添加课程类别</a>
+                <h2 style="display:inline-block">课程类别</h2>
+                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addSubjectCategory()" href="#"><i class="fa"></i> 添加</a>
             </div>
 
             <div class="panel-body">
@@ -27,8 +27,8 @@
                             <tr ng-repeat="row in list">
                                 <td>{{row.CategoryName}}</td>
                                 <td>{{row.CategoryDescription}}</td>      
-                                <td><a class="btn btn-primary" ng-click="updateSubjectCategory(row.Id)" href="#"><i class="fa fa-edit"></i>  更新课程类别</a></td>
-                                <td><a class="btn btn-danger" ng-click="deleteSubjectCategory(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除课程类别</a></td>
+                                <td><a class="btn btn-primary" ng-click="updateSubjectCategory(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
+                                <td><a class="btn btn-danger" ng-click="deleteSubjectCategory(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
 
                             </tr>
                         </tbody>
@@ -59,13 +59,17 @@
         };
 
         $scope.deleteSubjectCategory = function (id) {
-            $http.post("@Url.Content("~/MoocAdmin/SubjectCategory/Delete/")" + id).then(function (response) {
-                if (response.status == 200) {
-                    getSubjectCategoryList($scope, $http);//刷新页面
+            if (confirm("确定删除该条数据?")) {
+                 $http.post("@Url.Content("~/MoocAdmin/SubjectCategory/Delete/")" + id).then(function (response) {
+                     if (response.status == 200) {
+                         alert("删除成功");
+                     getSubjectCategoryList($scope, $http);//刷新页面
                 }
-            }).catch(function (data) {
-                console.log("catch:" + data);
+                 }).catch(function (data) {
+                     alert("删除失败");
+                     console.log("catch:" + data);
             })
+            }   
         };
 
         $scope.addSubjectCategory = function () {
