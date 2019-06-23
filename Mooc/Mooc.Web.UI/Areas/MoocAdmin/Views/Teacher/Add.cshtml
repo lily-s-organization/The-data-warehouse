@@ -34,7 +34,7 @@
                 <label class="col-md-1 col-md-offset-2 col-form-label">头像123</label>
                 <div class="col-md-6">
                     <input type="file" name="ImageUpload" id="ImageUpload"
-                          onchange="angular.element(this).scope().fileNameChanged()" />
+                          onchange="angular.element(this).scope().imgSelected()" />
                     
                 </div>
             </div>
@@ -70,7 +70,7 @@
             window.location.href = "@Url.Content("~/MoocAdmin/Teacher/Index/")";
         };
 
-        $scope.fileNameChanged = function () {
+        $scope.imgSelected = function () {
             
             console.log("select file");
             //angular.element("#submitBtn").click();
