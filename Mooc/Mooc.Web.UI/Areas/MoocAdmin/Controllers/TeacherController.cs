@@ -55,7 +55,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddPhoto(HttpPostedFileBase ImageUpload)
+        public JsonResult AddPhoto(HttpPostedFileBase ImageUpload,string PhotoUrl)
         {
 
             string fileName = Path.GetFileNameWithoutExtension(ImageUpload.FileName);
@@ -68,7 +68,16 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             }
             string saveFile = savePath + fileName;
 
-            
+            if (PhotoUrl != "NewPhoto" )      //如果旧头像存在 则先删除旧的头像
+            {
+                string deleteFile = savePath + PhotoUrl;
+                if (System.IO.File.Exists(deleteFile))
+                {
+                    System.IO.File.Delete(deleteFile);
+                }
+            }
+
+
             ImageUpload.SaveAs(saveFile);
             return Json(new { url = fileName });
         }
