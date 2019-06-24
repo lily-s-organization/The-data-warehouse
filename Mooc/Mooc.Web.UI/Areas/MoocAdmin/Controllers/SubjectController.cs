@@ -31,7 +31,6 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public JsonResult GetSubjectList(int pageIndex, int pageSize)
         {
             int currentItems = (pageIndex - 1) * pageSize;
-            //   var list = db.Subjects.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).ToList();
 
             var list = db.Subjects.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).Join(db.Teachers,
                 subject => subject.Teacher.Id,
@@ -59,7 +58,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 
                 ).ToList();
                 
-           List<SubjectViewModel> viewList = AutoMapper.Mapper.Map<List<SubjectViewModel>>(list);
+            List<SubjectViewModel> viewList = AutoMapper.Mapper.Map<List<SubjectViewModel>>(list);
             int iCount = db.Subjects.Count(x => x.Id > 0);
             return Json(new { code = 0, data = viewList, iCount = iCount });
 
@@ -106,6 +105,36 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 
                 logger.Error(ex.Message);
                 return Json(400);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            try
+            {
+                Subject subject = db.Subjects.Find(id);
+                if (subject == null)
+                    return Json(500);
+
+                if (subject.PhotoUrl != null)      //如果用户有头像照片的话 删除照片
+                {
+                    string savePath = Server.MapPath("~/Images/Upload/");
+                    string deleteFile = savePath + subject.PhotoUrl;
+                    if (System.IO.File.Exists(deleteFile))
+                    {
+                        System.IO.File.Delete(deleteFile);
+                    }
+                }
+
+                db.Subjects.Remove(subject);
+                db.SaveChanges();
+                return Json(0);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                return Json(300);
             }
         }
     }

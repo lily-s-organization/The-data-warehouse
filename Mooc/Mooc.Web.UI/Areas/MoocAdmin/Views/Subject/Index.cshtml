@@ -35,9 +35,9 @@
                                 <td>{{row.TeacherName}}</td>
                                 <td>{{row.ShowStatus}}</td>
                                 <td colspan="2"></td>
-                                <td><a class="btn btn-primary" ng-click="updateSubjectCategory(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
-                                <td><a class="btn btn-danger" ng-click="deleteSubjectCategory(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
-                                <td><a class="btn btn-primary" ng-click="updateSubjectCategory(row.Id)" href="#"><i class="fa fa-edit"></i>  显示章节详情</a></td>
+                                <td><a class="btn btn-primary" ng-click="updateSubject(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
+                                <td><a class="btn btn-danger" ng-click="deleteSubject(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
+                                <td><a class="btn btn-primary" ng-click="showSection(row.Id)" href="#"><i class="fa fa-edit"></i>  显示章节详情</a></td>
 
                             </tr>
                         </tbody>
@@ -63,16 +63,16 @@
         $scope.pageSize = 10;
         getSubjectList($scope, $http);//载入页面数据
 
-        $scope.updateSubjectCategory = function (id) {
-            window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Details/")" + id;
+        $scope.updateSubject = function (id) {
+            window.location.href = "@Url.Content("~/MoocAdmin/Subject/Details/")" + id;
         };
 
-        $scope.deleteSubjectCategory = function (id) {
+        $scope.deleteSubject = function (id) {
             if (confirm("确定删除该条数据?")) {
-                 $http.post("@Url.Content("~/MoocAdmin/SubjectCategory/Delete/")" + id).then(function (response) {
+                 $http.post("@Url.Content("~/MoocAdmin/Subject/Delete/")" + id).then(function (response) {
                      if (response.status == 200) {
                          alert("删除成功");
-                     getSubjectCategoryList($scope, $http);//刷新页面
+                         getSubjectList($scope, $http);//刷新页面
                 }
                  }).catch(function (data) {
                      alert("删除失败");
