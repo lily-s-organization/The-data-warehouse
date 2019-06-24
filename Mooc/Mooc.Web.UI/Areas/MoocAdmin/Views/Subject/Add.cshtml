@@ -1,0 +1,146 @@
+﻿<script src="~/Scripts/bootstrap.min.js"></script>
+
+<div id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+    <h2 style="text-align:center;margin-bottom:20px">添加课程 </h2>
+    <form name="myForm">
+        <div class="container">
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">课程名</label>
+                <div class="col-md-6">
+                    <input type="text" name="subjectnameInput" class="form-control" ng-model="subjectName" required />
+                    <span ng-show="myForm.subjectnameInput.$touched && myForm.subjectnameInput.$invalid" class="help-block">请填写课程名</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">课程简介</label>
+                <div class="col-md-6">
+                    <input type="text"  class="form-control" ng-model="subjectDescription" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">课程类别</label>
+                <div class="col-md-6">
+                    <select ng-model="selectedSubjectCategory" ng-options="x.name for x in subjectCategory" name="categoryInput" ng-change="categorySelected()"   required>
+                        <option value="">请选择</option>
+                    </select>
+                    <span ng-show="myForm.categoryInput.$touched && myForm.categoryInput.$invalid" class="help-block">请选择一个课程类别</span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">讲师</label>
+                <div class="col-md-6">
+                    <select ng-model="selectedTeacher" ng-options="x.name for x in teacherList" name="teacherInput" ng-change="teacherSelected()" required>
+                        <option value="">请选择</option>
+                    </select>
+                    <span ng-show="myForm.teacherInput.$touched && myForm.teacherInput.$invalid" class="help-block">请选择一个讲师</span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-md-offset-5" style="padding-left:20px">
+                    <input type="submit" class="btn btn-primary" value="保存" ng-click="saveUser(PassWord,ConfirmPassWord)" />
+                    <input type="button" class="btn btn-danger" value="取消" ng-click="cancelSubmit()" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+</div>
+
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+       
+        initSelectList($scope, $http); //初始化下拉列表
+
+        $scope.categorySelected =function() {
+            console.log($scope.selectedSubjectCategory.id);
+            $scope.categoryId = $scope.selectedSubjectCategory.id;
+        }
+
+        $scope.teacherSelected = function () {
+            console.log($scope.selectedTeacher.id);
+            $scope.teacherId = $scope.selectedTeacher.id;
+        }
+        
+
+        $scope.saveUser = function (PassWord, ConfirmPassWord) {
+            if (PassWord == ConfirmPassWord) {
+                saveUser($scope, $http);
+            }
+            else {
+                window.alert("密码不一致");
+            }
+        };
+
+        $scope.cancelSubmit = function () {
+            window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
+        };
+
+
+
+    });
+
+   
+
+    function initSelectList($scope, $http) {
+       
+         $http({
+            method: 'GET',
+            url: "@Url.Content("~/MoocAdmin/Subject/InitSelectList")",
+        }).then(function (response) {
+            if (response.status == 200) {
+                $scope.teacherList = response.data.teacherList;
+                $scope.subjectCategory = response.data.subjectCategory;
+              
+               
+
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+    
+
+
+    function saveUser($scope, $http) {
+
+        var subject = {
+            SubjectName: $scope.subjectName,
+            Description: $scope.subjectDescription,
+            teacherId: $scope.teacherId,
+            categoryId: $scope.categoryId
+
+        };
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/Subject/AddSubjectList")",
+            data: JSON.stringify(subject),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.status == 200) {
+                alert("添加成功");
+                window.location.href = "@Url.Content("~/MoocAdmin/Subject/Index/")";
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+</script>
+
+

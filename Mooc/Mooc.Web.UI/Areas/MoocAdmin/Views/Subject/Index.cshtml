@@ -1,0 +1,124 @@
+﻿
+<script src="~/Scripts/jqPaginator.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+
+    <div class="col-md-10 col-md-offset-1" style="margin-top:20px">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 style="display:inline-block">课程维护</h2>
+                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addSubject()" href="#"><i class="fa"></i> 添加</a>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive table-striped">
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <th>课程名</th>
+                                <th>课程类别</th>
+                                <th>讲师</th>
+                                <th>课程状态</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in list">
+                                <td>{{row.SubjectName}}</td>
+                                <td>{{row.CategoryName}}</td>
+                                <td>{{row.TeacherName}}</td>
+                                <td>{{row.ShowStatus}}</td>
+                                <td colspan="2"></td>
+                                <td><a class="btn btn-primary" ng-click="updateSubjectCategory(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
+                                <td><a class="btn btn-danger" ng-click="deleteSubjectCategory(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
+                                <td><a class="btn btn-primary" ng-click="updateSubjectCategory(row.Id)" href="#"><i class="fa fa-edit"></i>  显示章节详情</a></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-md-4 col-md-offset-8">
+                        <ul class="pagination" id="paginationBtn" style="margin:auto"></ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        $scope.pageIndex = 1;
+        $scope.pageSize = 10;
+        getSubjectList($scope, $http);//载入页面数据
+
+        $scope.updateSubjectCategory = function (id) {
+            window.location.href = "@Url.Content("~/MoocAdmin/SubjectCategory/Details/")" + id;
+        };
+
+        $scope.deleteSubjectCategory = function (id) {
+            if (confirm("确定删除该条数据?")) {
+                 $http.post("@Url.Content("~/MoocAdmin/SubjectCategory/Delete/")" + id).then(function (response) {
+                     if (response.status == 200) {
+                         alert("删除成功");
+                     getSubjectCategoryList($scope, $http);//刷新页面
+                }
+                 }).catch(function (data) {
+                     alert("删除失败");
+                     console.log("catch:" + data);
+            })
+            }
+        };
+
+        $scope.addSubject = function () {
+             window.location.href = "@Url.Content("~/MoocAdmin/Subject/Add/")";
+        }
+    });
+
+
+
+
+    function getSubjectList($scope, $http) {
+
+        $http.post("@Url.Content("~/MoocAdmin/Subject/GetSubjectList")", { pageIndex: $scope.pageIndex, pageSize: $scope.pageSize }).then(function (response) {
+            if (response.status == 200) {
+                $('#paginationBtn').jqPaginator({
+                    totalCounts: response.data.iCount,
+                    pageSize:$scope.pageSize,
+                    visiblePages: 5,
+                    currentPage: $scope.pageIndex,
+
+                    first: '<li class="first"><a href="javascript:void(0);">First</a></li>',
+                    prev: '<li class="prev"><a href="javascript:void(0);">Previous</a></li>',
+                    next: '<li class="next"><a href="javascript:void(0);">Next</a></li>',
+                    last: '<li class="last"><a href="javascript:void(0);">Last</a></li>',
+                    page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+                    onPageChange: function (number) {
+                        //number为用户点击触发的那个页数
+                        $scope.pageIndex = number;
+                        if ($('#paginationBtn .active').eq(0).attr('jp-data') !== number.toString()) {
+                            getSubjectList($scope, $http);
+                        }
+                    }
+                });
+                $scope.list = response.data.data;
+                console.log($scope.list);
+            }
+        }).catch(function (data) {
+            console.log("catch:" + data);
+        });
+    }
+
+</script>
+

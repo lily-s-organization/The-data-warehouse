@@ -16,13 +16,15 @@ namespace Mooc.DataAccess.Models.Entities
 
         [Required]
         public string TeacherName { get; set; }
-      
+
+        [Required]
         public string Email { get; set; }
       
         public string PhotoUrl { get; set;}
    
         public string Level { get; set; }
 
+        [Required]
         public string Department { get; set; }
 
         public string Description { get; set; }
