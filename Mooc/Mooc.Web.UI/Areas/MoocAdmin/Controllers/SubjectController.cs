@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,6 +26,58 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public ActionResult Add()
         {
             return View();
+        }
+
+        public ActionResult Details(int id)
+        {
+            try
+            {
+                ViewBag.Id = id;
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetSubjectDetail(long id)
+        {
+            var result = db.Subjects.Where(x=>x.Id == id).Join(db.Teachers,
+                subject => subject.Teacher.Id,
+                teacher => teacher.Id,
+                (subject, teacher) => new
+                {
+                    subjectId = subject.Id,
+                    subjectName = subject.SubjectName,
+                    teacherId = teacher.Id,
+                    teacherName = teacher.TeacherName,
+                    subjectStatus = subject.Status,
+                    subjectDescription = subject.Description,
+                    subjectPhotoUrl = subject.PhotoUrl,
+                    linkId = subject.Subjectgory.Id
+                })
+                .Join(db.SubjectCategorys, subject => subject.linkId, category => category.Id, (subject, category) => new
+                {
+
+                    CategoryId =category.Id,
+                    CategoryName = category.CategoryName,                  
+                    Id = subject.subjectId,
+                    SubjectName = subject.subjectName,
+                    TeacherId = subject.teacherId,
+                    TeacherName = subject.teacherName,
+                    Status = subject.subjectStatus,
+                    PhotoUrl = subject.subjectPhotoUrl,
+                    Description = subject.subjectDescription
+
+                }
+
+                ).SingleOrDefault();
+
+            return Json(result);
         }
 
         [HttpPost]
@@ -74,13 +127,16 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
            
         }
 
+       
+
         [HttpPost]
-        public JsonResult AddSubjectList(Subject subject,int teacherId,int categoryId)        //是否用viewModel比较好
+        public JsonResult AddSubjectList(Subject subject,int teacherId,int categoryId)        
         {
            
             subject.Teacher = db.Teachers.Find(teacherId);
             subject.Subjectgory = db.SubjectCategorys.Find(categoryId);
-           
+            
+
             try
             {
                 if (subject == null)
@@ -94,11 +150,15 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 }
                 else
                 {
-                    db.Entry(subject).State = EntityState.Modified;
-                }
-
-                db.SaveChanges();
-                return Json(0);
+                    var tmp = db.Subjects.Find(subject.Id);
+                    tmp.Subjectgory = db.SubjectCategorys.Find(categoryId);
+                    tmp.Teacher = db.Teachers.Find(teacherId);
+                    subject.AddTime = DateTime.Now;
+                    db.Entry(tmp).CurrentValues.SetValues(subject);  
+                    //使用db.Entry(subject).State = EntityState.Modified; subject表中两个外键并没有被改变 只能使用CuurentValues.SetValues
+                }  
+                var a = db.SaveChanges();
+                return Json(new { code = 200 });
             }
             catch (Exception ex)
             {
@@ -107,6 +167,35 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 return Json(400);
             }
         }
+
+        [HttpPost]
+        public JsonResult AddPhoto(HttpPostedFileBase ImageUpload, string PhotoUrl)
+        {
+
+            string fileName = Path.GetFileNameWithoutExtension(ImageUpload.FileName);
+            string extension = Path.GetExtension(ImageUpload.FileName);
+            fileName = fileName + "_" + DateTime.Now.ToString("yyyymmssfff") + extension;
+            string savePath = Server.MapPath("~/Images/Upload/");
+            if (!System.IO.Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            string saveFile = savePath + fileName;
+
+            if (PhotoUrl != "NewPhoto")      //如果旧头像存在 则先删除旧的头像
+            {
+                string deleteFile = savePath + PhotoUrl;
+                if (System.IO.File.Exists(deleteFile))
+                {
+                    System.IO.File.Delete(deleteFile);
+                }
+            }
+
+
+            ImageUpload.SaveAs(saveFile);
+            return Json(new { url = fileName });
+        }
+
 
         [HttpPost]
         public JsonResult Delete(int id)
