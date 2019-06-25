@@ -32,26 +32,40 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddUserList(User user)
+        public JsonResult AddUserList(User user,int TeacherId)
         {
             try
             {
                 if (user == null)
                     return Json(300);
-
+            
                 if (user.Id == 0)
                 {
+                    if (TeacherId > 0) //用户在注册时关联了讲师账户
+                    {
+                        var tmpTeacher = db.Teachers.Find(TeacherId);
+                        user.Teacher = tmpTeacher;
+                    }   
                     user.UserState = 0;
-                    user.AddTime = DateTime.Now;
+                    user.AddTime = DateTime.Now;                 
                     db.Users.Add(user);
                 }
                 else
                 {
+                    if (TeacherId > 0) //用户在更新时关联了讲师账户
+                    {
+                        var tmpTeacher = db.Teachers.Find(TeacherId);
+                        user.Teacher = tmpTeacher;
+                       
+                    }
                     var tmp = db.Users.Find(user.Id);
                     user.UserState = tmp.UserState;
                     user.AddTime = tmp.AddTime;       //在前端获得的日期格式为"/Date(1560579721727)/"，无法在js里转换成c#的datetime格式                 
                     db.Entry(tmp).State = EntityState.Detached;
-                    db.Entry(user).State = EntityState.Modified;
+                    // db.Entry(user).State = EntityState.Modified; 要使用CurrentValues.SetValues才行
+                    var tmpUser = db.Users.Find(user.Id);
+                    tmpUser.Teacher = db.Teachers.Find(TeacherId);
+                    db.Entry(tmpUser).CurrentValues.SetValues(user);
                 }
 
                 db.SaveChanges();
@@ -95,14 +109,24 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         [HttpPost]
         public JsonResult GetUserDetail(long id)
         {
-            return Json(db.Users.Find(id));
+            var teacherInfo = db.Users.Where(x => x.Id == id).Join(db.Teachers,
+                 user => user.Teacher.Id,
+                 teacher => teacher.Id,
+                 (user,teacher)=> new
+                 {
+                     teacherName = teacher.TeacherName,
+                     teacherId = teacher.Id
+                 }
+                ).SingleOrDefault();
+            var teacherList = db.Teachers.Where(x => x.Id > 0);
+            return Json(new { userInfo = db.Users.Find(id),teacherInfo = teacherInfo, teacherList = teacherList , roleList = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum))});
         }
 
         [HttpGet]
         public JsonResult GetRoleTypeList()
         {
-
-            return Json(new { data = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum)) }, JsonRequestBehavior.AllowGet);
+            var teacherList = db.Teachers.Where(x => x.Id > 0).ToList();
+            return Json(new { roleList = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum)),teacherList = teacherList }, JsonRequestBehavior.AllowGet);
 
         }
 

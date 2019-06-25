@@ -28,11 +28,19 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">角色</label>
                 <div class="col-md-6">
-                    <select ng-model="user.RoleType" ng-options="x.Text for x in names" name="roletypeInput"></select>
+                    <select ng-model="user.RoleType" ng-options="x.Text for x in names" name="roletypeInput"  ng-change="roleSelected()"></select>
                     <span ng-show="myForm.roletypeInput.$touched && myForm.roletypeInput.$invalid" class="help-block">请选择一个角色</span>
                 </div>
             </div>
-
+            <div class="form-group row" ng-show="hiddenSelelctList">
+                <label class="col-md-1 col-md-offset-2 col-form-label">讲师列表</label>
+                <div class="col-md-6">
+                    <select ng-model="user.Teacher" ng-options="x.TeacherName for x in teacherList" name="teacherInput" ng-change="teacherSelected()" required>
+                        <option value="">{{teacherName}}</option>
+                    </select>
+                    <span ng-show="myForm.teacherInput.$touched && myForm.teacherInput.$invalid" class="help-block">请选择一个讲师</span>
+                </div>
+            </div>
 
             <div class="form-group row">
                 <div class="col-md-offset-5" style="padding-left:20px">
@@ -56,8 +64,8 @@
      
         $scope.Id = '@ViewBag.Id';
         var id = $scope.Id;
-
-        getRoleTypeList($scope, $http);//初始化下拉列表
+        $scope.teacherName = "请选择";
+       // getRoleTypeList($scope, $http);//初始化下拉列表
         getUserDetail($scope, $http);
        
 
@@ -68,6 +76,24 @@
         };
         $scope.cancelSubmit = function () {
             window.location.href = "@Url.Content("~/MoocAdmin/Users/Index/")";
+        };
+
+        $scope.teacherSelected = function () {
+
+            $scope.teacherId = $scope.user.Teacher.Id;
+
+        };
+
+        $scope.roleSelected = function () {
+
+            if ($scope.user.RoleType.Value == 2) {
+                //console.log($scope.selectedName.Value);
+                $scope.hiddenSelelctList = true;
+            }
+            else {
+                $scope.hiddenSelelctList = false;
+                $scope.teacherId = -1;
+            }
         };
 
     });
@@ -81,7 +107,8 @@
             url: "@Url.Content("~/MoocAdmin/Users/GetRoleTypeList")",
         }).then(function (response) {
             if (response.status == 200) {
-                $scope.names = response.data.data;                      
+                $scope.names = response.data.roleList;    
+                console.log($scope.names);
             }
         }, function (data) {
             console.log(data);
@@ -96,9 +123,24 @@
             data: {"id":$scope.Id},
         }).then(function (response) {
             if (response.status == 200) {
-                $scope.user = response.data;
-                console.log($scope.user);
-                $scope.user.RoleType = $scope.names[($scope.user.RoleType - 1)]; //初始化select列表的默认选中项，因为RoleTypes是1到3，为了对应数组下标，所以减去1
+                $scope.user = response.data.userInfo;              
+                $scope.names = response.data.roleList;
+                $scope.user.RoleType = $scope.names[($scope.user.RoleType - 1)]; //初始化select列表的默认选中项，因为RoleTypes是1到3，为了对应数组下标，所以减去1               
+                if ($scope.user.RoleType.Value == 2) {
+                    $scope.hiddenSelelctList = true;   //如果不是讲师 则不显示讲师列表下拉框
+                    $scope.teacherId = -1;
+                }  
+                $scope.teacherList = response.data.teacherList;
+                console.log($scope.teacherList);
+                if (response.data.teacherInfo.teacherName == null && response.data.teacherInfo.teacherId== null) {     //用户注册时不是讲师 但是在Update时关联讲师账户
+                    $scope.teacherName = "请选择";
+                }
+                else {
+                    $scope.teacherName = response.data.teacherInfo.teacherName;
+                    $scope.teacherId = -1;
+                }
+              
+              
 
             }
         }, function (data) {
@@ -114,7 +156,8 @@
             PassWord: $scope.user.PassWord,
             RoleType: $scope.user.RoleType.Value,
             Id: $scope.Id,          
-            PhotoUrl: $scope.user.PhotoUrl
+            PhotoUrl: $scope.user.PhotoUrl,
+            TeacherId: $scope.teacherId
         };
 
         $http({
