@@ -13,7 +13,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">Email</label>
                 <div class="col-md-6">
-                    <input type="email" class="form-control" name="Email" ng-model="teacher.Email">
+                    <input type="email" class="form-control" name="Email" ng-model="teacher.Email" required>
                     <span ng-show="myForm.Email.$touched && myForm.Email.$invalid" class="help-block">错误格式</span>
                 </div>
             </div>
@@ -26,7 +26,8 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">部门</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="teacher.Department" name="Department">
+                    <input type="text" class="form-control" ng-model="teacher.Department" name="Department" required>
+                    <span ng-show="myForm.Department.$touched && myForm.Department.$invalid" class="help-block">请填写一个部门</span>
                 </div>
             </div>
             <div class="form-group row">
