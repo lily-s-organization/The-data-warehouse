@@ -183,6 +183,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\AdminController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\SectionController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SubjectCategoryController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SubjectController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\TeacherController.cs" />
@@ -257,6 +258,7 @@
     <Content Include="Areas\MoocAdmin\Views\Subject\Index.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Subject\Add.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Subject\Details.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\Section\Add.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jqPaginator.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

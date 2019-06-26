@@ -47,8 +47,8 @@
 
             <div class="form-group row">
                 <div class="col-md-offset-5" style="padding-left:20px">
-                    <input type="button" class="btn btn-primary" value="保存" ng-click="saveSubject()" />
-                    <input type="button" class="btn btn-danger" value="取消" ng-click="cancelSubmit()" />
+                    <input type="button" class="btn btn-primary" value="保存" ng-click="saveSubject()"  />                 
+                    <input type="button" class="btn btn-danger" value="取消" ng-click="cancelSubmit()"  />
                 </div>
             </div>
         </div>
@@ -68,8 +68,7 @@
     app.controller("myCtrl", function ($scope, $http) {
 
        
-        initSelectList($scope, $http); //初始化下拉列表
-
+        initSelectList($scope, $http); //初始化下拉列表       
         $scope.categorySelected =function() {
             console.log($scope.selectedSubjectCategory.id);
             $scope.categoryId = $scope.selectedSubjectCategory.id;
@@ -150,8 +149,8 @@
             dataType: "json"
         }).then(function (response) {
             if (response.status == 200) {
-                alert("添加成功");
-                window.location.href = "@Url.Content("~/MoocAdmin/Subject/Index/")";
+                alert("课程添加成功，前往章节添加页面");              
+                window.location.href = "@Url.Content("~/MoocAdmin/Section/Add/")";
             }
         }, function (data) {
             console.log(data);
