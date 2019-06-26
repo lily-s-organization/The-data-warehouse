@@ -11,6 +11,7 @@ namespace Mooc.DataAccess.Models.ViewModels
         public int Id { get; set; }
         public string CategoryName { set; get; }
         public string SubjectName { set; get; }
+        public string PhotoUrl { set; get; }
 
         public string ShowStatus
         {

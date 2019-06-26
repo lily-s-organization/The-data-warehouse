@@ -101,7 +101,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                     var tmp = db.Teachers.Find(teacher.Id);
                     teacher.State = tmp.State;
                     teacher.AddTime = tmp.AddTime;
-                    teacher.PhotoUrl = tmp.PhotoUrl;
+                    //teacher.PhotoUrl = tmp.PhotoUrl;
                     db.Entry(tmp).State = EntityState.Detached;
                     db.Entry(teacher).State = EntityState.Modified;
                 }

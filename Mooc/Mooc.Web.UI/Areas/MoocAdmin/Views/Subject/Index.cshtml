@@ -21,6 +21,7 @@
                                 <th>课程类别</th>
                                 <th>讲师</th>
                                 <th>课程状态</th>
+                                <th>课程封面</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -34,6 +35,7 @@
                                 <td>{{row.CategoryName}}</td>
                                 <td>{{row.TeacherName}}</td>
                                 <td>{{row.ShowStatus}}</td>
+                                <td><img ng-src="~/Images/Upload/{{row.PhotoUrl}}" style="max-height:35px;" /></td>
                                 <td colspan="2"></td>
                                 <td><a class="btn btn-primary" ng-click="updateSubject(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
                                 <td><a class="btn btn-danger" ng-click="deleteSubject(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>

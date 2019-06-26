@@ -95,6 +95,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                     teacherId = teacher.Id,
                     teacherName = teacher.TeacherName,
                     subjectStatus = subject.Status,
+                    subjectPhotoUrl = subject.PhotoUrl,
                     linkId = subject.Subjectgory.Id
                 })
                 .Join(db.SubjectCategorys, subject => subject.linkId, category => category.Id, (subject, category) => new
@@ -105,7 +106,8 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                     SubjectName = subject.subjectName,
                     TeacherId = subject.teacherId,
                     TeacherName = subject.teacherName,
-                    Status = subject.subjectStatus
+                    Status = subject.subjectStatus,
+                    PhotoUrl = subject.subjectPhotoUrl
 
                 }
 
