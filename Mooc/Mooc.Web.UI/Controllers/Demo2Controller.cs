@@ -4,6 +4,7 @@ using Mooc.DataAccess.Models.Utils;
 using Mooc.DataAccess.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,6 +20,7 @@ namespace Mooc.Web.UI.Controllers
         }
 
 
+      
         public ActionResult Add()
         {
             IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
@@ -78,6 +80,41 @@ namespace Mooc.Web.UI.Controllers
         public ActionResult Angular()
         {
             return View();
+        }
+
+
+        public ActionResult Video()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public JsonResult UploadVideo(HttpPostedFileBase video)
+        {
+            if (video == null)
+                return Json(new { code = 300, msg = "请上传视频" });
+
+            string fileName = Path.GetFileName(video.FileName);
+            string fileExtension = Path.GetExtension(video.FileName).ToLower();
+
+            string[] filetype = { ".mp4", ".avi", ".flv", ".3gp", ". rmvb" }; //文件允许格式    
+            bool checkType = Array.IndexOf(filetype, fileExtension) == -1;
+            if (checkType)
+                return Json(new { code = 301, msg = "格式错误" });
+
+            if (video.ContentLength >= 1024 * 1024 * 800)//1gb
+                return Json(new { code = 302, msg = "超过800MB了" });
+
+            string saveName = string.Format("{0}{1}", DateTime.Now.ToString("yyyyMMddHHmmss"), fileExtension);
+            string savePath = Server.MapPath("~/Images/Video/");
+            if (!System.IO.Directory.Exists(savePath))
+                Directory.CreateDirectory(savePath);
+
+            var filePath = Path.Combine(savePath, saveName);
+            video.SaveAs(filePath);
+
+            return Json(new { code = 0, filename = saveName, url = Url.Content("~/api/GetContentApi/Video?id=" + saveName) });
         }
 
 

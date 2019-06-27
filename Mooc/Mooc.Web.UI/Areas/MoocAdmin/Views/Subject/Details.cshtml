@@ -11,7 +11,7 @@
                     <span ng-show="myForm.subjectnameInput.$touched && myForm.subjectnameInput.$invalid" class="help-block">请填写课程名</span>
                 </div>
             </div>
-            <div class="form-group row">
+            i<div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">课程简介</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" ng-model="subject.Description" />
@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">课程封面</label>
                 <div class="col-md-6">
-                    <img ng-src="~/Images/Upload/{{subject.PhotoUrl}}" style="max-height:250px;max-width:250px;" />
+                    <img ng-src="{{subject.PhotoUrl|trustUrl}}"  style="max-height:250px;max-width:250px;" />
                 </div>
             </div>
             <div class="form-group row">
@@ -33,7 +33,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">课程类别</label>
                 <div class="col-md-6">
-                    <select ng-model="CategoryName" ng-options="x.name for x in subjectCategory" name="categoryInput" ng-change="categorySelected()" >
+                    <select ng-model="CategoryName" ng-options="x.name for x in subjectCategory" name="categoryInput" ng-change="categorySelected()">
                         <option value="">{{subject.CategoryName}}</option>
                     </select>
                     <span ng-show="myForm.categoryInput.$touched && myForm.categoryInput.$invalid" class="help-block">请选择一个课程类别</span>
@@ -43,7 +43,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">讲师</label>
                 <div class="col-md-6">
-                    <select ng-model="TeacherName" ng-options="x.name for x in teacherList" name="teacherInput" ng-change="teacherSelected()" >
+                    <select ng-model="TeacherName" ng-options="x.name for x in teacherList" name="teacherInput" ng-change="teacherSelected()">
                         <option value="">{{subject.TeacherName}}</option>
                     </select>
                     <span ng-show="myForm.teacherInput.$touched && myForm.teacherInput.$invalid" class="help-block">请选择一个讲师</span>
@@ -72,7 +72,7 @@
         var id = $scope.Id;
         getSubjectDetail($scope, $http);
         initSelectList($scope, $http); //初始化下拉列表
-       
+
         $scope.categorySelected = function () {
             console.log($scope.CategoryName.id);
             $scope.categoryId = $scope.CategoryName.id;
@@ -91,42 +91,44 @@
             window.location.href = "@Url.Content("~/MoocAdmin/Subject/Index/")";
         };
 
-         $scope.imgSelected = function () {
+        $scope.imgSelected = function () {
 
             var fd = new FormData();
             var file = document.querySelector('input[type=file]').files[0];
-             fd.append('ImageUpload', file);
-             fd.append("PhotoUrl", $scope.subject.PhotoUrl);
-             $http({
-            method: 'POST',
-                 url: "@Url.Content("~/MoocAdmin/Subject/AddPhoto")",
-                 data: fd,
-                 headers: { 'Content-Type': undefined },
-                 transformRequest: angular.identity ,
-                 dataType: "json"
-        }).then(function (response) {
-            if (response.status == 200) {
-                //alert("头像添加成功");
-                console.log(response.data.url);
-                $scope.subject.PhotoUrl = response.data.url;
-            }
-        }, function (data) {
-            console.log(data);
-        });
+            fd.append('ImageUpload', file);
+            fd.append("PhotoUrl", $scope.subject.PhotoUrl);
+
+            $http({
+                method: 'POST',
+                url: "@Url.Content("~/MoocAdmin/Subject/AddPhoto")",
+                data: fd,
+                headers: { 'Content-Type': undefined },
+                transformRequest: angular.identity,
+                //dataType: "json"
+            }).then(function (response) {
+                debugger
+                if (response.status == 200) {
+                    //alert("头像添加成功");
+                    console.log(response.data.url);
+                    $scope.subject.PhotoUrl = response.data.url;
+                }
+            }, function (data) {
+                console.log(data);
+            });
         }
 
     });
 
     function initSelectList($scope, $http) {
-       
-         $http({
+
+        $http({
             method: 'GET',
             url: "@Url.Content("~/MoocAdmin/Subject/InitSelectList")",
         }).then(function (response) {
             if (response.status == 200) {
                 $scope.teacherList = response.data.teacherList;
                 $scope.subjectCategory = response.data.subjectCategory;
-               
+
             }
         }, function (data) {
             console.log(data);
@@ -134,13 +136,13 @@
     }
 
     function updateSubject($scope, $http) {
-       
+
         var subject = {
             SubjectName: $scope.subject.SubjectName,
             Description: $scope.subject.Description,
             PhotoUrl: $scope.subject.PhotoUrl,
-            teacherId: $scope.teacherId ,
-            categoryId: $scope.categoryId ,
+            teacherId: $scope.teacherId,
+            categoryId: $scope.categoryId,
             Id: $scope.subject.Id
         };
 
@@ -170,7 +172,7 @@
         $http({
             method: 'POST',
             url: "@Url.Content("~/MoocAdmin/Subject/getSubjectDetail")",
-            data: {"id":$scope.Id},
+            data: { "id": $scope.Id },
         }).then(function (response) {
             if (response.status == 200) {
                 $scope.subject = response.data;
@@ -178,13 +180,18 @@
                 console.log($scope.subject.CategoryName);
                 $scope.categoryId = response.data.CategoryId;
                 $scope.teacherId = response.data.TeacherId;
-               // console.log(response);
+                // console.log(response);
             }
         }, function (data) {
             console.log(data);
         });
     }
 
+    app.filter("trustUrl", ['$sce', function ($sce) {
+        return function (recordingUrl) {
+            return $sce.trustAsResourceUrl(recordingUrl);
+        };
+    }]);
 
 
 

@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Video";
+}
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/angular1.7/angular.js"></script>
+<div ng-app="myapp" ng-controller="myCtrl">
+    <div name="myForm">
+        <h2 style="text-align:center;margin-bottom:20px">添加视频 </h2>
+        <div class="container">
+           
+
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">视频播放</label>
+                <div class="col-md-6">
+                    <video width="400"  ng-src="{{videoUrl|trustUrl}}" controls>
+                       
+                    </video>
+                </div>
+            </div>
+           
+
+            <div class="form-group row">
+                <label class="col-md-1 col-md-offset-2 col-form-label">视频</label>
+                <div class="col-md-6">
+                    <input type="file" accept="video/*" file-model="videos" onchange="angular.element(this).scope().video_upload(this.files)" />
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+       
+
+        $scope.video_upload = function (files) {
+
+            var data = new FormData();      //以下为像后台提交图片数据
+            data.append('video', files[0]);
+            $http({
+                method: 'post',
+                url: "@Url.Content("~/Demo2/UploadVideo")",
+                data: data,
+                headers: { 'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).then(function (response) {
+                debugger
+                console.log(response);
+                if (response.status == 200) {
+                    if (response.data.code == 0) {
+                        $scope.videoUrl= response.data.url;
+                    } else {
+                        alert(response.data.msg);
+                    }
+                    
+                    // console.log(response.data.url);
+                    // $scope.PhotoUrl = response.data.url;
+                }
+            }, function (data) {
+                console.log(data);
+            });
+            return false;
+        };
+
+      
+    });
+
+    app.filter("trustUrl", ['$sce', function ($sce) {
+        return function (recordingUrl) {
+            return $sce.trustAsResourceUrl(recordingUrl);
+        };
+    }]);
+
+
+</script>
+

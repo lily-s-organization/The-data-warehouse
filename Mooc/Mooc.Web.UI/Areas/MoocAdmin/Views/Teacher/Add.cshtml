@@ -1,6 +1,6 @@
 ﻿
 <div ng-app="myapp" ng-controller="myCtrl">
-    <form name="myForm"  >
+    <div name="myForm">
         <h2 style="text-align:center;margin-bottom:20px">添加讲师 </h2>
         <div class="container">
             <div class="form-group row">
@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">身份</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="Level" ng-model="Level" >
+                    <input type="text" class="form-control" name="Level" ng-model="Level">
                 </div>
             </div>
             <div class="form-group row">
@@ -30,12 +30,16 @@
                     <span ng-show="myForm.Department.$touched && myForm.Department.$invalid" class="help-block">请选择一个部门</span>
                 </div>
             </div>
-           
+
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">头像</label>
                 <div class="col-md-6">
-                    <input type="file" name="ImageUpload" id="ImageUpload"
-                    onchange="angular.element(this).scope().imgSelected()" />       
+
+                    <input type="file"  accept="image/*" file-model="images" onchange="angular.element(this).scope().img_upload(this.files)" />
+
+                    @*<input type="file" name="ImageUpload" id="ImageUpload"
+                        onchange="angular.element(this).scope().imgSelected()" accept="image/*" />*@
+
                 </div>
             </div>
             <div class="form-group row">
@@ -52,7 +56,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
 
@@ -60,8 +64,8 @@
 
     var app = angular.module("myapp", []);
     app.controller("myCtrl", function ($scope, $http) {
+        $scope.reader = new FileReader();
 
-       
         $scope.saveTeacher = function () {
             saveTeacher($scope, $http);
         };
@@ -70,42 +74,82 @@
             window.location.href = "@Url.Content("~/MoocAdmin/Teacher/Index/")";
         };
 
-        $scope.imgSelected = function () {          
+        $scope.img_upload = function (files) {       //单次提交图片的函数
+            //$scope.guid = (new Date()).valueOf();   //通过时间戳创建一个随机数，作为键名使用
+            //$scope.reader.readAsDataURL(files[0]);  //FileReader的方法，把图片转成base64
+            //$scope.reader.onload = function (ev) {
+            //    $scope.$apply(function () {
+            //        $scope.thumb[$scope.guid] = {
+            //            imgSrc: ev.target.result,  //接收base64
+            //        }
+            //    });
+            //};
+
+            
+            var data = new FormData();      //以下为像后台提交图片数据
+            data.append('ImageUpload', files[0]);
+            data.append('PhotoUrl', '');
+            $http({
+                method: 'post',
+                url: "@Url.Content("~/MoocAdmin/Teacher/AddPhoto")",
+                data: data,
+                headers: { 'Content-Type': undefined },
+                transformRequest: angular.identity
+            }).then(function (response) {
+                debugger
+                console.log(response);
+                if (response.status == 200) {
+                    //alert("头像添加成功");
+                   // console.log(response.data.url);
+                   // $scope.PhotoUrl = response.data.url;
+                }
+            }, function (data) {
+                console.log(data);
+            });
+            return false;
+        };
+
+        $scope.imgSelected = function (files) {
+
+
             var fd = new FormData();
             var file = document.querySelector('input[type=file]').files[0];
-            fd.append('ImageUpload', file);
-            fd.append("PhotoUrl","NewPhoto");
-             $http({
-            method: 'POST',
-            url: "@Url.Content("~/MoocAdmin/Teacher/AddPhoto")",
-                 data: fd,
-                 headers: { 'Content-Type': undefined },
-                 transformRequest: angular.identity ,
-            dataType: "json"
-        }).then(function (response) {
-            if (response.status == 200) {
-                //alert("头像添加成功");
-                console.log(response.data.url);
-                $scope.PhotoUrl = response.data.url;
+            if (file) {
+                fd.append('ImageUpload', file);
+                fd.append("PhotoUrl", "NewPhoto");
+                $http({
+                    method: 'POST',
+                    url: "@Url.Content("~/MoocAdmin/Teacher/AddPhoto")",
+                    data: fd,
+                    headers: { 'Content-Type': undefined },
+                    transformRequest: angular.identity,
+                    dataType: "json"
+                }).then(function (response) {
+                    if (response.status == 200) {
+                        //alert("头像添加成功");
+                        console.log(response.data.url);
+                        $scope.PhotoUrl = response.data.url;
+                    }
+                }, function (data) {
+                    console.log(data);
+                });
             }
-        }, function (data) {
-            console.log(data);
-        });
+
         }
 
     });
 
     function saveTeacher($scope, $http) {
         var teacher = {
-            TeacherName: $scope.TeacherName,        
-             Email: $scope.Email,
-             PhotoUrl: $scope.PhotoUrl,
-             Level: $scope.Level,
-             Department: $scope.Department,
-             Description: $scope.Description,
+            TeacherName: $scope.TeacherName,
+            Email: $scope.Email,
+            PhotoUrl: $scope.PhotoUrl,
+            Level: $scope.Level,
+            Department: $scope.Department,
+            Description: $scope.Description,
 
         };
-
+        debugger;
         $http({
             method: 'POST',
             url: "@Url.Content("~/MoocAdmin/Teacher/AddTeacherList")",
