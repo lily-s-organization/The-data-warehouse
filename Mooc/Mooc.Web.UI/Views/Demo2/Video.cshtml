@@ -47,9 +47,10 @@
                 url: "@Url.Content("~/Demo2/UploadVideo")",
                 data: data,
                 headers: { 'Content-Type': undefined },
-                transformRequest: angular.identity
+                transformRequest: angular.identity,
+                dataType: "json"
             }).then(function (response) {
-                debugger
+               // debugger
                 console.log(response);
                 if (response.status == 200) {
                     if (response.data.code == 0) {

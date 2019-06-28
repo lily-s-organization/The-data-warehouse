@@ -5,28 +5,28 @@
     <form name="myForm">
         <div class="container">
             <div class="form-group row">
-                <label class="col-md-1 col-md-offset-2 col-form-label">姓名</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label"  style="font-size:16px;">姓名</label>
                 <div class="col-md-6">
                     <input type="text" name="usernameInput" class="form-control" ng-model="UserName" required />
                     <span ng-show="myForm.usernameInput.$touched && myForm.usernameInput.$invalid" class="help-block">请填写姓名</span>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-1 col-md-offset-2 col-form-label">Email</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label"  style="font-size:16px;">Email</label>
                 <div class="col-md-6">
                     <input name="emailInput" type="email" class="form-control" ng-model="Email" required />
-                    <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid" class="help-block">错误格式</span>
+                    <span ng-show="myForm.emailInput.$touched && myForm.emailInput.$invalid" class="help-block">请按正确的格式填写:例如123@qq.com</span>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-1 col-md-offset-2 col-form-label">密码</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label"  style="font-size:16px;">密码</label>
                 <div class="col-md-6">
                     <input type="password" class="form-control" ng-model="PassWord" ng-minlength="6" name="passwordInput" required />
                     <span ng-show="myForm.passwordInput.$touched && myForm.passwordInput.$invalid" class="help-block">最少六位</span>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-1 col-md-offset-2 col-form-label">确认密码</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label"  style="font-size:16px;">确认密码</label>
                 <div class="col-md-6">
                     <input type="password" class="form-control" ng-model="ConfirmPassWord" ng-minlength="6" name="confirmpasswordInput" required />
                     <span ng-show="myForm.confirmpasswordInput.$touched && myForm.confirmpasswordInput.$invalid" class="help-block">最少六位</span>
@@ -34,18 +34,18 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-1 col-md-offset-2 col-form-label">角色</label>
-                <div class="col-md-1">
-                    <select ng-model="selectedName" ng-options="x.Text for x in names" name="roletypeInput" ng-change="roleSelected()" required>
+                <label class="col-md-1 col-md-offset-2 col-form-label"  style="font-size:16px;">角色</label>
+                <div class="col-md-2">
+                    <select ng-model="selectedName" ng-options="x.Text for x in names" name="roletypeInput" ng-change="roleSelected()" style="font-size:20px;" required>
                         <option value="">请选择</option>
                     </select>
                     <span ng-show="myForm.roletypeInput.$touched && myForm.roletypeInput.$invalid" class="help-block">请选择一个角色</span>
                 </div>
             </div>
             <div class="form-group row" ng-show="hiddenSelelctList">
-                <label class="col-md-1 col-md-offset-2 col-form-label">讲师列表</label>
+                <label class="col-md-1 col-md-offset-2 col-form-label" style="font-size:16px;">讲师列表</label>
                 <div class="col-md-6">
-                    <select ng-model="selectedTeacher" ng-options="x.TeacherName for x in teacherList" name="teacherInput" ng-change="teacherSelected()" required>
+                    <select ng-model="selectedTeacher" ng-options="x.TeacherName for x in teacherList" name="teacherInput" ng-change="teacherSelected()" style="font-size:20px;" required>
                         <option value="">请选择</option>
                     </select>
                     <span ng-show="myForm.teacherInput.$touched && myForm.teacherInput.$invalid" class="help-block">请选择一个讲师</span>
