@@ -160,7 +160,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                     //使用db.Entry(subject).State = EntityState.Modified; subject表中两个外键并没有被改变 只能使用CuurentValues.SetValues
                 }  
                 var a = db.SaveChanges();
-                return Json(new { code = 200 });
+                return Json(new { code = 200,currentId = subject.Id });     //添加完成后 返回最新的自增长id
             }
             catch (Exception ex)
             {

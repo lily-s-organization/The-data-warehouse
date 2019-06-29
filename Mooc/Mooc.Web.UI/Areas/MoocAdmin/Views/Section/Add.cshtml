@@ -14,7 +14,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">章节简介</label>
                 <div class="col-md-6">
-                    <input name="emailInput" type="email" class="form-control" ng-model="sectionDescription" required />
+                    <input name="emailInput" type="text" class="form-control" ng-model="sectionDescription"  />
 
                 </div>
             </div>
@@ -22,32 +22,50 @@
 
             <div class="form-group row">
                 <div class="col-md-offset-5" style="padding-left:40px">
-                    <input type="submit" class="btn btn-primary" value="保存" ng-click="saveUser(PassWord,ConfirmPassWord)" />
+                    <input type="submit" class="btn btn-primary" value="保存" ng-click="saveSection()" />
                     <input type="button" class="btn btn-danger" value="取消" ng-click="cancelSubmit()" />
                 </div>
             </div>
         </div>
     </form>
 
-    <div style="border-top:1px solid grey">
-        <h2 style="text-align:center;margin-bottom:20px;margin-top:20px">上传视频 </h2>
-        <a class="btn btn-primary" style="float:right;margin-right:16px;"  href="#"><i class="fa"></i> 添加</a>
-        <ul id="myTab" class="nav nav-tabs">
-            <li class="active">
-                <a href="#home" data-toggle="tab">
-                    视频1
-                </a>
-            </li>
+    <div style="border-top:1px solid grey" ng-show="hideVideoUpload">
+        <div name="videoForm">
+            <h2 style="text-align:center;margin-bottom:20px">添加视频 </h2>
+            <div class="container">
+                <div class="form-group row">
+                    <label class="col-md-1 col-md-offset-2 col-form-label">视频播放</label>
+                    <div class="col-md-6">
+                        <video width="400" ng-src="{{videoUrl|trustUrl}}" controls></video>
+                    </div>
+                </div>
 
-        </ul>
-        <div id="myTabContent" class="tab-content" style="padding-top:20px">
-            <div class="form-group row">
-                <label class="col-md-1 col-form-label">上传</label>
-                <div class="col-md-2">
-                    <input type="file" name="ImageUpload" id="ImageUpload" />
+
+                <div class="form-group row">
+                    <label class="col-md-1 col-md-offset-2 col-form-label">视频</label>
+                    <div class="col-md-6">
+                        <input type="file" accept="video/*" file-model="videos" onchange="angular.element(this).scope().video_upload(this.files)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-md-offset-2 col-form-label">视频标题</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" ng-model="videoTitle" required />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-1 col-md-offset-2 col-form-label">视频简介</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" ng-model="videoDescription" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-offset-5" style="padding-left:20px">
+                        <input type="button" class="btn btn-primary" value="保存视频" ng-click="saveVideo()" />
+                        <input type="button" class="btn btn-danger" value="删除视频" ng-click="cancelSubmit()" />
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -58,13 +76,120 @@
     var app = angular.module("myapp", []);
     app.controller("myCtrl", function ($scope, $http) {
 
+        $scope.SubjectId = '@ViewBag.Id';
 
+        $scope.saveVideo = function () {
+            saveVideo($scope, $http);
+        }
 
+        $scope.cancelSubmit = function () {
+            window.location.href = "@Url.Content("~/MoocAdmin/Subject/Index/")";
+        };
+
+        $scope.saveSection = function () {
+            saveSection($scope, $http);
+        };
+
+         $scope.video_upload = function (files) {
+
+            var data = new FormData();      //以下为像后台提交图片数据
+            data.append('video', files[0]);
+            $http({
+                method: 'post',
+                url: "@Url.Content("~/MoocAdmin/Video/UploadVideo/")" ,
+                data: data,
+                headers: { 'Content-Type': undefined },
+                transformRequest: angular.identity,
+                dataType: "json"
+            }).then(function (response) {
+               // debugger
+                console.log(response);
+                if (response.status == 200) {
+                    if (response.data.code == 0) {
+                        $scope.videoUrl = response.data.url;
+                        $scope.fileSaveName = response.data.filename;
+                        $scope.originalFileName = response.data.originalFileName;
+                    } else {
+                        alert(response.data.msg);
+                    }
+                    
+                    // console.log(response.data.url);
+                    // $scope.PhotoUrl = response.data.url;
+                }
+            }, function (data) {
+                console.log(data);
+            });
+            return false;
+        };
 
     });
 
+    app.filter("trustUrl", ['$sce', function ($sce) {
+        return function (recordingUrl) {
+            return $sce.trustAsResourceUrl(recordingUrl);
+        };
+    }]);
 
 
+    
+    function saveSection($scope, $http) {
+
+        var section = {
+            SectionName: $scope.sectionName,
+            Description: $scope.sectionDescription,
+            SubjectId: $scope.SubjectId
+           
+        };
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/Section/AddSectionList")",
+            data: JSON.stringify(section),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.data.code == 200) {
+                alert("添加章节成功");              
+                //show video upload page
+                $scope.hideVideoUpload = true;
+                $scope.sectionId = response.data.currentId;
+            }
+            else {
+                alert("添加章节失败"); 
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
+
+    function saveVideo($scope, $http) {
+          var video = {
+              VideoTitle: $scope.videoTitle,
+              Description: $scope.videoDescription,
+              FileId: $scope.fileSaveName,              //视频文件在服务器上保存的文件名
+              OriginalFileName: $scope.originalFileName,                     //上传时的原始名字
+              SectionId: $scope.sectionId
+
+                           
+        };
+
+        $http({
+            method: 'POST',
+            url: "@Url.Content("~/MoocAdmin/Video/AddVideoList")",
+            data: JSON.stringify(video),
+            dataType: "json"
+        }).then(function (response) {
+            if (response.data.code == 200) {
+                alert("添加视频成功");              
+                //show video upload page
+              
+            }
+            else {
+                alert("添加视频失败"); 
+            }
+        }, function (data) {
+            console.log(data);
+        });
+    }
 
 
 

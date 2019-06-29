@@ -150,7 +150,8 @@
         }).then(function (response) {
             if (response.status == 200) {
                 alert("课程添加成功，前往章节添加页面");              
-                window.location.href = "@Url.Content("~/MoocAdmin/Section/Add/")";
+               // window.location.href = "@Url.Content("~/MoocAdmin/Section/Add/")";
+                window.location.href = "@Url.Content("~/MoocAdmin/Section/Add/")" + response.data.currentId;
             }
         }, function (data) {
             console.log(data);

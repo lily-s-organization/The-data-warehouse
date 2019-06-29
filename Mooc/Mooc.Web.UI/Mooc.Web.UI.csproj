@@ -182,12 +182,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\GetContentController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SectionController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SubjectCategoryController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SubjectController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\TeacherController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\VideoController.cs" />
     <Compile Include="Areas\MoocAdmin\MoocAdminAreaRegistration.cs" />
     <Compile Include="Controllers\AngularJSDemoController.cs" />
     <Compile Include="Controllers\Demo1Controller.cs" />
@@ -317,6 +319,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\MoocAdmin\Models\" />
+    <Folder Include="Areas\MoocAdmin\Views\Video\" />
     <Folder Include="assets\img\" />
     <Folder Include="Views\Demo1\" />
   </ItemGroup>
