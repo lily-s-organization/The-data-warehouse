@@ -4,11 +4,13 @@
 
 <div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
 
-    <div class="col-md-10 col-md-offset-1" style="margin-top:20px">
+    <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 style="display:inline-block">课程维护</h2>
-                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addSubject()" href="#"><i class="fa"></i> 添加</a>
+                <h2 style="display:inline-block">章节信息</h2>
+                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;"  href="@Url.Content("~/MoocAdmin/Subject/Index/")"><i class="fa"></i> 返回至上一级</a>
+                <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addNewSection()" href="#"><i class="fa"></i> 添加</a>
+
             </div>
 
             <div class="panel-body">
@@ -17,29 +19,22 @@
 
                         <thead>
                             <tr>
-                                <th>课程名</th>
-                                <th>课程类别</th>
-                                <th>讲师</th>
-                                <th>课程状态</th>
-                                <th>课程封面</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>章节名称</th>
+                                <th>章节简介</th>
+
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in list">
-                                <td>{{row.SubjectName}}</td>
-                                <td>{{row.CategoryName}}</td>
-                                <td>{{row.TeacherName}}</td>
-                                <td>{{row.ShowStatus}}</td>
-                                <td><img ng-src="~/Images/Upload/{{row.PhotoUrl}}" style="max-height:35px;" /></td>
-                                <td colspan="2"></td>
-                                <td><a class="btn btn-primary" ng-click="updateSubject(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
-                                <td><a class="btn btn-danger" ng-click="deleteSubject(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
-                                <td><a class="btn btn-primary" ng-click="showSectionList(row.Id)" href="#"><i class="fa fa-edit"></i>  显示章节详情</a></td>
+                                <td>{{row.SectionName}}</td>
+                                <td>{{row.Description}}</td>
+
+
+                                <td>
+                                    <a class="btn btn-primary" ng-click="updateSection(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a>
+                                    <a class="btn btn-danger" ng-click="deleteSection(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a>
+                                </td>
 
                             </tr>
                         </tbody>
@@ -61,43 +56,42 @@
     var app = angular.module("myapp", []);
     app.controller("myCtrl", function ($scope, $http) {
 
+        $scope.SubjectId = '@ViewBag.subjectId';
         $scope.pageIndex = 1;
         $scope.pageSize = 10;
-        getSubjectList($scope, $http);//载入页面数据
+        getSectionList($scope, $http);//载入页面数据
 
-        $scope.showSectionList = function (id) {
-             window.location.href = "@Url.Content("~/MoocAdmin/Section/Index/")"+id;         //根据课程id 显示课程下所有的章节
+        $scope.updateSection = function (id) {
+            window.location.href = "@Url.Content("~/MoocAdmin/Section/Edit/")" + id;
         };
 
-        $scope.updateSubject = function (id) {
-            window.location.href = "@Url.Content("~/MoocAdmin/Subject/Details/")" + id;
-        };
+        $scope.addNewSection = function () {
+            window.location.href = "@Url.Content("~/MoocAdmin/Section/Add/")" + $scope.SubjectId ;
+        }
 
-        $scope.deleteSubject = function (id) {
+        $scope.deleteSection = function (id) {
             if (confirm("确定删除该条数据?")) {
-                 $http.post("@Url.Content("~/MoocAdmin/Subject/Delete/")" + id).then(function (response) {
+                 $http.post("@Url.Content("~/MoocAdmin/Section/Delete/")" + id).then(function (response) {
                      if (response.status == 200) {
                          alert("删除成功");
-                         getSubjectList($scope, $http);//刷新页面
+                         getSectionList($scope, $http);//刷新页面
                 }
-                 }).catch(function (data) {
-                     alert("删除失败");
+            }).catch(function (data) {
                      console.log("catch:" + data);
+                     alert("删除失败");
             })
             }
         };
 
-        $scope.addSubject = function () {
-             window.location.href = "@Url.Content("~/MoocAdmin/Subject/Add/")";
-        }
+
     });
 
 
 
 
-    function getSubjectList($scope, $http) {
+    function getSectionList($scope, $http) {
 
-        $http.post("@Url.Content("~/MoocAdmin/Subject/GetSubjectList")", { pageIndex: $scope.pageIndex, pageSize: $scope.pageSize }).then(function (response) {
+        $http.post("@Url.Content("~/MoocAdmin/Section/GetSectionList/")" + $scope.SubjectId, { pageIndex: $scope.pageIndex, pageSize: $scope.pageSize }).then(function (response) {
             if (response.status == 200) {
                 $('#paginationBtn').jqPaginator({
                     totalCounts: response.data.iCount,
@@ -114,12 +108,17 @@
                         //number为用户点击触发的那个页数
                         $scope.pageIndex = number;
                         if ($('#paginationBtn .active').eq(0).attr('jp-data') !== number.toString()) {
-                            getSubjectList($scope, $http);
+                            getSectionList($scope, $http);
                         }
                     }
                 });
                 $scope.list = response.data.data;
                 console.log($scope.list);
+                $scope.list.forEach(function (element) {
+                   // alert(element.SubjectId);         //因为subjectId包含在一个list中返回，所有用foreach读取
+                    $scope.subjectId = element.SubjectId;
+                });
+
             }
         }).catch(function (data) {
             console.log("catch:" + data);

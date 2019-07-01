@@ -86,5 +86,33 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 
             return Json(new { code = 0, filename = saveName, originalFileName = fileName, url = Url.Content("~/api/GetContent/Video?id=" + saveName) });
         }
+
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            try
+            {
+                Video video = db.Videos.Find(id);
+                if (video == null)
+                    return Json(500);
+
+                //删除视频文件
+                string savePath = Server.MapPath("~/Images/Video/");
+                string deleteFile = savePath + video.FileId;
+                if (System.IO.File.Exists(deleteFile))
+                {
+                    System.IO.File.Delete(deleteFile);
+                }
+
+                db.Videos.Remove(video);
+                db.SaveChanges();
+                return Json(0);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                return Json(300);
+            }
+        }
     }
 }

@@ -228,5 +228,22 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 return Json(300);
             }
         }
+
+        [HttpPost]
+        public JsonResult GetSubjectId(int id)       //传入sectionId 获得对应的subjectId
+        {
+            var tmpSubject = db.Sections.Where(x => x.Id > 0).Join(db.Subjects,
+                section=>section.Subject.Id,
+                subject=>subject.Id,
+                (section,subject) => new
+                {
+                   subjectId = subject.Id
+                }
+
+                );
+
+
+            return Json(new { subjectId = tmpSubject });
+        }
     }
 }
