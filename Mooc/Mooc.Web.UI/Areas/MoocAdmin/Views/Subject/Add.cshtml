@@ -14,7 +14,8 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">课程简介</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="subjectDescription" />
+                    <textarea type="text" class="form-control" ng-model="subjectDescription" ></textarea>
+                   
                 </div>
             </div>
             <div class="form-group row">
@@ -27,7 +28,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">课程类别</label>
                 <div class="col-md-6">
-                    <select ng-model="selectedSubjectCategory" ng-options="x.name for x in subjectCategory" name="categoryInput" ng-change="categorySelected()" required>
+                    <select class="form-control" ng-model="selectedSubjectCategory" ng-options="x.name for x in subjectCategory" name="categoryInput" ng-change="categorySelected()" required>
                         <option value="">请选择</option>
                     </select>
                     <span ng-show="myForm.categoryInput.$touched && myForm.categoryInput.$invalid" class="help-block">请选择一个课程类别</span>
@@ -37,7 +38,7 @@
             <div class="form-group row">
                 <label class="col-md-1 col-md-offset-2 col-form-label">讲师</label>
                 <div class="col-md-6">
-                    <select ng-model="selectedTeacher" ng-options="x.name for x in teacherList" name="teacherInput" ng-change="teacherSelected()" required>
+                    <select class="form-control" ng-model="selectedTeacher" ng-options="x.name for x in teacherList" name="teacherInput" ng-change="teacherSelected()" required>
                         <option value="">请选择</option>
                     </select>
                     <span ng-show="myForm.teacherInput.$touched && myForm.teacherInput.$invalid" class="help-block">请选择一个讲师</span>

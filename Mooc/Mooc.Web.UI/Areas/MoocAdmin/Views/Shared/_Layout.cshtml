@@ -59,19 +59,19 @@
             <div class="sidebar-collapse">
                 <ul class="nav " id="main-menu">
 
-                    <li >
-                        <a href="@Url.Content("~/MoocAdmin/Users/Index")" ><i class="fa fa-dashboard"></i> 用户</a>
+                    <li>
+                        <a id="Users" href="@Url.Content("~/MoocAdmin/Users")"  class="active-menu"><i class="fa fa-dashboard "></i> 用户列表</a>
                     </li>
                     <li>
-                        <a href="@Url.Content("~/MoocAdmin/Teacher/Index")"><i class="fa fa-desktop"></i> 讲师</a>
-                    </li>
-
-                    <li>
-                        <a href="@Url.Content("~/MoocAdmin/Subject/Index")"><i class="fa fa-qrcode"></i> 课程</a>
+                        <a id="Teacher" href="@Url.Content("~/MoocAdmin/Teacher")"><i class="fa fa-desktop"></i> 讲师列表</a>
                     </li>
 
                     <li>
-                        <a href="@Url.Content("~/MoocAdmin/SubjectCategory/Index")" ><i class="fa fa-table"></i> 课程类别</a>
+                        <a id="Subject" href="@Url.Content("~/MoocAdmin/Subject")"><i class="fa fa-qrcode"></i> 课程列表</a>
+                    </li>
+
+                    <li>
+                        <a id="SubjectCategory" href="@Url.Content("~/MoocAdmin/SubjectCategory")" ><i class="fa fa-table"></i> 课程类别列表</a>
                     </li>
                    
                 </ul>
@@ -88,6 +88,16 @@
     </div>
 
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var location = window.location.href;
+            var id = location.substring(location.lastIndexOf('/') + 1);
+            $("#Users").removeClass("active-menu");
+            $("#" + id).addClass("active-menu");
+        });
+    </script>
+
 </body>
 
 
