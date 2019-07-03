@@ -47,7 +47,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public JsonResult GetSubjectDetail(long id)
         {
             var result = db.Subjects.Where(x=>x.Id == id).Join(db.Teachers,
-                subject => subject.Teacher.Id,
+                subject => subject.SubjectCategoryId,
                 teacher => teacher.Id,
                 (subject, teacher) => new
                 {
@@ -58,7 +58,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                     subjectStatus = subject.Status,
                     subjectDescription = subject.Description,
                     subjectPhotoUrl = subject.PhotoUrl,
-                    linkId = subject.Subjectgory.Id
+                    linkId = subject.SubjectCategoryId
                 })
                 .Join(db.SubjectCategorys, subject => subject.linkId, category => category.Id, (subject, category) => new
                 {
@@ -86,7 +86,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             int currentItems = (pageIndex - 1) * pageSize;
 
             var list = db.Subjects.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).Join(db.Teachers,
-                subject => subject.Teacher.Id,
+                subject => subject.TeacherId,
                 teacher => teacher.Id,
                 (subject, teacher) => new
                 {
@@ -96,7 +96,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                     teacherName = teacher.TeacherName,
                     subjectStatus = subject.Status,
                     subjectPhotoUrl = subject.PhotoUrl,
-                    linkId = subject.Subjectgory.Id
+                    linkId = subject.SubjectCategoryId
                 })
                 .Join(db.SubjectCategorys, subject => subject.linkId, category => category.Id, (subject, category) => new
                 {
@@ -135,14 +135,17 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public JsonResult AddSubjectList(Subject subject,int teacherId,int categoryId)        
         {
            
-            subject.Teacher = db.Teachers.Find(teacherId);
-            subject.Subjectgory = db.SubjectCategorys.Find(categoryId);
+           // subject.Teacher = db.Teachers.Find(teacherId);
+          //  subject.Subjectgory = db.SubjectCategorys.Find(categoryId);
             
 
             try
             {
                 if (subject == null)
                     return Json(300);
+
+                subject.TeacherId = teacherId;
+                subject.SubjectCategoryId = categoryId;
 
                 if (subject.Id == 0)
                 {
@@ -152,11 +155,13 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 }
                 else
                 {
-                    var tmp = db.Subjects.Find(subject.Id);
-                    tmp.Subjectgory = db.SubjectCategorys.Find(categoryId);
-                    tmp.Teacher = db.Teachers.Find(teacherId);
-                    subject.AddTime = DateTime.Now;
-                    db.Entry(tmp).CurrentValues.SetValues(subject);  
+                   
+                    db.Entry(subject).State = EntityState.Modified;
+                    // var tmp = db.Subjects.Find(subject.Id);
+                   // tmp.Subjectgory = db.SubjectCategorys.Find(categoryId);
+                   // tmp.Teacher = db.Teachers.Find(teacherId);
+                  //  subject.AddTime = DateTime.Now;
+                  // db.Entry(tmp).CurrentValues.SetValues(subject);  
                     //使用db.Entry(subject).State = EntityState.Modified; subject表中两个外键并没有被改变 只能使用CuurentValues.SetValues
                 }  
                 var a = db.SaveChanges();

@@ -16,11 +16,12 @@ namespace Mooc.DataAccess.Models.Entities
         [Required]
         public int Status { get; set; }  //初始默认为0（编辑中） 1为上架 2为下架
 
+        
         [Required]
-        public SubjectCategory Subjectgory { get; set; }  //类别表外键
+        public int SubjectCategoryId { get; set; }
 
         [Required]
-        public Teacher Teacher { get; set; }   //讲师表外键
+        public int TeacherId {get;set;}
 
         public string Description { get; set; }
 
