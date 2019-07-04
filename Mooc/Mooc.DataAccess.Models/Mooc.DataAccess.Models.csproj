@@ -132,10 +132,6 @@
     <Compile Include="Migrations\201905241611268_test01.Designer.cs">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907040536481_AddOpenCourseTable.cs" />
-    <Compile Include="Migrations\201907040536481_AddOpenCourseTable.Designer.cs">
-      <DependentUpon>201907040536481_AddOpenCourseTable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IUsersService.cs" />
@@ -151,9 +147,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201905241611268_test01.resx">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907040536481_AddOpenCourseTable.resx">
-      <DependentUpon>201907040536481_AddOpenCourseTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
