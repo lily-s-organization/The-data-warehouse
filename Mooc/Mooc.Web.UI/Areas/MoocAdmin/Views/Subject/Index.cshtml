@@ -8,14 +8,14 @@
 
 <div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
 
-    <div class="col-md-10 col-md-offset-1" style="margin-top:20px">
+    <div class="col-md-12 " style="margin-top:20px">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 style="display:inline-block">课程维护</h2>
                 <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addSubject()" href="#"><i class="fa"></i> 添加</a>
             </div>
 
-            <div class="panel-body" style="border-color:transparent">
+            <div class="panel-body" style="border-color:transparent;padding-left:15px">
                 <div class="table-responsive table-striped">
                     <table class="table">
 
@@ -49,8 +49,9 @@
                                 <td ng-hide="row.Status==0 || row.Status ==2 "><a class="btn btn-primary" ng-click="notSell(row.Id)" href="#"><i class="fa fa-pencil"></i>  下架</a></td>
 
                                 <td><a class="btn btn-primary" ng-click="showSectionList(row.Id)" href="#"><i class="fa fa-edit"></i>  显示章节详情</a></td>
-                                <td ng-show="row.Status==1"><a class="btn btn-primary " onclick="$('#dlg').dialog('open')" href="#"><i class="fa fa-pencil"></i>  开课</a></td>
+                                <td ng-show="row.Status==1"><a class="btn btn-primary " ng-click="saveCoureseId(row.Id)" onclick="$('#dlg').dialog('open')" href="#"><i class="fa fa-pencil"></i>  开课</a></td>
                                 <td ng-show="cancelDiaglog"><a id="cancelDiaglog" href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#dlg').dialog('close')">Close</a></td>
+                              
 
                             </tr>
                         </tbody>
@@ -78,6 +79,7 @@
             if(startDate.length == 0 || closeDate.length == 0)
             {
             alert('日期不能为空');
+                 return;
             }
 
                   saveCourseDate(startDate,closeDate);      
@@ -156,14 +158,22 @@
                 method: 'POST',
                 url: "@Url.Content("~/MoocAdmin/Subject/NotSell/")" + id,
                 dataType: "json"
-            }).then(function (response) {
-                if (response.status == 200) {
+             }).then(function (response) {
+                 console.log(response);
+                if (response.data == 200) {
                     alert("下架成功");
                     getSubjectList($scope, $http);
+                 }
+                else if (response.data == 600) {
+                    alert("开课中，无法下架课程");
                 }
             }, function (data) {
                 console.log(data);
             });
+        };
+
+        $scope.saveCoureseId = function (id) {
+            $scope.CourseId = id;
         };
 
         $scope.showSectionList = function (id) {
@@ -246,20 +256,27 @@
     }
 
     function saveCourseDate(startDate, closeDate) {
-      
+        var ctrl = document.querySelector('[ng-controller=myCtrl]');
+        var scope = angular.element(ctrl).scope();
+      //  alert(scope.CourseId);
+        var courseId = scope.CourseId;
+
        
          $.ajax({
                 url: "@Url.Content("~/MoocAdmin/OpenCourse/Add/")",
-             data: { "startDate": startDate, "closeDate": closeDate },
+             data: { "startDate": startDate, "closeDate": closeDate, "courseId": courseId },
                 dataType: 'json', type: "POST",
                 success: function (result) {
                    
-                    if (result == 0) {
-                      
-                       
-                    } else {
-                       
+                    if (result == 100) {
+                        alert("开课成功");
+                        document.getElementById('cancelDiaglog').click();
 
+                    } else if (result == 0) {
+                        alert("开课日期要早于结课日期");
+                    }
+                    else {
+                        alert("开课失败");
                     }
 
                 }

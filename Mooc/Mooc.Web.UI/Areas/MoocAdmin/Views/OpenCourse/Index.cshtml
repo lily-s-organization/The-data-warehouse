@@ -1,0 +1,125 @@
+﻿
+<script src="~/Scripts/jqPaginator.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 style="display:inline-block">已开课课程</h2>
+               
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive table-striped">
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <th>课程名字</th>
+                                <th>开课日期</th>
+                                <th>结课日期</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in list">
+                                <td>{{row.subjectName}}</td>
+                                <td>{{row.startDate}}</td>
+                                <td>{{row.closeDate}}</td>
+                              
+                                <td><a class="btn btn-danger" ng-click="deleteOpenCourse(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-md-4 col-md-offset-8">
+                        <ul class="pagination" id="paginationBtn" style="margin:auto"></ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        $scope.pageIndex = 1;
+        $scope.pageSize = 10;
+        getOpenCourseList($scope, $http);//载入页面数据
+
+
+        $scope.deleteOpenCourse = function (id) {
+            if (confirm("确定删除该条数据?")) {
+                 $http.post("@Url.Content("~/MoocAdmin/OpenCourse/Delete/")" + id).then(function (response) {
+                     if (response.status == 200) {
+                         alert("删除成功");
+                         getOpenCourseList($scope, $http);//刷新页面
+                }
+                 }).catch(function (data) {
+                     alert("删除失败");
+                     console.log("catch:" + data);
+            })
+            }
+        };
+
+        
+    });
+
+
+
+
+    function getOpenCourseList($scope, $http) {
+
+        $http.post("@Url.Content("~/MoocAdmin/OpenCourse/GetOpenCourseList")", { pageIndex: $scope.pageIndex, pageSize: $scope.pageSize }).then(function (response) {
+            if (response.status == 200) {
+                $('#paginationBtn').jqPaginator({
+                    totalCounts: response.data.iCount,
+                    pageSize:$scope.pageSize,
+                    visiblePages: 5,
+                    currentPage: $scope.pageIndex,
+
+                    first: '<li class="first"><a href="javascript:void(0);">第一页</a></li>',
+                    prev: '<li class="prev"><a href="javascript:void(0);">前一页</a></li>',
+                    next: '<li class="next"><a href="javascript:void(0);">后一页</a></li>',
+                    last: '<li class="last"><a href="javascript:void(0);">最后一页</a></li>',
+                    page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+                    onPageChange: function (number) {
+                        //number为用户点击触发的那个页数
+                        $scope.pageIndex = number;
+                        if ($('#paginationBtn .active').eq(0).attr('jp-data') !== number.toString()) {
+                            getSubjectCategoryList($scope, $http);
+                        }
+                    }
+                });
+                console.log(response.data);
+                
+                $scope.list = response.data.data;
+                $scope.list.forEach(function (element) {
+                   
+                   
+                    var msecStr = element.startDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
+                    var msesInt = Number.parseInt(msecStr);
+                    element.startDate = new Date(msesInt).toLocaleString(); 
+
+                    var msecStr1 = element.closeDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); 
+                    var msesInt1 = Number.parseInt(msecStr1);
+                    element.closeDate = new Date(msesInt1).toLocaleString(); 
+                });
+
+
+            }
+        }).catch(function (data) {
+            console.log("catch:" + data);
+        });
+    }
+
+</script>
+

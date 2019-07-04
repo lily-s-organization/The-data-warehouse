@@ -121,6 +121,7 @@
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\Follower.cs" />
+    <Compile Include="Entities\OpenCourse.cs" />
     <Compile Include="Entities\Section.cs" />
     <Compile Include="Entities\Subject.cs" />
     <Compile Include="Entities\SubjectCategory.cs" />
@@ -131,13 +132,9 @@
     <Compile Include="Migrations\201905241611268_test01.Designer.cs">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907032319429_UpdateFK.cs" />
-    <Compile Include="Migrations\201907032319429_UpdateFK.Designer.cs">
-      <DependentUpon>201907032319429_UpdateFK.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907032342119_Fk3.cs" />
-    <Compile Include="Migrations\201907032342119_Fk3.Designer.cs">
-      <DependentUpon>201907032342119_Fk3.cs</DependentUpon>
+    <Compile Include="Migrations\201907040536481_AddOpenCourseTable.cs" />
+    <Compile Include="Migrations\201907040536481_AddOpenCourseTable.Designer.cs">
+      <DependentUpon>201907040536481_AddOpenCourseTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,11 +152,8 @@
     <EmbeddedResource Include="Migrations\201905241611268_test01.resx">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907032319429_UpdateFK.resx">
-      <DependentUpon>201907032319429_UpdateFK.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907032342119_Fk3.resx">
-      <DependentUpon>201907032342119_Fk3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907040536481_AddOpenCourseTable.resx">
+      <DependentUpon>201907040536481_AddOpenCourseTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

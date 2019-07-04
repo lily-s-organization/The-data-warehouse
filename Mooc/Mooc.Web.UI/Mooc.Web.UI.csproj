@@ -265,6 +265,7 @@
     <Content Include="Areas\MoocAdmin\Views\Section\Add.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Section\Edit.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Section\Index.cshtml" />
+    <Content Include="Areas\MoocAdmin\Views\OpenCourse\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\calendar_arrows.png" />
     <Content Include="Scripts\easyui.css" />
@@ -326,7 +327,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\MoocAdmin\Models\" />
-    <Folder Include="Areas\MoocAdmin\Views\OpenCourse\" />
     <Folder Include="Areas\MoocAdmin\Views\Video\" />
     <Folder Include="assets\img\" />
     <Folder Include="Views\Demo1\" />

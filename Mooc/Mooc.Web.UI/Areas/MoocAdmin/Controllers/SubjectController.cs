@@ -29,7 +29,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult Sell(int id)
+        public JsonResult Sell(int id)  //课程上架
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         }
 
         [HttpPost]
-        public JsonResult NotSell(int id)
+        public JsonResult NotSell(int id)    //课程下架
         {
             try
             {
@@ -98,6 +98,22 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 {
                     return Json(500);
                 }
+
+                var keyDateList = db.OpenCourses.Where(x => x.CourseId == id).Select(x=>new { StartDate= x.StartDate, CloseDate = x.CloseDate}).ToList();
+
+                var currentTime =  DateTime.Now;
+                foreach (var keyDate in keyDateList)
+                {
+                    var res1 = DateTime.Compare(currentTime, keyDate.StartDate);
+                    var res2 = DateTime.Compare(currentTime, keyDate.CloseDate);
+
+                    if (res1*res2 < 0)          //如果res1,res2为一正一负 则说明当前时间落在开课结课的区间内 ,正在开课 则不允许下架
+                    {
+                        return Json(600);            
+                    }
+                }
+
+
                 subject.Status = 2;
                 db.SaveChanges();
                 return Json(200);

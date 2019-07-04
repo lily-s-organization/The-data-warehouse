@@ -27,6 +27,7 @@ namespace Mooc.DataAccess.Models.Context
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Video> Videos { get; set; }
+        public DbSet<OpenCourse> OpenCourses { get; set; }
 
 
 
