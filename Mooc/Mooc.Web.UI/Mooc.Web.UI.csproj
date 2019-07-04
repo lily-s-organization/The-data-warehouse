@@ -184,6 +184,7 @@
     <Compile Include="Areas\MoocAdmin\Controllers\AdminController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\GetContentController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\MoocAdmin\Controllers\OpenCourseController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SectionController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SubjectCategoryController.cs" />
     <Compile Include="Areas\MoocAdmin\Controllers\SubjectController.cs" />
@@ -265,7 +266,9 @@
     <Content Include="Areas\MoocAdmin\Views\Section\Edit.cshtml" />
     <Content Include="Areas\MoocAdmin\Views\Section\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\calendar_arrows.png" />
     <Content Include="Scripts\easyui.css" />
+    <Content Include="Scripts\icon.css" />
     <Content Include="Scripts\jqPaginator.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -323,6 +326,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\MoocAdmin\Models\" />
+    <Folder Include="Areas\MoocAdmin\Views\OpenCourse\" />
     <Folder Include="Areas\MoocAdmin\Views\Video\" />
     <Folder Include="assets\img\" />
     <Folder Include="Views\Demo1\" />

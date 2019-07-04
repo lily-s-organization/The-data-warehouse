@@ -28,6 +28,88 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult Sell(int id)
+        {
+            try
+            {
+                var subject = db.Subjects.Find(id);
+                if (subject == null)
+                {
+                    return Json(500);
+                }
+
+                //遍历该课程下的video
+
+                var sectionList = db.Subjects.Where(x => x.Id == id).Join(db.Sections,
+                    selectedSubject => selectedSubject.Id,
+                    section => section.Subject.Id,
+                    (selectedSubject, section) => new
+                    {
+                        sectionId = section.Id,
+                        sectionName = section.SectionName
+                    }
+                    ).ToList();
+
+                if (sectionList.Count()==0)
+                {
+                    return Json(700);  //告诉前端该课程下没有章节
+                }
+
+                foreach (var section in sectionList)
+                {
+                    var videoList = db.Sections.Where(x => x.Id == section.sectionId).Join(db.Videos,
+                        selectedSection => selectedSection.Id,
+                        video => video.Section.Id,
+                        (selectedSection, video) => new
+                        {
+                            sectionId = selectedSection.Id,
+                            videId = video.Id,
+                            sectionName = selectedSection.SectionName
+                        }
+
+                        );
+
+                    if (videoList.Count() == 0)
+                    {
+                        return Json(new { code = 600, sectionName = section.sectionName });  //告诉前端第几章没有视频
+                    }
+                }
+
+                subject.Status = 1;
+                db.SaveChanges();
+                return Json(200);
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return Json(100);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult NotSell(int id)
+        {
+            try
+            {
+                var subject = db.Subjects.Find(id);
+                if (subject == null)
+                {
+                    return Json(500);
+                }
+                subject.Status = 2;
+                db.SaveChanges();
+                return Json(200);
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return Json(100);
+            }
+        }
+
         public ActionResult Details(int id)
         {
             try

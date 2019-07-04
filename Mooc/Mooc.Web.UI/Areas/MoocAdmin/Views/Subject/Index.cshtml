@@ -1,6 +1,10 @@
 ﻿
 <script src="~/Scripts/jqPaginator.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Scripts/easyui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.easyui.min.js"></script>
+<link href="~/Scripts/icon.css" rel="stylesheet" />
+
 
 <div class="row" id="dataBind" ng-app="myapp" ng-controller="myCtrl">
 
@@ -11,7 +15,7 @@
                 <a class="btn btn-primary" style="float:right;margin-top:14px;margin-right:16px;" ng-click="addSubject()" href="#"><i class="fa"></i> 添加</a>
             </div>
 
-            <div class="panel-body">
+            <div class="panel-body" style="border-color:transparent">
                 <div class="table-responsive table-striped">
                     <table class="table">
 
@@ -22,6 +26,8 @@
                                 <th>讲师</th>
                                 <th>课程状态</th>
                                 <th>课程封面</th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -39,7 +45,12 @@
                                 <td colspan="2"></td>
                                 <td><a class="btn btn-primary" ng-click="updateSubject(row.Id)" href="#"><i class="fa fa-edit"></i>  修改</a></td>
                                 <td><a class="btn btn-danger" ng-click="deleteSubject(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
+                                <td ng-hide="row.Status==1"><a class="btn btn-primary" ng-click="sell(row.Id)" href="#"><i class="fa fa-pencil"></i>  上架</a></td>
+                                <td ng-hide="row.Status==0 || row.Status ==2 "><a class="btn btn-primary" ng-click="notSell(row.Id)" href="#"><i class="fa fa-pencil"></i>  下架</a></td>
+
                                 <td><a class="btn btn-primary" ng-click="showSectionList(row.Id)" href="#"><i class="fa fa-edit"></i>  显示章节详情</a></td>
+                                <td ng-show="row.Status==1"><a class="btn btn-primary " onclick="$('#dlg').dialog('open')" href="#"><i class="fa fa-pencil"></i>  开课</a></td>
+                                <td ng-show="cancelDiaglog"><a id="cancelDiaglog" href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#dlg').dialog('close')">Close</a></td>
 
                             </tr>
                         </tbody>
@@ -50,6 +61,54 @@
 
                 </div>
             </div>
+
+            <div id="dlg" class="easyui-dialog" title="选择开课/结课日期" closed="true" style="width:400px;height:200px;padding:10px;"
+                 data-options="
+                 iconCls: 'icon-save' ,
+                 modal:true,
+                 buttons: [{
+                 text:'Save',
+                 iconCls:'icon-ok',
+                 handler:function(){
+						//保存开结课的日期
+            var startDate = $('#resultStart').text();
+            var closeDate = $('#resultClose').text();
+                
+
+            if(startDate.length == 0 || closeDate.length == 0)
+            {
+            alert('日期不能为空');
+            }
+
+                  saveCourseDate(startDate,closeDate);      
+
+
+            }
+            },{
+            text:'Cancel',
+            handler:function(){
+
+            document.getElementById('cancelDiaglog').click();
+            }
+            }]
+            ">
+
+
+            <div style="margin:10px 0">
+                <span style="margin-right:40px">选择开课日期: </span>
+                <span id="resultStart" hidden></span>
+                <input class="easyui-datebox" data-options="onSelect:onSelectStart">
+            </div>
+
+
+            <div style="margin:10px 0">
+                <span style="margin-right:40px">选择结课日期: </span>
+                <span id="resultClose" hidden></span>
+                <input class="easyui-datebox" data-options="onSelect:onSelectClose" style="margin-left:20px">
+            </div>
+
+        </div>
+           
         </div>
     </div>
 </div>
@@ -64,6 +123,48 @@
         $scope.pageIndex = 1;
         $scope.pageSize = 10;
         getSubjectList($scope, $http);//载入页面数据
+
+        $scope.sell = function (id) {
+
+            $http({
+                method: 'POST',
+                url: "@Url.Content("~/MoocAdmin/Subject/Sell/")" + id,
+                dataType: "json"
+            }).then(function (response) {
+                console.log(response);
+                if (response.data == 200) {
+                    alert("上架成功");
+                    getSubjectList($scope, $http);
+                }
+                else if (response.data == 700)
+                {
+                    alert("该课程下还没有添加章节");
+                }
+                else if (response.data.code == 600) {
+                    var msg = "章节： " + response.data.sectionName + " 下没有视频";
+
+                    alert(msg);
+                }
+
+            }, function (data) {
+                console.log(data);
+            });
+        };
+
+        $scope.notSell = function (id) {
+             $http({
+                method: 'POST',
+                url: "@Url.Content("~/MoocAdmin/Subject/NotSell/")" + id,
+                dataType: "json"
+            }).then(function (response) {
+                if (response.status == 200) {
+                    alert("下架成功");
+                    getSubjectList($scope, $http);
+                }
+            }, function (data) {
+                console.log(data);
+            });
+        };
 
         $scope.showSectionList = function (id) {
              window.location.href = "@Url.Content("~/MoocAdmin/Section/Index/")"+id;         //根据课程id 显示课程下所有的章节
@@ -93,8 +194,7 @@
     });
 
 
-
-
+  
     function getSubjectList($scope, $http) {
 
         $http.post("@Url.Content("~/MoocAdmin/Subject/GetSubjectList")", { pageIndex: $scope.pageIndex, pageSize: $scope.pageSize }).then(function (response) {
@@ -124,6 +224,46 @@
         }).catch(function (data) {
             console.log("catch:" + data);
         });
+    }
+
+    function onSelectStart(date) {
+      //  console.log(date);
+        da = new Date(date);
+        var year = da.getFullYear() ;
+        var month = da.getMonth() + 1 ;
+        var date = da.getDate() ;
+        console.log([year, month, date].join('-'));
+        $('#resultStart').text([year, month, date].join('-'))
+    }
+
+    function onSelectClose(date) {
+        da = new Date(date);
+        var year = da.getFullYear() ;
+        var month = da.getMonth() + 1 ;
+        var date = da.getDate() ;
+        console.log([year, month, date].join('-'));
+        $('#resultClose').text([year, month, date].join('-'))
+    }
+
+    function saveCourseDate(startDate, closeDate) {
+      
+       
+         $.ajax({
+                url: "@Url.Content("~/MoocAdmin/OpenCourse/Add/")",
+             data: { "startDate": startDate, "closeDate": closeDate },
+                dataType: 'json', type: "POST",
+                success: function (result) {
+                   
+                    if (result == 0) {
+                      
+                       
+                    } else {
+                       
+
+                    }
+
+                }
+            });
     }
 
 </script>
