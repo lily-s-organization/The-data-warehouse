@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <link href="~/Scripts/LoginStyle/bootstrap.min.css" rel="stylesheet" />
+ 
     <link href="~/Scripts/LoginStyle/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Scripts/LoginStyle/material-design-iconic-font.min.css" rel="stylesheet" />
 
@@ -41,12 +41,12 @@
                       登录
                     </span>
 
-                    <div class="wrap-input100 validate-input" data-validate="Enter username">
+                    <div class="wrap-input100 " >
                         <input class="input100" type="text" name="username" placeholder="请输入用户名" id="UserName">
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
                     </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <div class="wrap-input100 " >
                         <input class="input100" type="password" name="pass" placeholder="请输入密码" id="PassWord">
                         <span class="focus-input100" data-placeholder="&#xf191;"></span>
                     </div>
@@ -59,9 +59,10 @@
                     </div>
 
                     <div class="container-login100-form-btn" >
-                        <button class="login100-form-btn" id="btnLogin">
+                        <button type="button" class="login100-form-btn" id="btnLogin">
                             登录
                         </button>
+                     
                     </div>
 
                     <div class="text-center p-t-90">
@@ -92,6 +93,9 @@
 
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script>
+     
+
+
     $(function () {
         $("#btnLogin").click(function () {
 
@@ -108,13 +112,15 @@
                 url: "@Url.Content("~/Login/Login")",
                  data: { "UserName": username, "PassWord": password},
                 dataType: 'json', type: "POST",
-                 success: function (result) {
+                    success: function (result) {
+                        console.log(result);
                      if (result == 0) {
 
                      window.location.href="@Url.Content("~/Home/Index")"//跳转到homeindex页
                      }
                      else {
-                         $("#errorMsg").text("wrong username or password");
+                         
+                         alert("wrong username or password");
                      }
                 }
             });
@@ -151,7 +157,12 @@
 
         });
 
+       
+
     })
+
+
+   
 
 </script>
 
