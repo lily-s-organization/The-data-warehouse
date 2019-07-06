@@ -27,6 +27,11 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Login(User user)
         {

@@ -67,9 +67,9 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                      Id = openCourse.Id,
                      subjectName = subject.SubjectName
                  }).ToList();
-                
 
-            return Json(new { data = openCourseList });
+            var iCount = openCourseList.Count();
+            return Json(new { data = openCourseList, iCount= iCount });
         }
 
 

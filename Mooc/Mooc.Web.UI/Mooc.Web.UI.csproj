@@ -333,6 +333,7 @@
     <Content Include="Scripts\LoginStyle\Material-Design-Iconic-Font.ttf" />
     <Content Include="Scripts\LoginStyle\Material-Design-Iconic-Font.woff" />
     <Content Include="Scripts\LoginStyle\Material-Design-Iconic-Font.woff2" />
+    <Content Include="Views\Login\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
