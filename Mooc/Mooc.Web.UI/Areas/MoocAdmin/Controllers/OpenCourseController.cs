@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
+using Mooc.DataAccess.Models.ViewModels;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
@@ -24,6 +25,21 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             DateTime startDateTime = Convert.ToDateTime(startDate);
             DateTime closeDateTime = Convert.ToDateTime(closeDate);
+            DateTime currentTime = DateTime.Now.Date;
+
+            var openCourseList = db.OpenCourses.Where(x => x.CourseId == CourseId).ToList();
+            foreach (var item in openCourseList)
+            {
+                if ((startDateTime >= item.StartDate && startDateTime <= item.CloseDate) || (closeDateTime >= item.StartDate && closeDateTime <= item.CloseDate))
+                {
+                    return Json(400);          //该时间段已经存在开课
+                }
+            }
+
+            if (DateTime.Compare(startDateTime, currentTime) <= 0)
+            {
+                return Json(300);    //开课日期必须比当前时间晚一天
+            }
 
             if (DateTime.Compare(startDateTime, closeDateTime) >= 0)  //开课日期不能大于结课日期
             {
@@ -57,7 +73,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             int currentItems = (pageIndex - 1) * pageSize;
 
-            var openCourseList = db.OpenCourses.Where(x => x.Id > 0).OrderByDescending(x => x.Id).Skip(currentItems).Take(pageSize).Join(db.Subjects,
+            var courseList = db.OpenCourses.Where(x => x.Id > 0).OrderByDescending(x => x.Id).Skip(currentItems).Take(pageSize).Join(db.Subjects,
                  openCourse => openCourse.CourseId,
                  subject => subject.Id,
                  (openCourse, subject) => new
@@ -68,8 +84,12 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                      subjectName = subject.SubjectName
                  }).ToList();
 
-            var iCount = openCourseList.Count();
-            return Json(new { data = openCourseList, iCount= iCount });
+          
+            //List<OpenCourseViewModel> openCourseList = AutoMapper.Mapper.Map<List<OpenCourseViewModel>>(courseList);
+
+            var iCount = courseList.Count();
+            return Json(new { data = courseList, iCount = iCount });
+ 
         }
 
 

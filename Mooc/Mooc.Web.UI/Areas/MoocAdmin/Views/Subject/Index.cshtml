@@ -275,6 +275,12 @@
                     } else if (result == 0) {
                         alert("开课日期要早于结课日期");
                     }
+                    else if (result == 300) {
+                        alert("开课日期必须比当前时间晚一天");
+                    }
+                    else if (result == 400) {
+                        alert("该时间段已经存在开课");
+                    }
                     else {
                         alert("开课失败");
                     }

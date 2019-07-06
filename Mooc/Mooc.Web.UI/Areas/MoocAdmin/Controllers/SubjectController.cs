@@ -41,40 +41,56 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 
                 //遍历该课程下的video
 
-                var sectionList = db.Subjects.Where(x => x.Id == id).Join(db.Sections,
-                    selectedSubject => selectedSubject.Id,
-                    section => section.SubjectId,
-                    (selectedSubject, section) => new
-                    {
-                        sectionId = section.Id,
-                        sectionName = section.SectionName
-                    }
-                    ).ToList();
-
-                if (sectionList.Count()==0)
+                var sectionList = db.Sections.Where(x => x.SubjectId == subject.Id).ToList();
+                if (sectionList.Count() == 0)
                 {
-                    return Json(700);  //告诉前端该课程下没有章节
+                    return Json(700); //告诉前端该课程下没有章节
                 }
 
-                foreach (var section in sectionList)
+                foreach (var item in sectionList)
                 {
-                    var videoList = db.Sections.Where(x => x.Id == section.sectionId).Join(db.Videos,
-                        selectedSection => selectedSection.Id,
-                        video => video.SectionId,
-                        (selectedSection, video) => new
-                        {
-                            sectionId = selectedSection.Id,
-                            videId = video.Id,
-                            sectionName = selectedSection.SectionName
-                        }
-
-                        );
-
-                    if (videoList.Count() == 0)
+                    if (db.Videos.Where(x=>x.SectionId == item.Id).Count() == 0)
                     {
-                        return Json(new { code = 600, sectionName = section.sectionName });  //告诉前端第几章没有视频
+                        return Json(new { code = 700,sectionName = item.SectionName}); //告诉前端第几章没有视频
                     }
                 }
+
+                /*
+                  var sectionList = db.Subjects.Where(x => x.Id == id).Join(db.Sections,
+                     selectedSubject => selectedSubject.Id,
+                     section => section.SubjectId,
+                     (selectedSubject, section) => new
+                     {
+                         sectionId = section.Id,
+                         sectionName = section.SectionName
+                     }
+                     ).ToList();
+
+                 if (sectionList.Count()==0)
+                 {
+                     return Json(700);  //告诉前端该课程下没有章节
+                 }
+
+                 foreach (var section in sectionList)
+                 {
+                     var videoList = db.Sections.Where(x => x.Id == section.sectionId).Join(db.Videos,
+                         selectedSection => selectedSection.Id,
+                         video => video.SectionId,
+                         (selectedSection, video) => new
+                         {
+                             sectionId = selectedSection.Id,
+                             videId = video.Id,
+                             sectionName = selectedSection.SectionName
+                         }
+
+                         );
+
+                     if (videoList.Count() == 0)
+                     {
+                         return Json(new { code = 600, sectionName = section.sectionName });  //告诉前端第几章没有视频
+                     }
+                 }
+                  */
 
                 subject.Status = 1;
                 db.SaveChanges();
@@ -104,13 +120,20 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 var currentTime =  DateTime.Now;
                 foreach (var keyDate in keyDateList)
                 {
+
+                    if (keyDate.StartDate <= currentTime && keyDate.CloseDate >= currentTime)
+                    {
+                        return Json(600);
+                    }
+                    /*
                     var res1 = DateTime.Compare(currentTime, keyDate.StartDate);
                     var res2 = DateTime.Compare(currentTime, keyDate.CloseDate);
 
                     if (res1*res2 < 0)          //如果res1,res2为一正一负 则说明当前时间落在开课结课的区间内 ,正在开课 则不允许下架
                     {
                         return Json(600);            
-                    }
+                    } 
+                    */
                 }
 
 

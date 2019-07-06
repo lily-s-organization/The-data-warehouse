@@ -20,6 +20,7 @@
                                 <th>课程名字</th>
                                 <th>开课日期</th>
                                 <th>结课日期</th>
+                                <th>课程状态</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -28,7 +29,8 @@
                                 <td>{{row.subjectName}}</td>
                                 <td>{{row.startDate}}</td>
                                 <td>{{row.closeDate}}</td>
-                              
+                                <td>{{row.ShowStatus}}</td>
+
                                 <td><a class="btn btn-danger" ng-click="deleteOpenCourse(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
 
                             </tr>
