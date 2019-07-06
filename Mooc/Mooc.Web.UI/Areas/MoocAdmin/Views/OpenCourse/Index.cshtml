@@ -26,9 +26,9 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in list">
-                                <td>{{row.subjectName}}</td>
-                                <td>{{row.startDate}}</td>
-                                <td>{{row.closeDate}}</td>
+                                <td>{{row.SubjectName}}</td>
+                                <td>{{row.StartDate}}</td>
+                                <td>{{row.CloseDate}}</td>
                                 <td>{{row.ShowStatus}}</td>
 
                                 <td><a class="btn btn-danger" ng-click="deleteOpenCourse(row.Id)" href="#"><i class="fa fa-pencil"></i>  删除</a></td>
@@ -110,13 +110,13 @@
                 $scope.list.forEach(function (element) {
                    
                    
-                    var msecStr = element.startDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
+                    var msecStr = element.StartDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
                     var msesInt = Number.parseInt(msecStr);
-                    element.startDate = new Date(msesInt).toLocaleString(); 
+                    element.StartDate = new Date(msesInt).toLocaleString(); 
 
-                    var msecStr1 = element.closeDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); 
+                    var msecStr1 = element.CloseDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); 
                     var msesInt1 = Number.parseInt(msecStr1);
-                    element.closeDate = new Date(msesInt1).toLocaleString(); 
+                    element.CloseDate = new Date(msesInt1).toLocaleString(); 
                 });
 
 

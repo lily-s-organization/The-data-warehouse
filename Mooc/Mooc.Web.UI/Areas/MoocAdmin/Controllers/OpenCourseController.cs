@@ -78,17 +78,17 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                  subject => subject.Id,
                  (openCourse, subject) => new
                  {
-                     startDate = openCourse.StartDate,
-                     closeDate = openCourse.CloseDate,
+                     StartDate = openCourse.StartDate,
+                     CloseDate = openCourse.CloseDate,
                      Id = openCourse.Id,
-                     subjectName = subject.SubjectName
+                     SubjectName = subject.SubjectName
                  }).ToList();
 
           
-            //List<OpenCourseViewModel> openCourseList = AutoMapper.Mapper.Map<List<OpenCourseViewModel>>(courseList);
+            List<OpenCourseViewModel> openCourseList = AutoMapper.Mapper.Map<List<OpenCourseViewModel>>(courseList);
 
             var iCount = courseList.Count();
-            return Json(new { data = courseList, iCount = iCount });
+            return Json(new { data = openCourseList, iCount = iCount });
  
         }
 

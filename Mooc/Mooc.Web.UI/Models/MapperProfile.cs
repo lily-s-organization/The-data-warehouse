@@ -10,7 +10,9 @@ namespace Mooc.Web.UI.Models
         {
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
-           
+            CreateMap<OpenCourse, OpenCourseViewModel>();
+            CreateMap<OpenCourseViewModel, OpenCourse>();
+
         }
 
        
