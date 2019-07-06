@@ -10,9 +10,11 @@ using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
 using Mooc.DataAccess.Models.Utils;
 using Mooc.DataAccess.Models.ViewModels;
+using Mooc.Web.UI.Filter;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
+    [LoginAuthorize]
     public class SubjectController : Controller
     {
         private DataContext db = new DataContext();
@@ -51,7 +53,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 {
                     if (db.Videos.Where(x=>x.SectionId == item.Id).Count() == 0)
                     {
-                        return Json(new { code = 700,sectionName = item.SectionName}); //告诉前端第几章没有视频
+                        return Json(new { code = 600,sectionName = item.SectionName}); //告诉前端第几章没有视频
                     }
                 }
 

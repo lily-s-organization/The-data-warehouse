@@ -7,9 +7,11 @@ using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
 using Mooc.DataAccess.Models.ViewModels;
+using Mooc.Web.UI.Filter;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
+    [LoginAuthorize]
     public class OpenCourseController : Controller
     {
         private DataContext db = new DataContext();

@@ -132,18 +132,6 @@
     <Compile Include="Migrations\201905241611268_test01.Designer.cs">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907060646259_updateViewModelp.cs" />
-    <Compile Include="Migrations\201907060646259_updateViewModelp.Designer.cs">
-      <DependentUpon>201907060646259_updateViewModelp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060728289_ADDSTATUS.cs" />
-    <Compile Include="Migrations\201907060728289_ADDSTATUS.Designer.cs">
-      <DependentUpon>201907060728289_ADDSTATUS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060732147_ADDSTATUP.cs" />
-    <Compile Include="Migrations\201907060732147_ADDSTATUP.Designer.cs">
-      <DependentUpon>201907060732147_ADDSTATUP.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IUsersService.cs" />
@@ -160,15 +148,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201905241611268_test01.resx">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060646259_updateViewModelp.resx">
-      <DependentUpon>201907060646259_updateViewModelp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060728289_ADDSTATUS.resx">
-      <DependentUpon>201907060728289_ADDSTATUS.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060732147_ADDSTATUP.resx">
-      <DependentUpon>201907060732147_ADDSTATUP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

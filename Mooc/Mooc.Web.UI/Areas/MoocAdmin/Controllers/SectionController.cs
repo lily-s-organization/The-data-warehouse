@@ -7,9 +7,11 @@ using System.Web.Mvc;
 using log4net;
 using Mooc.DataAccess.Models.Context;
 using Mooc.DataAccess.Models.Entities;
+using Mooc.Web.UI.Filter;
 
 namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 {
+    [LoginAuthorize]
     public class SectionController : Controller
     {
         private DataContext db = new DataContext();
