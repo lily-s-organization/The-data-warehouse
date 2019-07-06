@@ -24,7 +24,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public JsonResult AddVideoList(Video video,int SectionId)
         {
 
-            video.Section = db.Sections.Find(SectionId);
+            video.SectionId = SectionId;
 
 
             try
@@ -35,18 +35,15 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 if (video.Id == 0)
                 {
                     db.Videos.Add(video);
+                    db.SaveChanges();
+                    return Json(new { code = 200, currentId = video.Id });     //添加完成后 返回最新的自增长id
                 }
                 else
                 {
-                    //var tmp = db.Subjects.Find(subject.Id);
-                    //tmp.Subjectgory = db.SubjectCategorys.Find(categoryId);
-                    //tmp.Teacher = db.Teachers.Find(teacherId);
-                    //subject.AddTime = DateTime.Now;
-                    //db.Entry(tmp).CurrentValues.SetValues(subject);
-                    //使用db.Entry(subject).State = EntityState.Modified; subject表中两个外键并没有被改变 只能使用CuurentValues.SetValues
+                    return Json(600);
                 }
-                db.SaveChanges();
-                return Json(new { code = 200, currentId = video.Id });     //添加完成后 返回最新的自增长id
+               
+              
             }
             catch (Exception ex)
             {

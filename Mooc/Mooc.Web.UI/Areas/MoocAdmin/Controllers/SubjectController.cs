@@ -43,7 +43,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
 
                 var sectionList = db.Subjects.Where(x => x.Id == id).Join(db.Sections,
                     selectedSubject => selectedSubject.Id,
-                    section => section.Subject.Id,
+                    section => section.SubjectId,
                     (selectedSubject, section) => new
                     {
                         sectionId = section.Id,
@@ -60,7 +60,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 {
                     var videoList = db.Sections.Where(x => x.Id == section.sectionId).Join(db.Videos,
                         selectedSection => selectedSection.Id,
-                        video => video.Section.Id,
+                        video => video.SectionId,
                         (selectedSection, video) => new
                         {
                             sectionId = selectedSection.Id,
@@ -255,12 +255,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 {
                    
                     db.Entry(subject).State = EntityState.Modified;
-                    // var tmp = db.Subjects.Find(subject.Id);
-                   // tmp.Subjectgory = db.SubjectCategorys.Find(categoryId);
-                   // tmp.Teacher = db.Teachers.Find(teacherId);
-                  //  subject.AddTime = DateTime.Now;
-                  // db.Entry(tmp).CurrentValues.SetValues(subject);  
-                    //使用db.Entry(subject).State = EntityState.Modified; subject表中两个外键并没有被改变 只能使用CuurentValues.SetValues
+                  
                 }  
                 var a = db.SaveChanges();
                 return Json(new { code = 200,currentId = subject.Id });     //添加完成后 返回最新的自增长id
@@ -336,7 +331,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public JsonResult GetSubjectId(int id)       //传入sectionId 获得对应的subjectId
         {
             var tmpSubject = db.Sections.Where(x => x.Id > 0).Join(db.Subjects,
-                section=>section.Subject.Id,
+                section=>section.SubjectId,
                 subject=>subject.Id,
                 (section,subject) => new
                 {

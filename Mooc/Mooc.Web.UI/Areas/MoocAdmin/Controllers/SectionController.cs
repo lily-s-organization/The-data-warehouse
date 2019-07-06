@@ -67,7 +67,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             int currentItems = (pageIndex - 1) * pageSize;
             var list = db.Sections.Where(x => x.Id > 0).OrderByDescending(p => p.Id).Skip(currentItems).Take(pageSize).Join(db.Subjects,
-                section=>section.Subject.Id,
+                section=>section.SubjectId,
                 subject=>subject.Id,
                 (section, subject) => new
                 {
@@ -92,19 +92,17 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 if (section == null)
                     return Json(300);
 
+                section.SubjectId = subjectId;//daidong
+
                 if (section.Id == 0)
                 {
-                    section.Subject = db.Subjects.Find(subjectId);
+                    //  section.Subject = db.Subjects.Find(subjectId);
+                   
                     db.Sections.Add(section);
                 }
                 else                         //未引用到对象的实例
                 {
-                    Subject subject = db.Subjects.Find(subjectId);
-                    section.Subject = subject;
-                    Section tmpSection = db.Sections.Find(section.Id);
-                    tmpSection.Subject = subject;
-                    // db.Entry(section).State = EntityState.Modified;
-                    db.Entry(tmpSection).CurrentValues.SetValues(section);
+                    db.Entry(section).State = EntityState.Modified;
                 }
 
                 db.SaveChanges();
@@ -123,7 +121,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             var sectionDetail = db.Sections.Where(x => x.Id == id).SingleOrDefault();
             var videoList = db.Videos.Join(db.Sections,
-                video => video.Section.Id,
+                video => video.SectionId,
                 section => section.Id,
                 (video, section) => new
                 {
@@ -136,7 +134,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 }
                 ).Where(x=>x.sectionId == id).ToList();
             var subjectId = db.Sections.Join(db.Subjects,
-                section=>section.Subject.Id,
+                section=>section.SubjectId,
                 subject=>subject.Id,
                 (section,subject)=>new
                 {

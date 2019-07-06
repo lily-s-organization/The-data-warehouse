@@ -13,8 +13,10 @@ namespace Mooc.DataAccess.Models.Entities
         [Required]
         public string SectionName { get; set; }
 
+     
+
         [Required]
-        public Subject Subject { get; set; }
+        public int SubjectId { get; set; }
 
         public string Description { get; set; }
     }

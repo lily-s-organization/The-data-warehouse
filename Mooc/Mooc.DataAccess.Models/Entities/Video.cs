@@ -13,8 +13,9 @@ namespace Mooc.DataAccess.Models.Entities
         [Required]
         public string VideoTitle { get; set; }
 
+
         [Required]
-        public Section Section { get; set; }
+        public int SectionId { get; set; }
 
         [Required]
         public string FileId { get; set; }  //视频在服务器中保存的文件名 由时间日期转化得到
