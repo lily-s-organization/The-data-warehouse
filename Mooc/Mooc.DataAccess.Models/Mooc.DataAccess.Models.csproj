@@ -132,36 +132,15 @@
     <Compile Include="Migrations\201905241611268_test01.Designer.cs">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907060131222_ModifySectionId.cs" />
-    <Compile Include="Migrations\201907060131222_ModifySectionId.Designer.cs">
-      <DependentUpon>201907060131222_ModifySectionId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060144413_ModifyVideoId.cs" />
-    <Compile Include="Migrations\201907060144413_ModifyVideoId.Designer.cs">
-      <DependentUpon>201907060144413_ModifyVideoId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060535321_updateViewModel.cs" />
-    <Compile Include="Migrations\201907060535321_updateViewModel.Designer.cs">
-      <DependentUpon>201907060535321_updateViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060603135_updateViewModel6.cs" />
-    <Compile Include="Migrations\201907060603135_updateViewModel6.Designer.cs">
-      <DependentUpon>201907060603135_updateViewModel6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060607355_updateViewModel00.cs" />
-    <Compile Include="Migrations\201907060607355_updateViewModel00.Designer.cs">
-      <DependentUpon>201907060607355_updateViewModel00.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907060636466_updateViewModeloo.cs" />
-    <Compile Include="Migrations\201907060636466_updateViewModeloo.Designer.cs">
-      <DependentUpon>201907060636466_updateViewModeloo.cs</DependentUpon>
+    <Compile Include="Migrations\201907060646259_updateViewModelp.cs" />
+    <Compile Include="Migrations\201907060646259_updateViewModelp.Designer.cs">
+      <DependentUpon>201907060646259_updateViewModelp.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IUsersService.cs" />
     <Compile Include="Service\UsersService.cs" />
     <Compile Include="Utils\EnumModels.cs" />
-    <Compile Include="ViewModels\OpenCourseViewModel.cs" />
     <Compile Include="ViewModels\SubjectViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
@@ -173,23 +152,8 @@
     <EmbeddedResource Include="Migrations\201905241611268_test01.resx">
       <DependentUpon>201905241611268_test01.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060131222_ModifySectionId.resx">
-      <DependentUpon>201907060131222_ModifySectionId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060144413_ModifyVideoId.resx">
-      <DependentUpon>201907060144413_ModifyVideoId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060535321_updateViewModel.resx">
-      <DependentUpon>201907060535321_updateViewModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060603135_updateViewModel6.resx">
-      <DependentUpon>201907060603135_updateViewModel6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060607355_updateViewModel00.resx">
-      <DependentUpon>201907060607355_updateViewModel00.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907060636466_updateViewModeloo.resx">
-      <DependentUpon>201907060636466_updateViewModeloo.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907060646259_updateViewModelp.resx">
+      <DependentUpon>201907060646259_updateViewModelp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

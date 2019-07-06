@@ -61,10 +61,13 @@
         $scope.deleteOpenCourse = function (id) {
             if (confirm("确定删除该条数据?")) {
                  $http.post("@Url.Content("~/MoocAdmin/OpenCourse/Delete/")" + id).then(function (response) {
-                     if (response.status == 200) {
+                     if (response.data.code == 0) {
                          alert("删除成功");
                          getOpenCourseList($scope, $http);//刷新页面
-                }
+                        
+                     } else if (response.data.code == 200) {
+                         alert("开课期间不能删除");
+                     }
                  }).catch(function (data) {
                      alert("删除失败");
                      console.log("catch:" + data);

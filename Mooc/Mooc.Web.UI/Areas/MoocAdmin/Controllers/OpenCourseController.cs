@@ -102,9 +102,15 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 if (openCourse == null)
                     return Json(500);
 
+                var currentTime = DateTime.Now.Date;
+                if (currentTime>=openCourse.StartDate && currentTime<= openCourse.CloseDate)
+                {
+                    return Json(new { code = 200});           //开课期间不能删除
+                }
+
                 db.OpenCourses.Remove(openCourse);
                 db.SaveChanges();
-                return Json(0);
+                return Json(new { code = 0 });
             }
             catch (Exception ex)
             {
