@@ -112,11 +112,15 @@
                    
                     var msecStr = element.StartDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); // => '1419492640000' ：通过正则替换，获取毫秒字符串
                     var msesInt = Number.parseInt(msecStr);
-                    element.StartDate = new Date(msesInt).toLocaleString(); 
+                  //  element.StartDate = new Date(msesInt).toLocaleString(); 
+                    var tmpDate = new Date(msesInt);
+                    element.StartDate = format(tmpDate);
 
                     var msecStr1 = element.CloseDate.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1"); 
                     var msesInt1 = Number.parseInt(msecStr1);
-                    element.CloseDate = new Date(msesInt1).toLocaleString(); 
+                    //element.CloseDate = new Date(msesInt1).toLocaleString(); 
+                    var tmpDate1 = new Date(msesInt1);
+                    element.CloseDate = format(tmpDate1);
                 });
 
 
@@ -126,5 +130,21 @@
         });
     }
 
+
+    function format(Date) {
+        var Y = Date.getFullYear();
+        var M = Date.getMonth() + 1;
+        M = M < 10 ? '0' + M : M;// 不够两位补充0
+        var D = Date.getDate();
+        D = D < 10 ? '0' + D : D;
+        var H = Date.getHours();
+        H = H < 10 ? '0' + H : H;
+        var Mi = Date.getMinutes();
+        Mi = Mi < 10 ? '0' + Mi : Mi;
+        var S = Date.getSeconds();
+        S = S < 10 ? '0' + S : S;
+        return Y + '-' + M + '-' + D + ' ' + H + ':' + Mi + ':' + S;
+    }
+   
 </script>
 
