@@ -170,7 +170,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         public JsonResult GetSubjectDetail(long id)
         {
             var result = db.Subjects.Where(x=>x.Id == id).Join(db.Teachers,
-                subject => subject.SubjectCategoryId,
+                subject => subject.TeacherId,
                 teacher => teacher.Id,
                 (subject, teacher) => new
                 {

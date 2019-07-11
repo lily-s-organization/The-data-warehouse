@@ -199,6 +199,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\SubjectCategoryController.cs" />
+    <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\UsersTestController.cs" />
     <Compile Include="Filter\LoginAuthorizeAttribute.cs" />
@@ -270,6 +272,15 @@
     <Content Include="Scripts\calendar_arrows.png" />
     <Content Include="Scripts\easyui.css" />
     <Content Include="Scripts\icon.css" />
+    <Content Include="Scripts\IndexPageSytle\be.png" />
+    <Content Include="Scripts\IndexPageSytle\bk.jpg" />
+    <Content Include="Scripts\IndexPageSytle\bootstrap.css" />
+    <Content Include="Scripts\IndexPageSytle\jquery.SuperSlide.2.1.1.js" />
+    <Content Include="Scripts\IndexPageSytle\muke.css" />
+    <Content Include="Scripts\IndexPageSytle\uiz1.png" />
+    <Content Include="Scripts\IndexPageSytle\uiz2.png" />
+    <Content Include="Scripts\IndexPageSytle\uiz20.jpg" />
+    <Content Include="Scripts\IndexPageSytle\uiz21.jpg" />
     <Content Include="Scripts\jqPaginator.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -341,6 +352,8 @@
     <Folder Include="Areas\MoocAdmin\Views\Video\" />
     <Folder Include="assets\img\" />
     <Folder Include="Views\Demo1\" />
+    <Folder Include="Views\SubjectCategory\" />
+    <Folder Include="Views\Subject\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
