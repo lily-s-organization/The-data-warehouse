@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,21 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        public ActionResult Detail(int id)
+        {
+            try
+            {
+                ViewBag.Id = id;
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex.Message);
+                return RedirectToAction("Index");
+            }
+        }
+
         [HttpPost]
         public JsonResult GetListByCategoryId(int id)      //通过课程类别的ID,获得这一类别下的课程 只取前五个课程
         {
@@ -33,5 +49,33 @@ namespace Mooc.Web.UI.Controllers
 
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult GetDetail(int id)      //根据课程Id 返回课程下的章节 以及章节下的视频
+        {
+           
+            var sectionList = db.Sections.Where(x => x.SubjectId == id).ToList();
+            ArrayList resultList = new ArrayList();
+            var videoCount = 0;
+            foreach (var item in sectionList)
+            {
+                var videoList = db.Videos.Where(x => x.SectionId == item.Id).ToList();
+                var tmp = new { sectionName = item.SectionName, list = videoList};
+                resultList.Add(tmp);                                                       //组装数据 得到所有章节下的对应视频
+
+                videoCount += videoList.Count();                                            //计算该老师所相关的视频数 用于前台展示
+            }
+
+            var teacherId = db.Subjects.Find(id).TeacherId;
+          
+            var teacherResult = db.Teachers.Find(teacherId);
+            var courseCount = db.Subjects.Where(x => x.TeacherId == teacherId).ToList().Count();             //得到该老师所教的课的总数 用于前台展示
+            
+            var teacherInfo = new { Name = teacherResult.TeacherName, Title = teacherResult.Level, department = teacherResult.Department,photoUrl = teacherResult.PhotoUrl ,courseCount = courseCount, videoCount = videoCount };
+            var subjectInfo = db.Subjects.Find(id);
+           
+            return Json(new { resultList  = resultList , teacherInfo = teacherInfo, subjectInfo = subjectInfo });
+        }
+        
     }
 }

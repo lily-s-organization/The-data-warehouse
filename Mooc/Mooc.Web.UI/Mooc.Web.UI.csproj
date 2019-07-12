@@ -304,6 +304,23 @@
     <Content Include="Scripts\LoginStyle\util.css" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\SubjectStyle\bg3.png" />
+    <Content Include="Scripts\SubjectStyle\bg4.jpg" />
+    <Content Include="Scripts\SubjectStyle\categoryPage-banner.jpg" />
+    <Content Include="Scripts\SubjectStyle\detail.css" />
+    <Content Include="Scripts\SubjectStyle\hot-column.jpg" />
+    <Content Include="Scripts\SubjectStyle\icon10.png" />
+    <Content Include="Scripts\SubjectStyle\icon21.png" />
+    <Content Include="Scripts\SubjectStyle\index-like.jpg" />
+    <Content Include="Scripts\SubjectStyle\logo.png" />
+    <Content Include="Scripts\SubjectStyle\user-avatar.png" />
+    <Content Include="Scripts\VideoPlayer\fancyplayer.js" />
+    <Content Include="Scripts\VideoPlayer\flowplayer-3.1.1.min.js" />
+    <Content Include="Scripts\VideoPlayer\jquery-1.3.2.min.js" />
+    <Content Include="Scripts\VideoPlayer\jquery.easing.1.3.js" />
+    <Content Include="Scripts\VideoPlayer\jquery.fancybox-1.2.1.pack.js" />
+    <Content Include="Scripts\VideoPlayer\jquery.fancybox.css" />
+    <Content Include="Scripts\VideoPlayer\lanrenzhijia.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -345,6 +362,7 @@
     <Content Include="Scripts\LoginStyle\Material-Design-Iconic-Font.woff" />
     <Content Include="Scripts\LoginStyle\Material-Design-Iconic-Font.woff2" />
     <Content Include="Views\Login\ForgotPassword.cshtml" />
+    <Content Include="Views\Subject\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -353,7 +371,6 @@
     <Folder Include="assets\img\" />
     <Folder Include="Views\Demo1\" />
     <Folder Include="Views\SubjectCategory\" />
-    <Folder Include="Views\Subject\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

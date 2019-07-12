@@ -208,7 +208,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
         {
             int currentItems = (pageIndex - 1) * pageSize;
 
-            var list = db.Subjects.Where(x => x.Id > 0).OrderByDescending(p => p.AddTime).Skip(currentItems).Take(pageSize).Join(db.Teachers,
+            var list = db.Subjects.Where(x => x.Id > 0).OrderByDescending(p => p.Id).Skip(currentItems).Take(pageSize).Join(db.Teachers,
                 subject => subject.TeacherId,
                 teacher => teacher.Id,
                 (subject, teacher) => new
@@ -278,7 +278,7 @@ namespace Mooc.Web.UI.Areas.MoocAdmin.Controllers
                 }
                 else
                 {
-                   
+                    subject.AddTime = DateTime.Now;
                     db.Entry(subject).State = EntityState.Modified;
                   
                 }  

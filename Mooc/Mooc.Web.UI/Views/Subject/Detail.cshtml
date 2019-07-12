@@ -1,0 +1,262 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script src="~/Scripts/angular1.7/angular.js"></script>
+    <script src="~/Scripts/VideoPlayer/jquery-1.3.2.min.js"></script>
+    <script src="~/Scripts/VideoPlayer/jquery.easing.1.3.js"></script>
+    <script src="~/Scripts/VideoPlayer/jquery.fancybox-1.2.1.pack.js"></script>
+    <script src="~/Scripts/VideoPlayer/flowplayer-3.1.1.min.js"></script>
+    <script src="~/Scripts/VideoPlayer/fancyplayer.js"></script>
+    <link href="~/Scripts/VideoPlayer/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/Scripts/VideoPlayer/lanrenzhijia.css" rel="stylesheet" />
+    <link href="~/Scripts/LoginStyle/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Scripts/SubjectStyle/detail.css" rel="stylesheet" />
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+
+    <div class="header"  >
+        <div class="width1200pxAuto clearfix">
+            <div class="left clearfix">
+                <div class="left logo"><a href=""><img src="~/Scripts/SubjectStyle/logo.png" height="44" width="176" alt=""></a></div>
+
+            </div>
+            <div class="right clearfix">
+
+                <div class="left loginWrap">
+                    <div class="user dropdown">
+                        <p class="dropdown-toggle clearfix"><span class="user-avatar positionR"><img src="~/Scripts/SubjectStyle/user-avatar.png" height="30" width="30" alt=""></span><span class="username">这个是我</span></p>
+                    </div>
+                </div>
+                <a href="" class="left rightbtn bgColorOrange">退出登陆</a>
+            </div>
+        </div>
+    </div>
+    <div class="categoryPage detailPage columnDetail">
+        <div class="topbanner width1200pxAuto">
+            <img ng-src="~/Images/Upload/{{subjectInfo.PhotoUrl}}" width="1200" height="330" />
+            <div class="intro">
+                <div class="title clearfix">
+                    <h1>{{subjectInfo.SubjectName}}</h1><span class="date">{{subjectInfo.AddTime}}</span>
+
+
+                </div>
+                <div class="bookThing"><a>报名学习</a>主讲人：{{teacherInfo.Name}}&nbsp;&nbsp;|&nbsp;&nbsp;当前人数：<span>32</span> 人</div>
+                <p>{{subjectInfo.Description}}</p>
+            </div>
+            <div class="info clearfix">
+
+            </div>
+        </div>
+        <div class="main width1200pxAuto clearfix">
+            <div class="left leftWrap">
+                <div class="module list lecture-list">
+                    <div class="module-hd list-header clearfix">
+
+                    </div>
+                    <div class="module-bd catalogue-view">
+
+                        <div class="chapter-list">
+                            <div class="chapter">
+                                <div ng-repeat="row in resultList">
+                                    <div class="chapterName">{{row.sectionName}}</div>
+                                    <div ng-repeat="video in row.list">
+                                        <div class="item ">
+                                            <div class="left con">
+
+                                                <video style="float:left;height:35px;width:48px;margin-top:10px" ng-src="~/Images/Video/{{video.FileId}}" alt=""></video>
+                                                <span class="title" style="margin-left:5px">{{video.VideoTitle}}</span>
+                                                
+                                                <a href="~/Images/Video/{{video.FileId}}" class="video_link"><i style="background-image:url(../../Scripts/SubjectStyle/icon10.png)"></i></a>
+                                            </div>
+                                          
+                                            <div style="float:right;">已结束</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right rightWrap">
+                <div class="module profile">
+                    <div class="clearfix">
+                        <div class="left avatar"><a><img src="~/Scripts/SubjectStyle/hot-column.jpg" height="80" width="80" alt=""></a></div>
+                        <div class="left content">
+                            <div class="nickname"><a>{{teacherInfo.Name}}</a></div>
+                            <div class="job">{{teacherInfo.department}}</div>
+                        </div>
+                    </div>
+                    <ul class="clearfix">
+                        <li><span>{{teacherInfo.courseCount}}</span><p>课程</p></li>
+                        <li><span>{{teacherInfo.videoCount}}</span><p>视频</p></li>
+                        <li class="last"><span>200</span><p>学习人数</p></li>
+                    </ul>
+                </div>
+
+                <div class="module hot-column related-lecture" style="display:none">
+                    <div class="module-hd clearfix">
+                        <div class="left title">相关课程</div>
+                        <a href="" class="right more">更多&gt;</a>
+                    </div>
+                    <div class="module-bd">
+                        <ul>
+                            <li>
+                                <div class="item">
+                                    <a href="" target="_blank">
+                                        <img src="image/platform/index-like.jpg" height="140" width="255" alt="">
+                                        <span>以图为媒 按图索骥</span>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item bdb0">
+                                    <a href="" target="_blank">
+                                        <img src="image/platform/index-like.jpg" height="140" width="255" alt="">
+                                        <span>以图为媒 按图索骥</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+
+        <p class="copyright">在线发行：MOOC技术有限公司&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    </div>
+    <!-- <script>
+
+        $('.catalogue-view .chapter .item').hover(function () {
+            $(this).addClass('active')},
+            function () {
+            $(this).removeClass('active')}
+        )
+
+    </script> -->
+    <script>
+
+
+
+    var app = angular.module("myapp", []);
+    app.controller("myCtrl", function ($scope, $http) {
+
+        $scope.Id = '@ViewBag.Id';
+
+        var id = $scope.Id;
+        getSubjectDetail($scope, $http);
+
+
+
+        $scope.showList = function (id) {
+
+            $http.post("@Url.Content("~/Subject/GetListByCategoryId/")"+id ).then(function (response) {
+                     if (response.status == 200) {
+
+                         console.log(response.data);
+                         $scope.subjectList = response.data;
+
+                }
+                 }).catch(function (data) {
+                     alert("载入失败");
+                     console.log("catch:" + data);
+            })
+
+
+        };
+
+
+
+        $scope.subjectDetail = function (id) {
+            console.log("detaile");
+            console.log(id);
+        }
+
+
+    });
+
+        function getSubjectDetail($scope, $http) {
+           // alert("s");
+           // alert($scope.Id);
+            $http.post("@Url.Content("~/Subject/GetDetail/")" + $scope.Id).then(function (response) {
+                if (response.status == 200) {
+                    //    alert("载入成功");
+                    console.log(response.data);
+                    $scope.resultList = response.data.resultList;
+                    $scope.subjectInfo = response.data.subjectInfo;
+                    
+                    $scope.teacherInfo = response.data.teacherInfo;
+
+
+                    var msecStr = $scope.subjectInfo.AddTime.toString().replace(/\/Date\(([-]?\d+)\)\//gi, "$1");
+                    var msesInt = Number.parseInt(msecStr);
+                   
+                    var tmpDate = new Date(msesInt);
+                    $scope.subjectInfo.AddTime = format(tmpDate);
+                   
+
+
+                   
+                }
+            }).catch(function (data) {
+                alert("载入失败");
+                console.log("catch:" + data);
+            }) 
+
+           
+        }
+
+        function format(Date) {
+            var Y = Date.getFullYear();
+            var M = Date.getMonth() + 1;
+            M = M < 10 ? '0' + M : M;// 不够两位补充0
+            var D = Date.getDate();
+            D = D < 10 ? '0' + D : D;
+            var H = Date.getHours();
+            H = H < 10 ? '0' + H : H;
+            var Mi = Date.getMinutes();
+            Mi = Mi < 10 ? '0' + Mi : Mi;
+            var S = Date.getSeconds();
+            S = S < 10 ? '0' + S : S;
+           // return Y + '-' + M + '-' + D + ' ' + H + ':' + Mi + ':' + S;
+            return Y + '-' + M + '-' + D ;
+        }
+
+        function getSubjectDetail11($scope, $http) {
+            alert("s");
+            alert($scope.Id);
+             @*$http.post("@Url.Content("~/SubjectCategory/GetList/")" ).then(function (response) {
+                     if (response.status == 200) {
+                     //    alert("载入成功");
+                         console.log(response.data);
+                         $scope.categorylist = response.data;
+
+                        // getSubjectList($scope, $http);//刷新页面
+                }
+                 }).catch(function (data) {
+                     alert("载入失败");
+                     console.log("catch:" + data);
+            })*@
+        }
+
+      
+
+
+    </script>
+</body>
+</html>
