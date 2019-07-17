@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+
 namespace WebApi.Controllers
 {
     [AllowAnonymous]
@@ -16,14 +17,16 @@ namespace WebApi.Controllers
         // GET api/values
         public IEnumerable<Subject> Get()
         {
-            var list = db.Subjects.ToList();
+            List<Subject> list = db.Subjects.ToList();
+
             return list;
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public Subject Get(int id)
         {
-            return "value";
+            Subject subject = db.Subjects.Find(id);
+            return subject; 
         }
 
         // POST api/values
