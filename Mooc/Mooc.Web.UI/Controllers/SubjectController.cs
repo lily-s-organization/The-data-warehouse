@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using log4net;
 using Mooc.DataAccess.Models.Context;
+using Mooc.DataAccess.Models.Entities;
 
 namespace Mooc.Web.UI.Controllers
 {
@@ -76,6 +77,47 @@ namespace Mooc.Web.UI.Controllers
            
             return Json(new { resultList  = resultList , teacherInfo = teacherInfo, subjectInfo = subjectInfo });
         }
-        
+
+        //Refactory
+        //拆分成四个函数 
+        #region 
+        [HttpPost]
+        public JsonResult GetTeacherDetail(int id)         //subjectId
+        {
+            int teacherId = db.Subjects.Find(id).TeacherId;
+            Teacher teacherResult = db.Teachers.Find(teacherId);
+
+            return Json(teacherResult);
+
+        }
+        [HttpPost]
+        public JsonResult GetSubjectDetail(int id)             //subjectId
+        {
+            Subject subjectResult = db.Subjects.Find(id);
+            int teacherId = db.Subjects.Find(id).TeacherId;
+            int courseCount = db.Subjects.Where(x => x.TeacherId == teacherId).ToList().Count();             //得到该老师所教的课的总数 用于前台展示
+            return Json(new { subjectResult= subjectResult, courseCount= courseCount });
+        }
+        [HttpPost]
+        public JsonResult GetSectionList(int id)              //subjectId
+        {
+          
+            List<Section> sectionList = db.Sections.Where(x => x.SubjectId == id).ToList();
+            var videoCount = 0;
+            foreach (var item in sectionList)
+            {
+                List<Video> videoList = db.Videos.Where(x => x.SectionId == item.Id).ToList();                                                                
+                videoCount += videoList.Count();          //得到每个章节下的视频数 累加  用于前台展示
+            }
+            return Json(new { sectionList = sectionList , videoCount = videoCount });
+        }
+        [HttpPost]
+        public JsonResult GetVideoList(int id)                 //sectionId
+        {
+            IList videoList = db.Videos.Where(x => x.SectionId == id).ToList();
+            return Json(videoList);
+        }
+        #endregion
+
     }
 }
