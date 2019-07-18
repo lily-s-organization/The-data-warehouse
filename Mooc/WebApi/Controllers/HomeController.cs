@@ -10,9 +10,12 @@ namespace WebApi.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+           // ViewBag.Title = "Home Page";
 
-            return View();
+            Response.Redirect(Url.Content("~/swagger/ui/index#/"));
+            return null;
+
+           // return View();
         }
     }
 }

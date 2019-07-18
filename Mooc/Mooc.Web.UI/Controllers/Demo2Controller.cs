@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Mooc.Web.UI.Controllers
 {
+    
     public class Demo2Controller : Controller
     {
         // 使用 jquey / vue.js /angular.js 绑定数据 EF+automap+autofac (不要急)
@@ -19,8 +20,9 @@ namespace Mooc.Web.UI.Controllers
             return View();
         }
 
+        //[ActionName("adddeom")]
+       //[Route("Demo/add")]
 
-      
         public ActionResult Add()
         {
             IList<SelectListItem> RoleNamelistItem = EnumModels.ToSelectList(typeof(EnumModels.RoleNameEnum));
