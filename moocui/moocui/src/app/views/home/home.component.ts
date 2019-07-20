@@ -12,16 +12,31 @@ export class HomeComponent implements OnInit {
 
   constructor(private http: HttpClient,private api: ApiService) { }
 
+  private singleTeacher: any;
+  private teacherList: any;
+
   ngOnInit() {
-    this.PostList();
+    this.GetTeacherList();
+    this.GetTeacherById(5);
   }
 
-  async GetList() {
-    var url = environment.apiPath+"api/values";
+  async GetTeacherList() {
+    var url = environment.apiPath+"api/teacher";
 
     this.http.get(url).subscribe(res => 
       {
          console.log(res);
+         this.teacherList = res;
+      })
+  }
+
+  async GetTeacherById(id) {
+    var url = environment.apiPath+"api/teacher/"+id;
+
+    this.http.get(url).subscribe(res => 
+      {
+         console.log(res);
+         this.singleTeacher = res;
       })
   }
 

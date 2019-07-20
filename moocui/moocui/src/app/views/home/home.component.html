@@ -1,1 +1,19 @@
-<p>home works!</p>
+
+<div style="float: left;display: inline">
+        <div>教师列表：</div>
+        <div *ngFor="let teacher of teacherList">
+                <p>名字:{{teacher.TeacherName}}</p>
+                <p>职位:{{teacher.Level}}</p>
+                <p>部门：{{teacher.Department}}</p>
+        </div>
+</div>
+
+<div style="float: left;display: inline;margin-left: 40px">
+        <div >单个教师:</div>
+        <div>
+            <p>名字 :{{singleTeacher.TeacherName}}</p>
+            <p>职位 :{{singleTeacher.Level}}</p>
+            <p>部门：{{singleTeacher.Department}}</p>
+            
+        </div>
+</div>

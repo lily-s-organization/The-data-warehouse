@@ -15,27 +15,34 @@ namespace WebApi.Controllers
     {
         private DataContext db = new DataContext();
 
-        [SwaggerConfig.HiddenApi]
+        //[SwaggerConfig.HiddenApi]
         [HttpGet]
-        public IEnumerable<Teacher> Get()
+        public IHttpActionResult Get()
         {
             List<Teacher> list = db.Teachers.ToList();
 
-            return list;
+            return Ok(list);
         }
 
         /// <summary>
         /// 获取老师信息
         /// </summary>
         /// <param name="id">主键id</param>
-        /// <returns></returns>
+        /// <returns>teacher info</returns>
         [HttpGet]
-        [Route("api/t/g")]
-        public Teacher Get(int id)
+     //   [Route("api/t/g")]
+        public IHttpActionResult Get(int id)
         {
 
             Teacher teacher = db.Teachers.Find(id);
-            return teacher;
+            if (teacher != null)
+            {
+                return Ok(teacher);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
 
